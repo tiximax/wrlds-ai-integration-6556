@@ -63,12 +63,14 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				wrlds: {
-					teal: '#9F9EA1',
-					dark: '#3F3F3F',
-					light: '#F6F6F7',
-					accent: '#C8C8C9',
-					muted: '#F1F1F1'
+				gsa: {
+					blue: '#2563eb', // Màu xanh tin cậy
+					orange: '#f97316', // Màu cam năng động
+					dark: '#1f2937', // Màu đen nhạt
+					light: '#f9fafb', // Màu trắng nhạt
+					accent: '#e5e7eb', // Màu accent nhạt
+					muted: '#f3f4f6', // Màu muted
+					green: '#10b981' // Màu xanh lá cho thành công
 				}
 			},
 			borderRadius: {

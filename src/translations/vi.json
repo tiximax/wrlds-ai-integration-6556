@@ -1,0 +1,167 @@
+{
+  "common": {
+    "home": "Trang chủ",
+    "backToHome": "Về trang chủ",
+    "contactUs": "Liên hệ chúng tôi",
+    "learnMore": "Tìm hiểu thêm",
+    "getStarted": "Bắt đầu",
+    "services": "Dịch vụ",
+    "readMore": "Đọc thêm",
+    "subscribe": "Đăng ký nhận tin",
+    "subscribing": "Đang đăng ký...",
+    "company": "Công ty",
+    "contact": "Liên hệ",
+    "allRightsReserved": "Tất cả quyền được bảo lưu"
+  },
+  "navigation": {
+    "home": "Trang chủ",
+    "about": "Về chúng tôi",
+    "services": "Dịch vụ",
+    "products": "Sản phẩm",
+    "caseStudies": "Tình huống Khách hàng",
+    "learnMore": "Tìm hiểu thêm",
+    "techDetails": "Chi tiết Công nghệ",
+    "techDetailsDesc": "Cách nền tảng vải thông minh của chúng tôi hoạt động",
+    "devProcess": "Quy trình Phát triển",
+    "devProcessDesc": "Phương pháp tạo ra các giải pháp tùy chỉnh",
+    "news": "Tin tức",
+    "blog": "Blog",
+    "contact": "Liên hệ",
+    "careers": "Tuyển dụng",
+    "privacyPolicy": "Chính sách bảo mật"
+  },
+  "hero": {
+    "title": "Dịch vụ Mua hộ Quốc tế Uy tín #1",
+    "tagline": "Kết nối Con người, Tạo ra Giá trị",
+    "subtitle": "Mua hộ, vận chuyển và thanh toán quốc tế từ Nhật Bản, Hàn Quốc, Mỹ về Đông Nam Á. Nhanh chóng - Uy tín - Giá cả hợp lý.",
+    "viewServices": "Xem Dịch vụ",
+    "contactNow": "Liên hệ ngay",
+    "globalShopping": "Mua hộ toàn cầu",
+    "globalShoppingDesc": "Mua sắm tất cả các sản phẩm từ Nhật Bản, Hàn Quốc và Mỹ một cách nhanh chóng và tiện lợi.",
+    "internationalShipping": "Vận chuyển quốc tế",
+    "internationalShippingDesc": "Hệ thống vận chuyển động lực và an toàn từ các quốc gia về Đông Nam Á.",
+    "flexiblePayment": "Thanh toán linh hoạt",
+    "flexiblePaymentDesc": "Hỗ trợ đa dạng hình thức thanh toán và quản lý đơn hàng thông minh."
+  },
+  "features": {
+    "title": "Dịch vụ Mua hộ Quốc tế",
+    "subtitle": "Chúng tôi cung cấp dịch vụ mua hộ toàn diện từ các quốc gia hàng đầu thế giới, giúp bạn tiếp cận các sản phẩm chất lượng với giá cả hợp lý.",
+    "japanTitle": "Mua hộ từ Nhật Bản",
+    "japanDesc": "Từ các website nổi tiếng như Amazon, Rakuten, Yahoo Auction. Hàng chính hãng, giá tốt, giao hàng nhanh chóng.",
+    "koreaTitle": "Mua hộ từ Hàn Quốc",
+    "koreaDesc": "K-beauty, thời trang, điện tử và các sản phẩm hot trend từ Hàn Quốc. Gmarket, Coupang, 11st và nhiều website khác.",
+    "usaTitle": "Mua hộ từ Mỹ",
+    "usaDesc": "Amazon US, eBay, Best Buy, và hàng ngàn website khác. Sản phẩm đa dạng và giá cả cạnh tranh nhất thế giới.",
+    "paymentTitle": "Thanh toán & Vận chuyển",
+    "paymentDesc": "Hỗ trợ thanh toán nhiều hình thức, vận chuyển nhanh chóng và an toàn về Việt Nam, Malaysia, Singapore, Indonesia.",
+    "categoryTitle": "Danh mục Sản phẩm",
+    "popularCategories": "Các Nhóm Hàng Phổ biến",
+    "categorySubtitle": "Khám phá các danh mục sản phẩm được yêu thích nhất từ Nhật Bản, Hàn Quốc và Mỹ, từ thời trang, công nghệ đến sức khỏe và làm đẹp.",
+    "scrollToSeeMore": "Trượt ngang để xem thêm →",
+    "fashionTitle": "Thời trang & Làm đẹp",
+    "fashionDesc": "K-beauty, mỹ phẩm, quần áo thời trang từ Nhật, Hàn với giá cả hấp dẫn và chất lượng đảm bảo.",
+    "electronicsTitle": "Điện tử & Công nghệ",
+    "electronicsDesc": "Smartphone, laptop, phụ kiện công nghệ mới nhất từ các thương hiệu hàng đầu với giá cạnh tranh.",
+    "sportsTitle": "Thể thao & Sức khỏe",
+    "sportsDesc": "Dụng cụ thể thao, thần phẩm bổ sung dinh dưỡng, thiết bị chăm sóc sức khỏe chất lượng cao.",
+    "fewExamples": "Những danh mục trên chỉ là một số ít trong hàng ngàn sản phẩm chúng tôi có thể mua hộ cho bạn",
+    "needConsultation": "Cần tư vấn riêng?",
+    "learnMoreAboutService": "Tìm hiểu thêm về dịch vụ"
+  },
+  "services": {
+    "title": "Dịch vụ của chúng tôi",
+    "subtitle": "Khám phá dịch vụ mua hộ đa quốc gia của chúng tôi, từ việc tìm kiếm sản phẩm đến giao hàng tận nơi với giá cả tối ưu.",
+    "purchasing": {
+      "title": "Mua hộ Quốc tế",
+      "description": "Đối tác tin cậy cho việc mua sắm và thu mua toàn cầu."
+    },
+    "logistics": {
+      "title": "Logistics & Thực hiện",
+      "description": "Giải pháp logistics hoàn chỉnh từ nguồn đến tận nơi."
+    },
+    "quality": {
+      "title": "Đảm bảo Chất lượng",
+      "description": "Kiểm tra chất lượng nghiêm ngặt và sự hài lòng của khách hàng."
+    }
+  },
+  "whyChooseUs": {
+    "title": "Tại sao chọn chúng tôi?",
+    "subtitle": "Trong lĩnh vực mua hộ quốc tế, chúng tôi mang đến sự đưn giản và chuyên nghiệp để đảm bảo thành công của bạn",
+    "marketValue": "Thị trường thương mại điện tử xuyên biên giới dự kiến đạt mức này vào năm 2030",
+    "customers": "Khách hàng đã tin tưởng và sử dụng dịch vụ mua hộ của chúng tôi",
+    "savings": "Tiết kiệm chi phí so với việc mua trực tiếp tại các nước này",
+    "whatWeBring": "Chúng tôi mang lại gì cho bạn",
+    "whatWeBringDesc": "Chúng tôi biến ý tưởng mua sắm của bạn thành hiện thực với những lợi ích cụ thể",
+    "diverseProducts": "Sản phẩm đa dạng",
+    "diverseProductsDesc": "Tiếp cận hàng triệu sản phẩm từ các quốc gia hàng đầu thế giới.",
+    "reliableService": "Dịch vụ uy tín",
+    "reliableServiceDesc": "Quy trình minh bạch, thông tin rõ ràng, hỗ trợ nhiệt tình 24/7.",
+    "convenientShopping": "Mua sắm tiện lợi",
+    "convenientShoppingDesc": "Chỉ cần gửi link sản phẩm, chúng tôi lo tất cả các thủ tục phức tạp.",
+    "fastShipping": "Vận chuyển nhanh",
+    "fastShippingDesc": "Cam kết giao hàng nhanh nhất và an toàn nhất đến tay bạn.",
+    "learnMoreAboutProcess": "Tìm hiểu thêm về quy trình dịch vụ của chúng tôi"
+  },
+  "about": {
+    "title": "Về chúng tôi - Global Shopping Assistant",
+    "subtitle": "Chúng tôi là đội ngũ chuyên gia tận tâm cung cấp dịch vụ mua hộ quốc tế uy tín, nhanh chóng và an toàn từ Nhật Bản, Hàn Quốc và Mỹ.",
+    "ourMission": "Sứ mệnh của chúng tôi",
+    "missionDesc1": "Tại Global Shopping Assistant, chúng tôi có sứ mệnh kết nối khách hàng Việt Nam với các sản phẩm chất lượng cao từ Nhật Bản, Hàn Quốc và Mỹ.",
+    "missionDesc2": "Chúng tôi tin rằng mỗi người đều xứng đáng có quyền tiếp cận các sản phẩm tốt nhất thế giới mà không bị rào cản bởi khoảng cách địa lý.",
+    "ourValues": "Giá trị của chúng tôi",
+    "reliability": "Uy tín",
+    "reliabilityDesc": "Chúng tôi đặt uy tín là giá trị hàng đầu trong mọi giao dịch.",
+    "quality": "Chất lượng",
+    "qualityDesc": "Chúng tôi cam kết mang đến sản phẩm chính hãng, chất lượng cao nhất.",
+    "dedication": "Tận tâm",
+    "dedicationDesc": "Chúng tôi luôn lắng nghe và đáp ứng nhu cầu riêng của từng khách hàng.",
+    "efficiency": "Hiệu quả",
+    "efficiencyDesc": "Chúng tôi đo lường thành công bằng sự hài lòng thực sự của khách hàng.",
+    "ourStory": "Câu chuyện của chúng tôi",
+    "storyDesc1": "Chúng tôi bắt đầu với mong muốn làm cho việc mua sắm quốc tế trở nên đưn giản và dễ dàng hơn cho người Việt Nam. Sau khi thành công trong việc xây dựng mạng lưới đối tác đáng tin cậy, chúng tôi đã dành hai năm đầu để hoàn thiện hệ thống.",
+    "storyDesc2": "Mục tiêu của chúng tôi là biến những thủ tục phức tạp trong mua hộ quốc tế thành các bước đơn giản, dễ hiểu. Trong thời gian này chúng tôi đã phục vụ hàng ngàn khách hàng - cách để chúng tôi đảm bảo rằng dịch vụ thực sự đáp ứng nhu cầu thực tế.",
+    "storyDesc3": "Năm 2023, chúng tôi cảm thấy đã đạt được trình độ cho phép bắt đầu làm việc ở quy mô lớn. Kể từ đó, chúng tôi tập trung vào dịch vụ mua hộ vì tiềm năng to lớn của thị trường thương mại điện tử xuyên biên giới từ các quốc gia hàng đầu.",
+    "ourTeam": "Đội ngũ của chúng tôi",
+    "teamDesc": "Đội ngũ đa dạng của chúng tôi kết hợp chuyên môn về thương mại quốc tế, logistics, công nghệ thông tin và dịch vụ khách hàng để mang lại giải pháp toàn diện.",
+    "joinTeam": "Tham gia đội ngũ"
+  },
+  "contact": {
+    "title": "Liên hệ chúng tôi",
+    "subtitle": "Liên hệ ngay hôm nay",
+    "description": "Bản có thắc mắc về dịch vụ mua hộ quốc tế của chúng tôi? Hãy liên hệ để chúng tôi có thể tư vấn và hỗ trợ bản một cách tốt nhất."
+  },
+  "blog": {
+    "title": "Blog Hướng dẫn Mua hộ",
+    "subtitle": "Những hiểu biết và hướng dẫn mới nhất về mua hộ quốc tế",
+    "readingTime": "phút đọc",
+    "by": "Bởi",
+    "categories": {
+      "guide": "Hướng dẫn",
+      "beauty": "Làm đẹp",
+      "comparison": "So sánh",
+      "business": "Kinh doanh"
+    }
+  },
+  "products": {
+    "title": "Sản phẩm",
+    "subtitle": "Khám phá hàng ngàn sản phẩm chất lượng cao từ Nhật Bản, Hàn Quốc và Mỹ với giá cả cạnh tranh nhất.",
+    "resultsFound": "sản phẩm",
+    "meta": {
+      "description": "Tìm và mua hộ sản phẩm chất lượng từ Nhật Bản, Hàn Quốc, Mỹ. Hàng nghìn sản phẩm thời trang, công nghệ, làm đẹp với giá tốt nhất.",
+      "keywords": "mua hộ, sản phẩm nhật bản, hàn quốc, mỹ, thời trang, công nghệ, mỹ phẩm, mua sắm quốc tế"
+    }
+  },
+  "footer": {
+    "companyName": "Global Shopping Assistant",
+    "tagline": "Dịch vụ Mua hộ Quốc tế Uy tín #1",
+    "description": "Chúng tôi cung cấp dịch vụ mua hộ toàn diện từ Nhật Bản, Hàn Quốc và Mỹ, giúp khách hàng tiếp cận các sản phẩm chất lượng cao với giá cả hợp lý và dịch vụ chuyên nghiệp.",
+    "address": "Tầng 12, Tòa nhà Vietcombank\n198 Trần Quốc Toản, Cầu Giấy, Hà Nội",
+    "company": "Công ty",
+    "aboutUs": "Về chúng tôi",
+    "careers": "Tuyển dụng",
+    "privacyPolicy": "Chính sách bảo mật",
+    "contact": "Liên hệ",
+    "yourEmail": "Email của bạn",
+    "subscribeNewsletter": "Đăng ký nhận tin"
+  }
+}

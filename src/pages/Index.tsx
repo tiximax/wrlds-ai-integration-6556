@@ -5,6 +5,7 @@ import Features from '@/components/Features';
 import Projects from '@/components/Projects';
 import WhyWrlds from '@/components/WhyWrlds';
 import BlogPreview from '@/components/BlogPreview';
+import TrustSignals from '@/components/TrustSignals';
 import SEO from '@/components/SEO';
 import { useEffect } from 'react';
 
@@ -21,13 +22,14 @@ const Index = () => {
   return (
     <PageLayout>
       <SEO 
-        title="WRLDS - Smart Textile Technology" 
-        description="WRLDS Technologies: Pioneering smart engineering solutions with textile sensors for sports, safety, and performance monitoring."
-        imageUrl="/lovable-uploads/526dc38a-25fa-40d4-b520-425b23ae0464.png"
-        keywords={['smart textiles', 'wearable technology', 'textile sensors', 'sports tech', 'safety monitoring', 'performance analytics', 'manufacturing']}
+        title="Global Shopping Assistant - Mua Hộ Quốc Tế" 
+        description="Dịch vụ mua hộ, vận chuyển và thanh toán quốc tế từ Nhật Bản, Hàn Quốc, Mỹ về các nước Đông Nam Á. Uy tín - Nhanh chóng - Giá cả hợp lý."
+        imageUrl="/og-image.png"
+        keywords={['mua hộ quốc tế', 'vận chuyển từ Nhật', 'mua hộ Hàn Quốc', 'mua hộ Mỹ', 'gửi hàng Đông Nam Á', 'thanh toán quốc tế', 'shopping service', 'global shipping', 'cross-border shopping']}
       />
       <Hero />
       <Features />
+      <TrustSignals />
       <WhyWrlds />
       <Projects />
       <BlogPreview />

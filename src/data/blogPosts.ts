@@ -34,99 +34,99 @@ export interface ContentSection {
 export const blogPosts: BlogPost[] = [
   {
     id: '6',
-    title: 'Wearable Safety Tech: Protecting Workers While Delivering Real ROI',
-    slug: 'wearable-safety-tech-protecting-workers-roi',
-    excerpt: 'Discover how wearable safety technology puts worker wellbeing first while delivering measurable business benefits through injury prevention and enhanced workplace safety.',
+    title: 'Hướng dẫn Mua hộ từ Nhật Bản: Kinh nghiệm và Mẹo hay',
+    slug: 'huong-dan-mua-ho-tu-nhat-ban-kinh-nghiem-meo-hay',
+    excerpt: 'Khám phá cách mua hộ hiệu quả từ Nhật Bản, từ việc tìm kiếm sản phẩm trên Amazon Japan, Rakuten đến các mẹo tiết kiệm chi phí vận chuyển.',
     date: 'June 12, 2025',
-    author: 'WRLDS Technologies',
-    category: 'Business',
-    imageUrl: '/lovable-uploads/078a129e-0f98-4d91-af61-873687db1a04.png',
+    author: 'Global Shopping Assistant',
+    category: 'Hướng dẫn',
+    imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
     keywords: [
-      'wearable safety technology',
-      'workplace injury prevention',
-      'worker safety',
-      'safety ROI',
-      'ergonomic sensors',
-      'workplace safety investment',
-      'industrial wearables',
-      'occupational safety',
-      'safety technology partnerships',
-      'worker protection',
-      'safety innovation',
-      'workplace wellbeing'
+      'mua hộ Nhật Bản',
+      'Amazon Japan',
+      'Rakuten',
+      'Yahoo Auction',
+      'vận chuyển từ Nhật',
+      'mua hộ quốc tế',
+      'mỹ phẩm Nhật',
+      'thời trang Nhật',
+      'điện tử Nhật',
+      'shopping service Japan',
+      'cross-border shopping',
+      'tiết kiệm chi phí'
     ],
-    metaDescription: 'Learn how wearable safety technology prioritizes worker protection while delivering proven business benefits. Real data shows significant injury reduction and improved workplace safety.',
+    metaDescription: 'Hướng dẫn chi tiết cách mua hộ từ Nhật Bản hiệu quả. Kinh nghiệm mua sắm trên Amazon Japan, Rakuten và các website đáng tin cậy.',
     content: [
       {
         type: 'paragraph',
-        content: 'Every worker deserves to go home safe at the end of their shift. That fundamental principle drives the evolution of workplace safety technology, where protecting people has always been the primary goal. What\'s remarkable about today\'s wearable safety technology is how it achieves this mission while also delivering tangible business benefits.'
+        content: 'Nhật Bản luôn là thiên đường mua sắm với vô vàn sản phẩm chất lượng cao từ công nghệ, mỹ phẩm, thời trang đến đồ gia dụng. Việc mua hộ từ Nhật Bản không chỉ giúp bạn tiết kiệm chi phí mà còn tiếp cận được những sản phẩm độc đáo không có ở thị trường nội địa.'
       },
       {
         type: 'stats',
         statsData: [
           {
-            value: '2.2',
-            label: 'Workplace injuries per 100 workers annually',
-            icon: 'Users'
-          },
-          {
-            value: '$43K',
-            label: 'Average cost per medically consulted injury',
+            value: '30%',
+            label: 'Tiết kiệm chi phí so với mua trực tiếp tại Nhật',
             icon: 'DollarSign'
           },
           {
-            value: '58%',
-            label: 'Injury reduction reported by early adopters',
-            icon: 'TrendingUp'
+            value: '5-7 ngày',
+            label: 'Thời gian vận chuyển trung bình',
+            icon: 'Clock'
+          },
+          {
+            value: '1000+',
+            label: 'Website hỗ trợ mua hộ',
+            icon: 'ShoppingCart'
           }
         ]
       },
       {
         type: 'heading',
-        content: 'The Human Cost Behind the Numbers'
+        content: 'Các Website Mua hộ Phổ biến'
       },
       {
         type: 'paragraph',
-        content: 'Behind every workplace injury statistic is a person: someone\'s parent, partner, or child. The data tells a sobering story about workplace safety in America. When we can prevent injuries before they happen, we\'re not just protecting company assets. We\'re preserving families and communities.'
+        content: 'Dưới đây là các website đáng tin cậy nhất để mua hộ từ Nhật Bản. Mỗi website đều có những ưu điểm riêng, bạn có thể lựa chọn phù hợp với nhu cầu và ngân sách của mình.'
       },
       {
         type: 'heading',
-        content: 'Real Results from Wearable Safety Technology'
+        content: 'Amazon Japan - Lựa chọn hàng đầu'
       },
       {
         type: 'paragraph',
-        content: 'The effectiveness of wearable safety technology becomes clear when we examine documented case studies and vendor-reported results. These implementations show real workers in demanding environments using technology that helps them stay safe while doing their jobs effectively.'
+        content: 'Amazon Japan (amazon.co.jp) là nền tảng thương mại điện tử lớn nhất Nhật Bản với hàng triệu sản phẩm đa dạng. Ưu điểm lớn nhất là giao diện thân thiện, dịch vụ khách hàng tốt và chính sách đổi trả linh hoạt.'
       },
       {
         type: 'subheading',
-        content: 'Documented Industry Results'
+        content: 'Website đáng chú ý khác'
       },
       {
         type: 'icon-list',
         items: [
-          'Companies report significant reductions in workplace injuries with consistent wearable device usage',
-          'Workers feel more confident and supported knowing technology is monitoring their safety',
-          'Safety managers gain real-time insights into workplace hazards and risk patterns',
-          'Insurance providers recognize the value with bundled policies for high-adoption organizations'
+          'Rakuten - Có chương trình tích điểm hấp dẫn, nhiều cửa hàng nhỏ',
+          'Yahoo Auction - Nơi tìm kiếm hàng hiếm, đồ cũ và limited edition',
+          'Mercari - Website mua bán cũ phổ biến, giá cả hấp dẫn',
+          'Yodobashi Camera - Chuyên về điện tử, công nghệ với giá tốt'
         ]
       },
       {
         type: 'heading',
-        content: 'When Safety and Business Align'
+        content: 'Mẹo Tiết kiệm Chi phí khi Mua hộ'
       },
       {
         type: 'paragraph',
-        content: 'Effective safety technology creates a virtuous cycle where prioritizing people leads to positive business outcomes. When injuries decrease, so do workers\' compensation claims, replacement worker costs, and operational disruptions.'
+        content: 'Việc mua hộ thông minh không chỉ giúp bạn có được sản phẩm yêu thích mà còn tối ưu hóa chi phí. Dưới đây là các chiến lược giúp bản tiết kiệm tối đa khi mua sắm.'
       },
       {
         type: 'table',
         tableData: {
-          headers: ['Safety Outcome', 'Human Impact', 'Business Benefit'],
+          headers: ['Chiến lược', 'Cách thực hiện', 'Mức tiết kiệm'],
           rows: [
-            ['Fewer back injuries', 'Workers maintain mobility and quality of life', 'Reduced comp claims and medical costs'],
-            ['Better ergonomic awareness', 'Less fatigue and chronic pain', 'Higher productivity and retention'],
-            ['Early hazard detection', 'Prevention of serious accidents', 'Avoided downtime and investigations'],
-            ['Real-time feedback', 'Workers feel supported and valued', 'Improved safety culture and morale']
+            ['Mua theo lô', 'Gộp nhiều sản phẩm trong 1 đơn hàng', 'Tiết kiệm 40-60% phí vận chuyển'],
+            ['Chờ khuyến mại', 'Theo dõi sale tháng 11, 12 và đầu năm', 'Giảm 20-50% giá sản phẩm'],
+            ['So sánh giá', 'Kiểm tra giá trên nhiều website', 'Tiết kiệm 10-30% chi phí'],
+            ['Chọn phương thức vận chuyển', 'Lựa chọn giữa nhanh và tiết kiệm', 'Giảm 30-70% phí ship']
           ]
         }
       },
@@ -199,29 +199,29 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: '5',
-    title: 'Smart PPE Revolution: How Safety Technology is Transforming Worker Protection',
-    slug: 'smart-ppe-revolution-safety-technology',
-    excerpt: 'Discover how smart textiles and sensor technology are revolutionizing personal protective equipment, creating safer workplaces and preventing accidents before they happen.',
+    title: 'K-Beauty 2025: Xu hướng Mỹ phẩm Hàn Quốc hot nhất',
+    slug: 'k-beauty-2025-xu-huong-my-pham-han-quoc-hot-nhat',
+    excerpt: 'Khám phá các xu hướng K-Beauty mới nhất năm 2025, từ skincare 10 bước đến makeup tự nhiên. Hướng dẫn mua hộ hiệu quả từ Gmarket và Olive Young.',
     date: 'June 5, 2025',
-    author: 'WRLDS Technologies',
-    category: 'Innovation',
-    imageUrl: '/lovable-uploads/927dae7e-6aaf-4b76-add2-1287a1dd9dc0.png',
+    author: 'Global Shopping Assistant',
+    category: 'Làm đẹp',
+    imageUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&h=600&fit=crop',
     keywords: [
-      'smart PPE',
-      'safety technology',
-      'personal protective equipment',
-      'smart textiles',
-      'workplace safety',
-      'wearable sensors',
-      'construction safety',
-      'industrial IoT',
-      'worker protection',
-      'safety monitoring',
-      'smart helmets',
-      'connected safety gear',
-      'occupational safety',
-      'safety innovation',
-      'protective equipment technology'
+      'K-Beauty',
+      'mỹ phẩm Hàn Quốc',
+      'skincare Hàn Quốc',
+      'Gmarket',
+      'Olive Young',
+      'Coupang',
+      'mua hộ Hàn Quốc',
+      'xu hướng làm đẹp 2025',
+      'glass skin',
+      'K-beauty routine',
+      'serum Hàn Quốc',
+      'mask sheet',
+      'sunscreen Hàn',
+      'Korean skincare',
+      'beauty trends'
     ],
     metaDescription: 'Learn how smart PPE with integrated sensors is revolutionizing workplace safety. Discover the latest innovations in intelligent personal protective equipment that prevent accidents and save lives.',
     content: [
@@ -294,13 +294,13 @@ export const blogPosts: BlogPost[] = [
   },
   {
     id: '4',
-    title: 'Leveraging Sensor Technology in Product Development: A Strategic Approach',
-    slug: 'leveraging-sensor-technology-product-development',
-    excerpt: 'Explore how sensor technology is revolutionizing product development across industries, from smart textiles to IoT devices, and learn strategic approaches for implementation.',
+    title: 'Amazon US vs eBay: So sánh để Mua hộ hiệu quả nhất',
+    slug: 'amazon-us-vs-ebay-so-sanh-mua-ho-hieu-qua-nhat',
+    excerpt: 'Phân tích chi tiết hai nền tảng mua sắm lớn nhất Mỹ, giúp bạn lựa chọn website phù hợp với từng loại sản phẩm và ngân sách.',
     date: 'May 8, 2025',
-    author: 'WRLDS Technologies',
-    category: 'Technology',
-    imageUrl: '/lovable-uploads/6b0637e9-4a7b-40d0-b219-c8b7f879f93e.png',
+    author: 'Global Shopping Assistant',
+    category: 'So sánh',
+    imageUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=600&fit=crop',
     keywords: [
       'sensor technology',
       'product development',

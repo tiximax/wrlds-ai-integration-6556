@@ -8,51 +8,51 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const projects = [
   {
     id: 1,
-    title: "6th SENSE Safety System",
-    brand: "FireCat Group",
-    description: "AI-driven sensor solution integrated into uniforms for law enforcement, military and firefighters, providing real-time vital monitoring and situational awareness in high-risk environments.",
-    tags: ["Safety", "Military", "AI Sensors", "Real-time Monitoring"],
-    imageUrl: "/lovable-uploads/93ab0638-8190-4ccf-897f-21fda7f4f5ad.png",
+    title: "Mua hộ từ Nhật Bản",
+    brand: "JAPAN SHOPPING",
+    description: "Dịch vụ mua hộ đa dạng sản phẩm từ Nhật Bản: điện tử, thời trang, mỹ phẩm, đồ chơi và hàng ngàn mặt hàng khác từ Amazon, Rakuten, Yahoo Auction.",
+    tags: ["Amazon Japan", "Rakuten", "Yahoo Auction", "Mỹ phẩm Nhật"],
+    imageUrl: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?w=800&h=600&fit=crop",
     isFeatured: true,
     link: "/projects/firecat",
     details: `
-      FireCat Group aimed to enhance safety in high-risk environments. WRLDS Technologies provided the 6th SENSE solution with secure real-time data transmission, high-quality sensors resistant to extreme conditions, integrated AI-powered clothing, and a centralized control unit. Features include Man Down Alarm, GPS positioning, vital sign monitoring, and Panic Button. Benefits: life-saving technology, machine learning preventing false alarms, durable hardware with 7-10 year lifespan, washable sensors, and Plug & Play installation with 12-20 hours of operation per charge.
+      Dịch vụ mua hộ chuyên nghiệp từ Nhật Bản với quy trình đơn giản: gửi link sản phẩm, nhận báo giá, thanh toán và nhận hàng tại nhà. Hỗ trợ mua từ tất cả website Nhật, giá cả cạnh tranh, giao hàng nhanh chóng và an toàn.
     `
   },
   {
     id: 2,
-    title: "Performance Athletic Footwear",
-    brand: "Global Sports Retail Leader",
-    description: "Smart Footwear R&D aiming to revolutionize development, fitting, and testing of athletic footwear.",
-    tags: ["Sports", "R&D", "Footwear", "Athletic Performance"],
-    imageUrl: "/lovable-uploads/b0622048-17b4-4c75-a3f0-6c9e17de1d09.png",
+    title: "Mua hộ từ Hàn Quốc",
+    brand: "KOREA SHOPPING",
+    description: "Chuyên mua hộ K-beauty, thời trang, điện tử và các sản phẩm hot trend từ Hàn Quốc qua Gmarket, Coupang, 11st và các website đáng tin cậy.",
+    tags: ["K-Beauty", "Gmarket", "Coupang", "Thời trang Hàn"],
+    imageUrl: "https://images.unsplash.com/photo-1521335629791-ce4aec67dd53?w=800&h=600&fit=crop",
     link: "/projects/sport-retail"
   },
   {
     id: 3,
-    title: "Workwear Climate Control",
-    brand: "European Multinational Textile Producer",
-    description: "Fully integrated temperature controls for professionals working in extreme heat and cold. Modular approach to enable full-body systems.",
-    tags: ["Climate Control", "Workwear", "Temperature Regulation", "Extreme Conditions"],
-    imageUrl: "/lovable-uploads/6b0637e9-4a7b-40d0-b219-c8b7f879f93e.png",
+    title: "Mua hộ từ Mỹ",
+    brand: "USA SHOPPING",
+    description: "Từ Amazon US, eBay, Best Buy đến hàng ngàn website khác. Sản phẩm đa dạng và giá cả cạnh tranh nhất thế giới với phiến bản hàng đầy đủ.",
+    tags: ["Amazon US", "eBay", "Best Buy", "Giá USA tốt nhất"],
+    imageUrl: "https://images.unsplash.com/photo-1481114052860-9b5b0c52a014?w=800&h=600&fit=crop",
     link: "/projects/workwear"
   },
   {
     id: 4,
-    title: "Ice Hockey Elite Skill Tracker",
-    brand: "Mars Blades",
-    description: "R&D product evaluating data from single IMU embedded in the hockey shoe. Aim: establish motion patterns that lead to ultimate acceleration, speed, and maneuverability.",
-    tags: ["Ice Hockey", "Motion Analysis", "Performance Tracking", "Sports"],
-    imageUrl: "/lovable-uploads/c30e0487-2fa0-41d1-9a0b-699cb2855388.png",
+    title: "Vận chuyển Nhanh chóng",
+    brand: "EXPRESS SHIPPING",
+    description: "Hệ thống vận chuyển đa dạng từ tiết kiệm đến siêu nhanh, đảm bảo hàng về tay bạn một cách an toàn và nguyên vẹn nhất.",
+    tags: ["Vận chuyển nhanh", "An toàn", "Theo dõi đơn hàng", "Bảo hiểm"],
+    imageUrl: "https://images.unsplash.com/photo-1515165562835-c3b8c1a9fc33?w=800&h=600&fit=crop",
     link: "/projects/hockey"
   },
   {
     id: 5,
-    title: "Dog Activity Counter",
-    brand: "UK Insurance Giant",
-    description: "R&D project embedding a step counter in a dog collar. Measures daily activity and sends real-time data to the cloud for veterinary consultancies.",
-    tags: ["Pet Technology", "Insurance", "Activity Tracking", "R&D"],
-    imageUrl: "/lovable-uploads/d5ce901e-2ce0-4f2a-bce1-f0ca5d6192df.png",
+    title: "Thanh toán Linh hoạt",
+    brand: "FLEXIBLE PAYMENT",
+    description: "Hỗ trợ đa dạng hình thức thanh toán: chuyển khoản, ví điện tử, thẻ tín dụng. Tính năng đặt cọc và thanh toán theo giai đoạn.",
+    tags: ["Thanh toán linh hoạt", "Ví điện tử", "Đặt cọc", "Trả góp"],
+    imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=600&fit=crop",
     link: "/projects/pet-tracker"
   }
 ];
@@ -130,13 +130,13 @@ const Projects = () => {
       <div className="w-full px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
         <div className={`text-center mb-10 max-w-3xl mx-auto transition-all duration-1000 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
           <div className="inline-block mb-2 px-3 py-1 bg-gray-100 text-gray-600 rounded-full text-sm font-medium">
-            Customer Cases
+            Dịch vụ của chúng tôi
           </div>
           <h2 className="text-3xl font-bold mb-3">
-            From Textile to Intelligence
+            Giải pháp Mua hộ Toàn diện
           </h2>
           <p className="text-gray-600">
-            Explore how our textile sensor technology is revolutionizing multiple industries with intelligent fabric solutions tailored to specific needs.
+            Khám phá dịch vụ mua hộ đa quốc gia của chúng tôi, từ việc tìm kiếm sản phẩm đến giao hàng tận nơi với giá cả tối ưu.
           </p>
           {isMobile && (
             <div className="flex items-center justify-center mt-4 animate-pulse-slow">
@@ -214,7 +214,7 @@ const Projects = () => {
                           }
                         }}
                       >
-                        <span className="relative z-10">Learn more</span>
+                        <span className="relative z-10">Tìm hiểu thêm</span>
                         <ArrowRight className="ml-2 w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
                         <span className="absolute left-0 bottom-0 w-0 h-0.5 bg-gray-500 transition-all duration-300 group-hover:w-full"></span>
                       </Link>

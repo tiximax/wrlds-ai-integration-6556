@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Activity, Shield, HardHat, Zap, ArrowRight, Box, Truck, Code, CheckCircle, Rocket, Factory, Microchip, Handshake, RefreshCcw, MessageSquare } from "lucide-react";
+import { ShoppingCart, Plane, CreditCard, Package, ArrowRight, Box, Truck, Code, CheckCircle, Rocket, Factory, Microchip, Handshake, RefreshCcw, MessageSquare } from "lucide-react";
 import { cn } from '@/lib/utils';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -11,6 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from "@/components/ui/button";
 import { useScrollHijack } from '@/hooks/useScrollHijack';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Features = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
@@ -20,31 +21,32 @@ const Features = () => {
   const [currentSprint, setCurrentSprint] = useState(1);
   const totalSprints = 3;
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
 
   const features = [
     {
-      icon: <Activity className="w-10 h-10 text-white transition-transform duration-300 transform" />,
-      title: "Sports Performance",
-      description: "Specialized fabrics that analyze form, provide instant feedback, and help prevent injuries in athletic equipment.",
-      image: "/lovable-uploads/48e540e5-6a25-44e4-b3f7-80f3bfc2777a.png"
+      icon: <ShoppingCart className="w-10 h-10 text-white transition-transform duration-300 transform" />,
+      title: t('features.japanTitle'),
+      description: t('features.japanDesc'),
+      image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?w=800&h=600&fit=crop"
     },
     {
-      icon: <Shield className="w-10 h-10 text-white transition-transform duration-300 transform" />,
-      title: "Military & Defense",
-      description: "Tactical gear with embedded sensors for soldier health monitoring, environmental awareness, and enhanced safety.",
-      image: "/lovable-uploads/48ecf6e2-5a98-4a9d-af6f-ae2265cd4098.png"
+      icon: <Plane className="w-10 h-10 text-white transition-transform duration-300 transform" />,
+      title: t('features.koreaTitle'),
+      description: t('features.koreaDesc'),
+      image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&h=600&fit=crop"
     },
     {
-      icon: <HardHat className="w-10 h-10 text-white transition-transform duration-300 transform" />,
-      title: "Industrial Safety",
-      description: "Protective workwear that detects hazards, monitors fatigue, and prevents workplace injuries through early intervention.",
-      image: "/lovable-uploads/cf8966e3-de0d-445f-9fbd-ee6c48daa7ff.png"
+      icon: <Package className="w-10 h-10 text-white transition-transform duration-300 transform" />,
+      title: t('features.usaTitle'),
+      description: t('features.usaDesc'),
+      image: "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&h=600&fit=crop"
     },
     {
-      icon: <Zap className="w-10 h-10 text-white transition-transform duration-300 transform" />,
-      title: "Thermal Regulation",
-      description: "Adaptive heating and cooling textiles that respond to body temperature and environmental conditions.",
-      image: "/lovable-uploads/6739bd63-bf19-4abd-bb23-0b613bbf7ac8.png"
+      icon: <CreditCard className="w-10 h-10 text-white transition-transform duration-300 transform" />,
+      title: t('features.paymentTitle'),
+      description: t('features.paymentDesc'),
+      image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=600&fit=crop"
     }
   ];
 
@@ -109,54 +111,57 @@ const Features = () => {
   }, []);
 
   const sensorCaseStudies = [{
-    image: "/lovable-uploads/843446fe-638e-4efb-b885-ed3cd505325a.png",
-    title: "Firefighter Safety",
-    description: "Advanced protective gear with gas, temperature, positioning, and motion sensors for safer emergency response."
+    image: "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&h=400&fit=crop",
+    title: "Thời trang & Làm đẹp",
+    description: "K-beauty, mỹ phẩm, quần áo thời trang từ Nhật, Hàn với giá cả hấp dẫn và chất lượng đảm bảo."
   }, {
-    image: "/lovable-uploads/5463c9c5-0946-4280-a14b-17636ff69a98.png",
-    title: "Industrial Worker Protection",
-    description: "Safety workwear with vibration, pressure, and heating sensors to prevent injuries and monitor environmental hazards."
+    image: "https://images.unsplash.com/photo-1468495244123-6c6c332eeece?w=600&h=400&fit=crop",
+    title: "Điện tử & Công nghệ",
+    description: "Smartphone, laptop, phụ kiện công nghệ mới nhất từ các thương hiệu hàng đầu với giá cạnh tranh."
   }, {
-    image: "/lovable-uploads/c5f8ee24-9815-4ebe-b65d-6f3d449feb8b.png",
-    title: "Sports Performance",
-    description: "Smart athletic wear with temperature and pressure sensors that track hydration, foot strike patterns, and performance metrics."
+    image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop",
+    title: "Thể thao & Sức khỏe",
+    description: "Dụng cụ thể thao, thần phẩm bổ sung dinh dưỡng, thiết bị chăm sóc sức khỏe chất lượng cao."
   }];
   const stepFlowItems = [{
-    icon: <Microchip className="h-10 w-10 text-gray-700" />,
-    title: "WRLDS Proprietary Modules",
-    description: "Our core technology components developed in-house"
+    icon: <ShoppingCart className="h-10 w-10 text-gray-700" />,
+    title: "Tiếp nhận đơn hàng",
+    description: "Bạn gửi link sản phẩm hoặc yêu cầu, chúng tôi báo giá ngay lập tức"
   }, {
-    icon: <Factory className="h-10 w-10 text-gray-700" />,
-    title: "Vetted Off-the-Shelf Hardware",
-    description: "Carefully selected components that complement our technology"
+    icon: <CreditCard className="h-10 w-10 text-gray-700" />,
+    title: "Thanh toán & Đặt hàng",
+    description: "Thanh toán linh hoạt, chúng tôi đặt hàng và theo dõi tình trạng"
   }, {
-    icon: <Handshake className="h-10 w-10 text-gray-700" />,
-    title: "Vetted Production Partners",
-    description: "Expert manufacturing partners for quality and reliability"
+    icon: <Truck className="h-10 w-10 text-gray-700" />,
+    title: "Vận chuyển về nhà",
+    description: "Hàng được đóng gói kỹ càng và gửi về địa chỉ của bạn"
   }];
   const sprintPhases = [{
-    name: "Planning",
+    name: "Tiếp nhận",
     icon: <CheckCircle className="h-4 w-4" />
   }, {
-    name: "Development",
-    icon: <Code className="h-4 w-4" />
+    name: "Đặt hàng",
+    icon: <ShoppingCart className="h-4 w-4" />
   }, {
-    name: "Testing",
+    name: "Kiểm tra",
     icon: <Box className="h-4 w-4" />
   }, {
-    name: "Review",
-    icon: <RefreshCcw className="h-4 w-4" />
+    name: "Gửi hàng",
+    icon: <Truck className="h-4 w-4" />
   }];
 
   return <>
       <section id="features" className="relative bg-white overflow-hidden py-10 md:py-[50px] w-full">
         <div className="w-full px-4 sm:px-6 lg:px-8" ref={featuresRef}> 
           <div className="text-center mb-10 max-w-3xl mx-auto feature-item">
-            <div className="inline-block mb-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
-              Textile Sensor Applications
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+              {t('features.title')}
+            </h2>
+            <div className="inline-block mb-2 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
+              {t('services.title')}
             </div>
-            <p className="text-gray-600 mt-4">
-              Our textile sensor technology transforms ordinary fabrics into intelligent interfaces that collect data, monitor conditions, and enhance performance across diverse sectors.
+            <p className="text-gray-600 mt-4 text-base md:text-lg leading-relaxed">
+              {t('features.subtitle')}
             </p>
           </div>
           
@@ -278,13 +283,13 @@ const Features = () => {
           <div className="mt-16 mb-8 feature-item">
             <div className="text-center mb-8">
               <div className="inline-block mb-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
-                Textile Sensor Applications
+                Danh mục Sản phẩm
               </div>
-              <h3 className="text-2xl font-bold">Real-World Use Cases</h3>
+              <h3 className="text-2xl font-bold">Các Nhóm Hàng Phổ biến</h3>
               <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
-                Explore how our textile sensors are applied in different professional contexts, 
-                from emergency response to construction and athletics.
-                <span className="block text-sm mt-1 text-blue-500">Scroll horizontally to see more examples →</span>
+                Khám phá các danh mục sản phẩm được yêu thích nhất từ Nhật Bản, Hàn Quốc và Mỹ, 
+                từ thời trang, công nghệ đến sức khỏe và làm đẹp.
+                <span className="block text-sm mt-1 text-blue-500">Trượt ngang để xem thêm →</span>
               </p>
             </div>
             
@@ -311,19 +316,19 @@ const Features = () => {
                 </div>
               </Carousel>
               <div className="text-center mt-6 text-sm text-gray-600">
-                <p className="font-medium">These examples showcase just a few ways our textile sensors can enhance safety and performance</p>
+                <p className="font-medium">Những danh mục trên chỉ là một số ít trong hàng ngàn sản phẩm chúng tôi có thể mua hộ cho bạn</p>
               </div>
             </div>
           </div>
         </div>
         <div className="text-center mt-12 flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
           <Button onClick={scrollToContact} className="inline-flex items-center px-4 sm:px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-all group w-full sm:w-auto">
-            Need Custom Solutions?
+            Cần tư vấn riêng?
             <MessageSquare className="ml-2 w-4 h-4 group-hover:animate-pulse" />
           </Button>
           
           <Button onClick={() => window.scrollTo(0, 0)} className="inline-flex items-center px-4 sm:px-6 py-3 bg-white text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all group w-full sm:w-auto">
-            Learn More About Our Technology
+            Tìm hiểu thêm về dịch vụ
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
           </Button>
         </div>
@@ -333,12 +338,12 @@ const Features = () => {
         <div className="w-full px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <div className="inline-block mb-2 px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">
-              Our Approach
+              Quy trình dịch vụ
             </div>
-            <h2 className="text-3xl font-bold mb-4">How our technology works</h2>
+            <h2 className="text-3xl font-bold mb-4">Cách chúng tôi hoạt động</h2>
             <p className="text-gray-600 max-w-3xl mx-auto">
-              WRLDS builds hardware and software with proprietary and off-the-shelf modules, 
-              allowing us to develop completely unique solutions at high speed and lower risk.
+              Chúng tôi kết hợp công nghệ hiện đại với mạng lưới đối tác toàn cầu, 
+              mang đến giải pháp mua hộ nhanh chóng, an toàn và tiết kiệm chi phí.
             </p>
           </div>
           
@@ -389,15 +394,15 @@ const Features = () => {
               <div className="max-w-3xl mx-auto">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3 gap-2">
                   <div className="flex items-center">
-                    <h3 className="text-xl font-bold">Adaptation Project</h3>
+                    <h3 className="text-xl font-bold">Quá trình đặt hàng</h3>
                   </div>
                   <div className="flex items-center">
-                    <span className="text-sm text-gray-500 mr-2">Iterative Development</span>
+                    <span className="text-sm text-gray-500 mr-2">Theo dõi liên tục</span>
                     <RefreshCcw className="h-5 w-5 text-gray-600 animate-rotate-slow" />
                   </div>
                 </div>
                 
-                <p className="text-gray-600 mb-4">Working iteratively with customers to tailor solutions to their needs</p>
+                <p className="text-gray-600 mb-4">Làm việc trực tiếp với khách hàng để đảm bảo dịch vụ phù hợp với yêu cầu</p>
                 
                 <div className="relative mb-2">
                   <Progress value={progressValue} className="h-3 bg-gray-200" />
@@ -419,10 +424,10 @@ const Features = () => {
                     <div className="bg-green-100 rounded-full p-1 mr-2 shrink-0">
                       <CheckCircle className="h-4 w-4 text-green-600" />
                     </div>
-                    <span className="text-sm text-gray-600">Customer feedback integrated at every stage</span>
+                    <span className="text-sm text-gray-600">Phản hồi khách hàng được tích hợp ở mọi giai đoạn</span>
                   </div>
                   <div className="text-sm text-gray-500 flex items-center mt-2 sm:mt-0">
-                    <span className="mr-2">Continuous improvement</span>
+                    <span className="mr-2">Cải tiến liên tục</span>
                     <div className="flex space-x-1">
                       <span className="inline-block w-2 h-2 bg-gray-300 rounded-full animate-pulse"></span>
                       <span className="inline-block w-2 h-2 bg-gray-400 rounded-full animate-pulse animation-delay-200"></span>
@@ -457,8 +462,8 @@ const Features = () => {
                   <Rocket className="h-10 w-10 text-gray-700" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-2">Hitting the Market</h3>
-              <p className="text-gray-700">Ready to scale, produce, and launch</p>
+              <h3 className="text-xl font-bold mb-2">Hàng về đến tay</h3>
+              <p className="text-gray-700">Sẵn sàng giao hàng và hoàn thành đơn hàng</p>
               <div className="flex justify-center mt-4 space-x-2">
                 <span className="inline-block w-3 h-3 rounded-full bg-gray-300 animate-pulse"></span>
                 <span className="inline-block w-3 h-3 rounded-full bg-gray-500 animate-pulse animation-delay-200"></span>
@@ -470,12 +475,12 @@ const Features = () => {
           <div className="text-center">
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
               <Link to="/tech-details" onClick={() => window.scrollTo(0, 0)} className="inline-flex items-center px-4 sm:px-6 bg-white text-gray-700 rounded-lg border border-gray-200 hover:bg-gray-50 hover:shadow-md transition-all group py-3 w-full sm:w-auto justify-center">
-                Learn More About Our Technology
+                Tìm hiểu thêm về dịch vụ
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               
               <Button onClick={scrollToContact} className="inline-flex items-center px-4 sm:px-6 py-3 bg-gray-700 hover:bg-gray-800 text-white rounded-lg shadow-md hover:shadow-lg transition-all group w-full sm:w-auto justify-center">
-                Contact Our Experts
+                Liên hệ chuyên gia
                 <MessageSquare className="ml-2 w-4 h-4 group-hover:scale-110 transition-transform" />
               </Button>
             </div>

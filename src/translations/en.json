@@ -1,0 +1,167 @@
+{
+  "common": {
+    "home": "Home",
+    "backToHome": "Back to Home",
+    "contactUs": "Contact us",
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "services": "Services",
+    "readMore": "Read More",
+    "subscribe": "Subscribe",
+    "subscribing": "Subscribing...",
+    "company": "Company",
+    "contact": "Contact",
+    "allRightsReserved": "All rights reserved"
+  },
+  "navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services",
+    "products": "Products",
+    "caseStudies": "Case Studies",
+    "learnMore": "Learn More",
+    "techDetails": "Technology Details",
+    "techDetailsDesc": "How our smart textile platform works",
+    "devProcess": "Development Process",
+    "devProcessDesc": "Our approach to creating custom solutions",
+    "news": "News",
+    "blog": "Blog",
+    "contact": "Contact",
+    "careers": "Careers",
+    "privacyPolicy": "Privacy Policy"
+  },
+  "hero": {
+    "title": "Trusted International Shopping Service #1",
+    "tagline": "Connecting People, Creating Values",
+    "subtitle": "International shopping, shipping and payment services from Japan, Korea, USA to Southeast Asia. Fast - Reliable - Affordable prices.",
+    "viewServices": "View Services",
+    "contactNow": "Contact Now",
+    "globalShopping": "Global Shopping",
+    "globalShoppingDesc": "Shop all products from Japan, Korea and USA quickly and conveniently.",
+    "internationalShipping": "International Shipping",
+    "internationalShippingDesc": "Dynamic and safe shipping system from countries to Southeast Asia.",
+    "flexiblePayment": "Flexible Payment",
+    "flexiblePaymentDesc": "Support diverse payment methods and smart order management."
+  },
+  "features": {
+    "title": "International Shopping Services",
+    "subtitle": "We provide comprehensive shopping services from leading countries worldwide, helping you access quality products at reasonable prices.",
+    "japanTitle": "Shopping from Japan",
+    "japanDesc": "From famous websites like Amazon, Rakuten, Yahoo Auction. Authentic products, good prices, fast delivery.",
+    "koreaTitle": "Shopping from Korea",
+    "koreaDesc": "K-beauty, fashion, electronics and hot trend products from Korea. Gmarket, Coupang, 11st and many other websites.",
+    "usaTitle": "Shopping from USA",
+    "usaDesc": "Amazon US, eBay, Best Buy, and thousands of other websites. Diverse products and the most competitive prices in the world.",
+    "paymentTitle": "Payment & Shipping",
+    "paymentDesc": "Support multiple payment methods, fast and safe shipping to Vietnam, Malaysia, Singapore, Indonesia.",
+    "categoryTitle": "Product Categories",
+    "popularCategories": "Popular Product Groups",
+    "categorySubtitle": "Discover the most popular product categories from Japan, Korea and USA, from fashion, technology to health and beauty.",
+    "scrollToSeeMore": "Scroll horizontally to see more →",
+    "fashionTitle": "Fashion & Beauty",
+    "fashionDesc": "K-beauty, cosmetics, fashion clothes from Japan, Korea with attractive prices and guaranteed quality.",
+    "electronicsTitle": "Electronics & Technology",
+    "electronicsDesc": "Smartphones, laptops, latest technology accessories from leading brands at competitive prices.",
+    "sportsTitle": "Sports & Health",
+    "sportsDesc": "Sports equipment, nutritional supplements, high-quality health care equipment.",
+    "fewExamples": "The above categories are just a few of the thousands of products we can shop for you",
+    "needConsultation": "Need consultation?",
+    "learnMoreAboutService": "Learn more about our services"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "Discover our comprehensive multi-country shopping services, from product search to doorstep delivery at optimal prices.",
+    "purchasing": {
+      "title": "International Purchasing",
+      "description": "Your trusted partner for global shopping and procurement."
+    },
+    "logistics": {
+      "title": "Logistics & Fulfillment",
+      "description": "Complete logistics solutions from source to doorstep."
+    },
+    "quality": {
+      "title": "Quality Assurance",
+      "description": "Rigorous quality checks and customer satisfaction."
+    }
+  },
+  "whyChooseUs": {
+    "title": "Why choose us?",
+    "subtitle": "In the international shopping field, we bring simplicity and professionalism to ensure your success",
+    "marketValue": "Cross-border e-commerce market expected to reach this level by 2030",
+    "customers": "Customers have trusted and used our shopping services",
+    "savings": "Cost savings compared to buying directly in these countries",
+    "whatWeBring": "What we bring to you",
+    "whatWeBringDesc": "We turn your shopping ideas into reality with specific benefits",
+    "diverseProducts": "Diverse products",
+    "diverseProductsDesc": "Access millions of products from leading countries around the world.",
+    "reliableService": "Reliable service",
+    "reliableServiceDesc": "Transparent process, clear information, enthusiastic 24/7 support.",
+    "convenientShopping": "Convenient shopping",
+    "convenientShoppingDesc": "Just send the product link, we handle all the complicated procedures.",
+    "fastShipping": "Fast shipping",
+    "fastShippingDesc": "Committed to delivering the fastest and safest to your hands.",
+    "learnMoreAboutProcess": "Learn more about our service process"
+  },
+  "about": {
+    "title": "About Us - Global Shopping Assistant",
+    "subtitle": "We are a team of experts dedicated to providing reliable, fast and safe international shopping services from Japan, Korea and USA.",
+    "ourMission": "Our Mission",
+    "missionDesc1": "At Global Shopping Assistant, we have a mission to connect Vietnamese customers with high-quality products from Japan, Korea and USA.",
+    "missionDesc2": "We believe that everyone deserves the right to access the world's best products without being hindered by geographical distance.",
+    "ourValues": "Our Values",
+    "reliability": "Reliability",
+    "reliabilityDesc": "We put reputation as the top value in every transaction.",
+    "quality": "Quality",
+    "qualityDesc": "We are committed to bringing authentic, highest quality products.",
+    "dedication": "Dedication",
+    "dedicationDesc": "We always listen and respond to each customer's individual needs.",
+    "efficiency": "Efficiency",
+    "efficiencyDesc": "We measure success by customers' real satisfaction.",
+    "ourStory": "Our Story",
+    "storyDesc1": "We started with the desire to make international shopping simpler and easier for Vietnamese people. After successfully building a reliable partner network, we spent the first two years perfecting the system.",
+    "storyDesc2": "Our goal is to turn the complex procedures in international shopping into simple, easy-to-understand steps. During this time we have served thousands of customers - a way for us to ensure that the service really meets real needs.",
+    "storyDesc3": "In 2023, we felt we had reached a level that allowed us to start working on a large scale. Since then, we have focused on shopping services because of the great potential of the cross-border e-commerce market from leading countries.",
+    "ourTeam": "Our Team",
+    "teamDesc": "Our diverse team combines expertise in international trade, logistics, information technology and customer service to deliver comprehensive solutions.",
+    "joinTeam": "Join Our Team"
+  },
+  "contact": {
+    "title": "Contact us",
+    "subtitle": "Contact us today",
+    "description": "Do you have questions about our international shopping services? Please contact us so we can advise and support you in the best way."
+  },
+  "blog": {
+    "title": "Shopping Guide Blog",
+    "subtitle": "Latest insights and guides for international shopping",
+    "readingTime": "min read",
+    "by": "By",
+    "categories": {
+      "guide": "Guide",
+      "beauty": "Beauty",
+      "comparison": "Comparison",
+      "business": "Business"
+    }
+  },
+  "products": {
+    "title": "Products",
+    "subtitle": "Discover thousands of high-quality products from Japan, Korea, and USA at the most competitive prices.",
+    "resultsFound": "products found",
+    "meta": {
+      "description": "Find and buy high-quality products from Japan, Korea, USA. Thousands of fashion, technology, beauty products at the best prices.",
+      "keywords": "international shopping, japan products, korea products, usa products, fashion, technology, cosmetics, global shopping"
+    }
+  },
+  "footer": {
+    "companyName": "Global Shopping Assistant",
+    "tagline": "Trusted International Shopping Service #1",
+    "description": "We provide comprehensive shopping services from Japan, Korea and USA, helping customers access high-quality products at reasonable prices and professional service.",
+    "address": "12th Floor, Vietcombank Building\n198 Tran Quoc Toan, Cau Giay, Hanoi",
+    "company": "Company",
+    "aboutUs": "About Us",
+    "careers": "Careers",
+    "privacyPolicy": "Privacy Policy",
+    "contact": "Contact",
+    "yourEmail": "Your email",
+    "subscribeNewsletter": "Subscribe to newsletter"
+  }
+}

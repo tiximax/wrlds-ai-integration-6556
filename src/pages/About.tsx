@@ -20,7 +20,7 @@ const About = () => {
           <div className="max-w-6xl mx-auto">
             <Link to="/" className="inline-flex items-center text-gray-500 hover:text-gray-700 mb-6 transition-colors">
               <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Home
+Về trang chủ
             </Link>
             
             <motion.h1 
@@ -29,7 +29,7 @@ const About = () => {
               transition={{ duration: 0.5 }} 
               className="text-4xl font-bold mb-6"
             >
-              About WRLDS Technologies
+Về chúng tôi - Global Shopping Assistant
             </motion.h1>
             
             <div className="prose prose-lg max-w-none">
@@ -39,7 +39,7 @@ const About = () => {
                 transition={{ duration: 0.5, delay: 0.2 }} 
                 className="text-xl text-gray-600 mb-12"
               >
-                We're a team of innovators dedicated to revolutionizing smart textile technology for industries worldwide.
+Chúng tôi là đội ngũ chuyên gia tận tâm cung cấp dịch vụ mua hộ quốc tế uy tín, nhanh chóng và an toàn từ Nhật Bản, Hàn Quốc và Mỹ.
               </motion.p>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
@@ -49,14 +49,12 @@ const About = () => {
                   transition={{ duration: 0.6 }}
                   className="space-y-6"
                 >
-                  <h2 className="text-3xl font-bold">Our Mission</h2>
+                  <h2 className="text-3xl font-bold">Sứ mệnh của chúng tôi</h2>
                   <p className="text-gray-600">
-                    At WRLDS Technologies, we're on a mission to transform ordinary textiles into intelligent, 
-                    data-driven solutions that improve safety, performance, and quality of life across industries.
+                    Tại Global Shopping Assistant, chúng tôi có sứ mệnh kết nối khách hàng Việt Nam với các sản phẩm chất lượng cao từ Nhật Bản, Hàn Quốc và Mỹ.
                   </p>
                   <p className="text-gray-600">
-                    We believe that by embedding intelligence into everyday fabrics, we can create a more 
-                    connected, responsive, and safer world.
+                    Chúng tôi tin rằng mỗi người đều xứng đáng có quyền tiếp cận các sản phẩm tốt nhất thế giới mà không bị rào cản bởi khoảng cách địa lý.
                   </p>
                 </motion.div>
                 
@@ -66,23 +64,23 @@ const About = () => {
                   transition={{ duration: 0.6, delay: 0.2 }}
                   className="bg-gray-50 rounded-2xl p-8 border border-gray-100"
                 >
-                  <h3 className="text-2xl font-bold mb-4">Our Values</h3>
+                  <h3 className="text-2xl font-bold mb-4">Giá trị của chúng tôi</h3>
                   <ul className="space-y-3">
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-gray-700 mt-1 mr-3 flex-shrink-0" />
-                      <span><strong>Innovation:</strong> We push boundaries to create solutions that weren't possible before.</span>
+                      <span><strong>Uy tín:</strong> Chúng tôi đặt uy tín là giá trị hàng đầu trong mọi giao dịch.</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-gray-700 mt-1 mr-3 flex-shrink-0" />
-                      <span><strong>Quality:</strong> We're committed to excellence in every sensor, algorithm, and solution we deliver.</span>
+                      <span><strong>Chất lượng:</strong> Chúng tôi cam kết mang đến sản phẩm chính hãng, chất lượng cao nhất.</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-gray-700 mt-1 mr-3 flex-shrink-0" />
-                      <span><strong>Collaboration:</strong> We work closely with our clients to ensure their unique needs are met.</span>
+                      <span><strong>Tận tâm:</strong> Chúng tôi luôn lắng nghe và đáp ứng nhu cầu riêng của từng khách hàng.</span>
                     </li>
                     <li className="flex items-start">
                       <CheckCircle className="h-5 w-5 text-gray-700 mt-1 mr-3 flex-shrink-0" />
-                      <span><strong>Impact:</strong> We measure success by the tangible differences our technology makes in the real world.</span>
+                      <span><strong>Hiệu quả:</strong> Chúng tôi đo lường thành công bằng sự hài lòng thực sự của khách hàng.</span>
                     </li>
                   </ul>
                 </motion.div>
@@ -94,22 +92,22 @@ const About = () => {
                 transition={{ duration: 0.6, delay: 0.4 }}
                 className="mb-16"
               >
-                <h2 className="text-3xl font-bold mb-6">Our Story</h2>
+                <h2 className="text-3xl font-bold mb-6">Câu chuyện của chúng tôi</h2>
                 <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm">
                   <p className="text-gray-600 mb-4">
-                    We started with the ambition to make an inherently scattered and complex development area modular, 
-                    smart and available to analog brands. After successfully raising millions of dollars for development, 
-                    we spent the first two years in full code mode.
+                    Chúng tôi bắt đầu với mong muốn làm cho việc mua sắm quốc tế trở nên đưn giản và dễ dàng hơn 
+                    cho người Việt Nam. Sau khi thành công trong việc xây dựng mạng lưới đối tác đáng tin cậy, 
+                    chúng tôi đã dành hai năm đầu để hoàn thiện hệ thống.
                   </p>
                   <p className="text-gray-600 mb-4">
-                    The goal was to turn all the scattered hardware and building blocks into simple modules to be 
-                    assembled like Lego. During this time we took in a range of customers for whom we built prototypes - 
-                    a way for us to make sure what we built had bearing in real world use cases.
+                    Mục tiêu của chúng tôi là biến những thủ tục phức tạp trong mua hộ quốc tế thành các bước 
+                    đơn giản, dễ hiểu. Trong thời gian này chúng tôi đã phục vụ hàng ngàn khách hàng - 
+                    cách để chúng tôi đảm bảo rằng dịch vụ thực sự đáp ứng nhu cầu thực tế.
                   </p>
                   <p className="text-gray-600">
-                    In 2023 we felt we had reached a technology level allowing us to start working on enterprise level. 
-                    Since then, we have focused on textile integrations because of the enormous potential smart textiles 
-                    have across multiple industries from healthcare to public safety.
+                    Năm 2023, chúng tôi cảm thấy đã đạt được trình độ cho phép bắt đầu làm việc ở quy mô lớn. 
+                    Kể từ đó, chúng tôi tập trung vào dịch vụ mua hộ vì tiềm năng to lớn của thị trường 
+                    thương mại điện tử xuyên biên giới từ các quốc gia hàng đầu.
                   </p>
                 </div>
               </motion.div>
@@ -120,36 +118,36 @@ const About = () => {
                 transition={{ duration: 0.6, delay: 0.6 }}
                 className="mb-16"
               >
-                <h2 className="text-3xl font-bold mb-6">Our Team</h2>
+                <h2 className="text-3xl font-bold mb-6">Đội ngũ của chúng tôi</h2>
                 <p className="text-gray-600 mb-8">
-                  Our diverse team combines expertise in textile engineering, electronics, software development, 
-                  artificial intelligence, and industry-specific knowledge to deliver holistic solutions.
+                  Đội ngũ đa dạng của chúng tôi kết hợp chuyên môn về thương mại quốc tế, logistics, 
+                  công nghệ thông tin và dịch vụ khách hàng để mang lại giải pháp toàn diện.
                 </p>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[
                     {
-                      name: "Felix von Heland",
-                      role: "CEO and Founder",
-                      bio: "Leading WRLDS Technologies with a vision to transform the future of smart textiles.",
+                      name: "Nguyễn Minh Quân",
+                      role: "CEO & Founder",
+                      bio: "Lãnh đạo Global Shopping Assistant với tầm nhìn kết nối Việt Nam với thế giới qua dịch vụ mua hộ.",
                       image: "/lovable-uploads/aa5291bd-2417-4c1e-9a02-0bcc71a92507.png"
                     },
                     {
-                      name: "Niek Bijman",
-                      role: "Software Lead",
-                      bio: "Specializing in cloud infrastructure and APIs for seamless data integration.",
+                      name: "Trần Hải Nam",
+                      role: "Trưởng bộ phận Công nghệ",
+                      bio: "Chuyên gia về hạ tầng đám mây và API để tích hợp dữ liệu liền mạch.",
                       image: "/lovable-uploads/e502f601-c519-43a8-86f5-5fa89ae50d2f.png"
                     },
                     {
-                      name: "Chengjie Li",
-                      role: "Hardware Lead",
-                      bio: "Expert in embedded systems engineering, leading our hardware development efforts.",
+                      name: "Lê Thị Hoa",
+                      role: "Trưởng bộ phận Logistics",
+                      bio: "Chuyên gia vận chuyển quốc tế, đảm bảo hàng hóa được giao đến tay khách hàng an toàn.",
                       image: "/lovable-uploads/3de85ddd-15e1-4216-9697-f91abb9a47ce.png"
                     },
                     {
-                      name: "Love",
+                      name: "Phạm Văn Đức",
                       role: "COO",
-                      bio: "Overseeing daily operations and ensuring business objectives are met effectively.",
+                      bio: "Giám sát hoạt động hàng ngày và đảm bảo các mục tiêu kinh doanh được thực hiện hiệu quả.",
                       image: "/lovable-uploads/a9bb9110-964a-43b0-a5ab-7162140cd133.png"
                     }
                   ].map((member, i) => (
@@ -176,7 +174,7 @@ const About = () => {
             
             <div className="mt-16 pt-8 border-t border-gray-200">
               <Link to="/careers" className="inline-flex items-center px-5 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-all group">
-                Join Our Team
+Tham gia đội ngũ 
                 <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
