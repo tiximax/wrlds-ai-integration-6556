@@ -3,6 +3,7 @@ import { screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { render } from '../../test/utils/testUtils';
 import Products from '../Products';
+import { FilterState } from '../../utils/productFilters';
 
 // Mock the product data
 vi.mock('../../data/products', () => ({
@@ -70,7 +71,7 @@ vi.mock('react-router-dom', async () => {
 
 // Mock the components that aren't critical for integration tests
 vi.mock('../../components/products/FilterBar', () => ({
-  default: ({ onFiltersChange, totalResults }: any) => (
+  default: ({ onFiltersChange, totalResults }: { onFiltersChange: (filters: FilterState) => void; totalResults: number }) => (
     <div data-testid="filter-bar">
       <div data-testid="total-results">{totalResults}</div>
       <input
@@ -105,7 +106,7 @@ vi.mock('../../components/products/FilterBar', () => ({
 }));
 
 vi.mock('../../components/ProductGrid', () => ({
-  default: ({ products, sortBy, onSortChange, totalResults }: any) => (
+  default: ({ products, sortBy, onSortChange, totalResults }: { products: Array<{ id: string; name: string; sellingPrice: number; origin: string }>; sortBy: string; onSortChange: (sort: string) => void; totalResults: number }) => (
     <div data-testid="product-grid">
       <div data-testid="grid-total-results">{totalResults}</div>
       <select 
@@ -119,7 +120,7 @@ vi.mock('../../components/ProductGrid', () => ({
         <option value="name">Name</option>
       </select>
       <div data-testid="products-list">
-        {products.map((product: any) => (
+        {products.map((product: { id: string; name: string; sellingPrice: number; origin: string }) => (
           <div key={product.id} data-testid={`product-${product.id}`}>
             <span data-testid={`product-name-${product.id}`}>{product.name}</span>
             <span data-testid={`product-price-${product.id}`}>{product.sellingPrice}</span>

@@ -28,7 +28,9 @@
     "blog": "Blog",
     "contact": "Liên hệ",
     "careers": "Tuyển dụng",
-    "privacyPolicy": "Chính sách bảo mật"
+    "privacyPolicy": "Chính sách bảo mật",
+    "categories": "Danh mục",
+    "viewAllProducts": "Xem tất cả sản phẩm"
   },
   "hero": {
     "title": "Dịch vụ Mua hộ Quốc tế Uy tín #1",
@@ -150,6 +152,34 @@
       "description": "Tìm và mua hộ sản phẩm chất lượng từ Nhật Bản, Hàn Quốc, Mỹ. Hàng nghìn sản phẩm thời trang, công nghệ, làm đẹp với giá tốt nhất.",
       "keywords": "mua hộ, sản phẩm nhật bản, hàn quốc, mỹ, thời trang, công nghệ, mỹ phẩm, mua sắm quốc tế"
     }
+  },
+  "productDetail": {
+    "relatedProducts": "Sản phẩm liên quan",
+    "basedOnCategory": "Dựa trên danh mục và thương hiệu",
+    "sameCategory": "Cùng danh mục",
+    "sameBrand": "Cùng thương hiệu",
+    "sameOrigin": "Cùng quốc gia",
+    "avgRating": "Đánh giá TB",
+    "viewAllRelated": "Xem tất cả sản phẩm liên quan",
+    "alsoViewed": "Khách hàng cũng xem",
+    "recommendedForYou": "Gợi ý cho bạn"
+  },
+  "cart": {
+    "title": "Giỏ hàng",
+    "items": "sản phẩm",
+    "empty": {
+      "title": "Giỏ hàng trống",
+      "description": "Thêm sản phẩm để bắt đầu mua sắm"
+    },
+    "subtotal": "Tổng",
+    "total": "Tổng cộng",
+    "checkout": "Thanh toán",
+    "continueShopping": "Tiếp tục mua sắm",
+    "clearAll": "Xóa tất cả sản phẩm",
+    "freeShipping": "Miễn phí vận chuyển cho đơn hàng trên",
+    "addToCart": "Thêm vào giỏ",
+    "quantity": "Số lượng",
+    "remove": "Xóa"
   },
   "footer": {
     "companyName": "Global Shopping Assistant",

@@ -2,6 +2,8 @@ import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, SlidersHorizontal, Grid3X3, List, ChevronDown, X } from 'lucide-react';
 import { Product } from '@/types/product';
+import { FilterState, defaultFilters } from '@/utils/productFilters';
+import { getRootCategories, getCategoryById, getChildren } from '@/utils/categoryUtils';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -28,22 +30,13 @@ import {
   CollapsibleTrigger,
 } from '@/components/ui/collapsible';
 
-export interface FilterState {
-  search: string;
-  origins: string[];
-  statuses: string[];
-  types: string[];
-  brands: string[];
-  priceRange: [number, number];
-  inStock: boolean;
-  trending: boolean;
-  featured: boolean;
-}
 
 interface FilterBarProps {
   filters: FilterState;
   onFiltersChange: (filters: FilterState) => void;
-  products: Product[];
+  products?: Product[];
+  totalResults?: number;
+  isLoading?: boolean;
   className?: string;
 }
 
@@ -76,42 +69,56 @@ const FilterSection: React.FC<FilterSectionProps> = ({
 const FilterBar: React.FC<FilterBarProps> = ({
   filters,
   onFiltersChange,
-  products,
+  products = [],
+  totalResults = 0,
+  isLoading = false,
   className = ''
 }) => {
   // Get unique values for filter options
   const filterOptions = useMemo(() => {
+    if (!products || products.length === 0) {
+      return {
+        categories: getRootCategories(),
+        origins: [],
+        status: [],
+        types: [],
+        brands: [],
+        minPrice: 0,
+        maxPrice: 100000000
+      };
+    }
+
+    const categories = getRootCategories();
     const origins = [...new Set(products.map(p => p.origin))];
-    const statuses = [...new Set(products.map(p => p.status))];
+    const status = [...new Set(products.map(p => p.status))];
     const types = [...new Set(products.map(p => p.type))];
     const brands = [...new Set(products.filter(p => p.brand).map(p => p.brand!.name))];
     const prices = products.map(p => p.sellingPrice);
-    const minPrice = Math.min(...prices);
-    const maxPrice = Math.max(...prices);
+    const minPrice = prices.length > 0 ? Math.min(...prices) : 0;
+    const maxPrice = prices.length > 0 ? Math.max(...prices) : 100000000;
 
-    return { origins, statuses, types, brands, minPrice, maxPrice };
+    return { categories, origins, status, types, brands, minPrice, maxPrice };
   }, [products]);
 
   // Count active filters
   const activeFiltersCount = useMemo(() => {
     let count = 0;
     if (filters.search) count++;
+    if (filters.categories.length > 0) count++;
     if (filters.origins.length > 0) count++;
-    if (filters.statuses.length > 0) count++;
+    if (filters.status.length > 0) count++;
     if (filters.types.length > 0) count++;
     if (filters.brands.length > 0) count++;
     if (filters.priceRange[0] > filterOptions.minPrice || filters.priceRange[1] < filterOptions.maxPrice) count++;
-    if (filters.inStock) count++;
-    if (filters.trending) count++;
-    if (filters.featured) count++;
+    if (filters.quickFilter) count++;
     return count;
   }, [filters, filterOptions]);
 
-  const updateFilter = (key: keyof FilterState, value: any) => {
+  const updateFilter = (key: keyof FilterState, value: FilterState[keyof FilterState]) => {
     onFiltersChange({ ...filters, [key]: value });
   };
 
-  const toggleArrayFilter = (key: 'origins' | 'statuses' | 'types' | 'brands', value: string) => {
+  const toggleArrayFilter = (key: 'categories' | 'origins' | 'status' | 'types' | 'brands', value: string) => {
     const current = filters[key];
     const updated = current.includes(value)
       ? current.filter(item => item !== value)
@@ -121,15 +128,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
   const clearFilters = () => {
     onFiltersChange({
-      search: '',
-      origins: [],
-      statuses: [],
-      types: [],
-      brands: [],
+      ...defaultFilters,
       priceRange: [filterOptions.minPrice, filterOptions.maxPrice],
-      inStock: false,
-      trending: false,
-      featured: false,
     });
   };
 
@@ -184,6 +184,43 @@ const FilterBar: React.FC<FilterBarProps> = ({
         </div>
       </FilterSection>
 
+      {/* Categories */}
+      <FilterSection title="Danh mục">
+        <div className="space-y-2">
+          {filterOptions.categories.map(category => (
+            <div key={category.id} className="space-y-1">
+              <label className="flex items-center space-x-2 cursor-pointer font-medium">
+                <Checkbox
+                  checked={filters.categories.includes(category.id)}
+                  onCheckedChange={() => toggleArrayFilter('categories', category.id)}
+                />
+                <span className="text-sm">{category.name}</span>
+                {category.productCount && (
+                  <span className="text-xs text-gray-500">({category.productCount})</span>
+                )}
+              </label>
+              {/* Subcategories */}
+              {category.children && category.children.length > 0 && (
+                <div className="ml-6 space-y-1">
+                  {category.children.map(subcategory => (
+                    <label key={subcategory.id} className="flex items-center space-x-2 cursor-pointer">
+                      <Checkbox
+                        checked={filters.categories.includes(subcategory.id)}
+                        onCheckedChange={() => toggleArrayFilter('categories', subcategory.id)}
+                      />
+                      <span className="text-xs text-gray-600">{subcategory.name}</span>
+                      {subcategory.productCount && (
+                        <span className="text-xs text-gray-400">({subcategory.productCount})</span>
+                      )}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </FilterSection>
+
       {/* Origin */}
       <FilterSection title="Xuất xứ">
         <div className="space-y-2">
@@ -202,11 +239,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {/* Status */}
       <FilterSection title="Trạng thái">
         <div className="space-y-2">
-          {filterOptions.statuses.map(status => (
+          {filterOptions.status.map(status => (
             <label key={status} className="flex items-center space-x-2 cursor-pointer">
               <Checkbox
-                checked={filters.statuses.includes(status)}
-                onCheckedChange={() => toggleArrayFilter('statuses', status)}
+                checked={filters.status.includes(status)}
+                onCheckedChange={() => toggleArrayFilter('status', status)}
               />
               <span className="text-sm">{getStatusLabel(status)}</span>
             </label>
@@ -267,27 +304,18 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {/* Quick Filters */}
       <FilterSection title="Bộ lọc nhanh">
         <div className="space-y-2">
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <Checkbox
-              checked={filters.inStock}
-              onCheckedChange={(checked) => updateFilter('inStock', checked)}
-            />
-            <span className="text-sm">Còn hàng</span>
-          </label>
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <Checkbox
-              checked={filters.trending}
-              onCheckedChange={(checked) => updateFilter('trending', checked)}
-            />
-            <span className="text-sm">Xu hướng</span>
-          </label>
-          <label className="flex items-center space-x-2 cursor-pointer">
-            <Checkbox
-              checked={filters.featured}
-              onCheckedChange={(checked) => updateFilter('featured', checked)}
-            />
-            <span className="text-sm">Nổi bật</span>
-          </label>
+          <Select value={filters.quickFilter || 'all'} onValueChange={(value) => updateFilter('quickFilter', value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Chọn bộ lọc nhanh" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Tất cả</SelectItem>
+              <SelectItem value="in-stock">Còn hàng</SelectItem>
+              <SelectItem value="trending">Xu hướng</SelectItem>
+              <SelectItem value="featured">Nổi bật</SelectItem>
+              <SelectItem value="flash-deal">Flash Deal</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </FilterSection>
 

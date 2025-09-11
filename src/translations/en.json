@@ -28,7 +28,9 @@
     "blog": "Blog",
     "contact": "Contact",
     "careers": "Careers",
-    "privacyPolicy": "Privacy Policy"
+    "privacyPolicy": "Privacy Policy",
+    "categories": "Categories",
+    "viewAllProducts": "View All Products"
   },
   "hero": {
     "title": "Trusted International Shopping Service #1",
@@ -150,6 +152,34 @@
       "description": "Find and buy high-quality products from Japan, Korea, USA. Thousands of fashion, technology, beauty products at the best prices.",
       "keywords": "international shopping, japan products, korea products, usa products, fashion, technology, cosmetics, global shopping"
     }
+  },
+  "productDetail": {
+    "relatedProducts": "Related Products",
+    "basedOnCategory": "Based on category and brand",
+    "sameCategory": "Same Category",
+    "sameBrand": "Same Brand",
+    "sameOrigin": "Same Origin",
+    "avgRating": "Avg Rating",
+    "viewAllRelated": "View all related products",
+    "alsoViewed": "Customers also viewed",
+    "recommendedForYou": "Recommended for you"
+  },
+  "cart": {
+    "title": "Shopping Cart",
+    "items": "items",
+    "empty": {
+      "title": "Your cart is empty",
+      "description": "Add products to start shopping"
+    },
+    "subtotal": "Subtotal",
+    "total": "Total",
+    "checkout": "Checkout",
+    "continueShopping": "Continue Shopping",
+    "clearAll": "Clear All Items",
+    "freeShipping": "Free shipping on orders over",
+    "addToCart": "Add to Cart",
+    "quantity": "Quantity",
+    "remove": "Remove"
   },
   "footer": {
     "companyName": "Global Shopping Assistant",

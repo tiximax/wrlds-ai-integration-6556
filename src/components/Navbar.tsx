@@ -7,10 +7,16 @@ import { Link } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { CartButton } from './CartButton';
+import { ShoppingCartSidebar } from './ShoppingCartSidebar';
+import SearchBar from './SearchBar';
+import CategoryMenu from './CategoryMenu';
+import MobileCategoryMenu from './MobileCategoryMenu';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const { t } = useLanguage();
 
   useEffect(() => {
@@ -56,7 +62,7 @@ const Navbar = () => {
           </div>
           
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center space-x-4">
             <NavigationMenu className={cn(isScrolled ? "" : "text-white")}>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -82,6 +88,8 @@ const Navbar = () => {
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
+                
+                <CategoryMenu isScrolled={isScrolled} />
                 
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className={cn(isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800")}>
@@ -169,16 +177,32 @@ const Navbar = () => {
                     {t('navigation.contact')}
                   </button>
                 </NavigationMenuItem>
-                
-                <NavigationMenuItem>
-                  <LanguageSwitcher />
-                </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
+            
+            {/* Search Bar */}
+            <div className="w-80">
+              <SearchBar
+                placeholder="Search products..."
+                className={cn(
+                  "transition-colors",
+                  isScrolled
+                    ? "bg-gray-100 text-gray-900 placeholder-gray-500"
+                    : "bg-gray-800 text-white placeholder-gray-400"
+                )}
+              />
+            </div>
+            
+            {/* Right side controls */}
+            <div className="flex items-center space-x-2">
+              <LanguageSwitcher />
+              <CartButton onClick={() => setIsCartOpen(true)} />
+            </div>
           </div>
           
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <CartButton onClick={() => setIsCartOpen(true)} />
             <button onClick={toggleMenu} className={cn("focus:outline-none", isScrolled ? "text-gray-700" : "text-white")}>
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -187,8 +211,21 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation Menu - Reduced height and simplified */}
-      <div className={cn("md:hidden transition-all duration-300 overflow-hidden w-full", isMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0")}>
-        <div className={cn("px-3 pt-2 pb-3 space-y-1 shadow-sm overflow-y-auto max-h-80", isScrolled ? "bg-white" : "bg-black")}>
+      <div className={cn("md:hidden transition-all duration-300 overflow-hidden w-full", isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0")}>
+        <div className={cn("px-3 pt-2 pb-3 space-y-2 shadow-sm overflow-y-auto max-h-96", isScrolled ? "bg-white" : "bg-black")}>
+          {/* Mobile Search Bar */}
+          <div className="px-1 pb-2">
+            <SearchBar
+              placeholder="Search products..."
+              className={cn(
+                "transition-colors w-full",
+                isScrolled
+                  ? "bg-gray-100 text-gray-900 placeholder-gray-500"
+                  : "bg-gray-800 text-white placeholder-gray-400"
+              )}
+            />
+          </div>
+          
           <Link to="/" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
             setIsMenuOpen(false);
             window.scrollTo(0, 0);
@@ -209,6 +246,15 @@ const Navbar = () => {
           }}>
             {t('navigation.products')}
           </Link>
+          
+          {/* Mobile Category Menu */}
+          <MobileCategoryMenu 
+            isScrolled={isScrolled} 
+            onLinkClick={() => {
+              setIsMenuOpen(false);
+              window.scrollTo(0, 0);
+            }} 
+          />
           
           {/* Simplified Customer Cases - no dropdown */}
           <Link to="/projects/firecat" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
@@ -249,6 +295,12 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+      
+      {/* Shopping Cart Sidebar */}
+      <ShoppingCartSidebar
+        isOpen={isCartOpen}
+        onClose={() => setIsCartOpen(false)}
+      />
     </motion.nav>
   );
 };

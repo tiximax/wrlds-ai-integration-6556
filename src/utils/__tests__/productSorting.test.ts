@@ -240,7 +240,7 @@ describe('Product Sorting Utils', () => {
     });
 
     it('should default to newest sorting for unknown sort options', () => {
-      const result = applySorting(mockProductList, 'unknown' as any);
+      const result = applySorting(mockProductList, 'unknown' as never);
       const expected = sortByNewest(mockProductList);
       
       expect(result).toEqual(expected);

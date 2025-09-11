@@ -457,4 +457,5 @@ const SEO: React.FC<SEOProps> = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export default SEO;

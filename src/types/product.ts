@@ -12,13 +12,51 @@ export interface ProductImage {
   order: number;
 }
 
+// Updated variant structure for better flexibility
+export interface ProductVariantOption {
+  id: string;
+  value: string;
+  label: string;
+  stock: number;
+  priceAdjustment: number;
+  image?: string;
+}
+
 export interface ProductVariant {
+  id: string;
+  name: string;
+  type: 'color' | 'size' | 'style' | 'capacity' | 'other';
+  required: boolean;
+  options: ProductVariantOption[];
+}
+
+// Keep legacy variant for backward compatibility
+export interface LegacyProductVariant {
   id: string;
   name: string;
   value: string;
   priceAdjustment: number;
   stock: number;
   sku: string;
+}
+
+export interface ProductSpecification {
+  label: string;
+  value: string;
+  category?: string;
+}
+
+export interface ProductReview {
+  id: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  title: string;
+  content: string;
+  images?: string[];
+  verified: boolean;
+  helpful: number;
+  date: Date;
 }
 
 export interface ProductCategory {
@@ -28,6 +66,28 @@ export interface ProductCategory {
   parentId?: string;
   image?: string;
   description?: string;
+  children?: ProductCategory[];
+  productCount?: number;
+  isActive: boolean;
+  seoTitle?: string;
+  seoDescription?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface CategoryHierarchy {
+  category: ProductCategory;
+  parent?: ProductCategory;
+  ancestors: ProductCategory[];
+  children: ProductCategory[];
+  breadcrumbs: Breadcrumb[];
+}
+
+export interface Breadcrumb {
+  id: string;
+  name: string;
+  slug: string;
+  url: string;
 }
 
 export interface ProductBrand {
@@ -93,6 +153,10 @@ export interface Product {
   stock: number;
   sku: string;
   variants?: ProductVariant[];
+  
+  // Enhanced product info
+  specifications?: ProductSpecification[];
+  reviews?: ProductReview[];
   
   // Metadata
   weight?: number; // kg
@@ -173,15 +237,4 @@ export interface PreorderRegistration {
   notifiedAt?: Date;
 }
 
-export interface ProductReview {
-  id: string;
-  productId: string;
-  customerName: string;
-  rating: number;
-  title: string;
-  content: string;
-  images?: string[];
-  verified: boolean;
-  helpful: number;
-  createdAt: Date;
-}
+// ProductReview interface moved above and enhanced

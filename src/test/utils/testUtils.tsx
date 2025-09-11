@@ -10,6 +10,7 @@ interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
   initialEntries?: string[]
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders: React.FC<{ children: React.ReactNode; initialEntries?: string[] }> = ({
   children,
   initialEntries = ['/']
@@ -39,5 +40,6 @@ const customRender = (
   })
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export * from '@testing-library/react'
 export { customRender as render }

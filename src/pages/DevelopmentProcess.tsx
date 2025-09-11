@@ -42,6 +42,7 @@ const DevelopmentProcess = () => {
   }];
   useEffect(() => {
     processSectionsRef.current = processes.map((_, i) => processSectionsRef.current[i] || null);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     const observer = new IntersectionObserver(entries => {

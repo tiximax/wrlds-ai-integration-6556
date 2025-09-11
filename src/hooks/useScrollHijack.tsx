@@ -89,6 +89,7 @@ export const useScrollHijack = (sectionRef: React.RefObject<HTMLElement>, itemCo
       window.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = 'auto';
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleScroll]);
 
   // Handle touch events for mobile

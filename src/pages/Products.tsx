@@ -6,16 +6,29 @@ import FilterBar from '../components/products/FilterBar';
 import ProductGrid from '../components/ProductGrid';
 import { mockProducts } from '../data/products';
 import { Product } from '@/types/product';
-import { applyFilters, FilterState, defaultFilters } from '@/utils/productFilters';
-import { applySorting, SortOption } from '@/utils/productSorting';
+import { FilterState, defaultFilters } from '@/utils/productFilters';
+import { updateCategoryProductCounts } from '@/utils/categoryUtils';
+import { 
+  performAdvancedSearch, 
+  AdvancedSearchFilters, 
+  defaultSearchFilters,
+  addToSearchHistory,
+  SearchResult
+} from '@/utils/advancedSearch';
 
 const Products: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   
+  // Update category product counts when component mounts
+  React.useEffect(() => {
+    updateCategoryProductCounts(mockProducts);
+  }, []);
+  
   // Initialize filters from URL or defaults
   const [filters, setFilters] = useState<FilterState>(() => {
     const urlSearch = searchParams.get('search') || '';
+    const urlCategories = searchParams.get('categories')?.split(',').filter(Boolean) || [];
     const urlOrigins = searchParams.get('origins')?.split(',').filter(Boolean) || [];
     const urlStatus = searchParams.get('status')?.split(',').filter(Boolean) || [];
     const urlTypes = searchParams.get('types')?.split(',').filter(Boolean) || [];
@@ -26,6 +39,7 @@ const Products: React.FC = () => {
     
     return {
       search: urlSearch,
+      categories: urlCategories,
       origins: urlOrigins,
       status: urlStatus,
       types: urlTypes,
@@ -44,10 +58,11 @@ const Products: React.FC = () => {
     const newSearchParams = new URLSearchParams();
     
     if (filters.search) newSearchParams.set('search', filters.search);
-    if (filters.origins.length) newSearchParams.set('origins', filters.origins.join(','));
-    if (filters.status.length) newSearchParams.set('status', filters.status.join(','));
-    if (filters.types.length) newSearchParams.set('types', filters.types.join(','));
-    if (filters.brands.length) newSearchParams.set('brands', filters.brands.join(','));
+    if (filters.categories && filters.categories.length) newSearchParams.set('categories', filters.categories.join(','));
+    if (filters.origins && filters.origins.length) newSearchParams.set('origins', filters.origins.join(','));
+    if (filters.status && filters.status.length) newSearchParams.set('status', filters.status.join(','));
+    if (filters.types && filters.types.length) newSearchParams.set('types', filters.types.join(','));
+    if (filters.brands && filters.brands.length) newSearchParams.set('brands', filters.brands.join(','));
     if (filters.priceRange[0] !== defaultFilters.priceRange[0]) newSearchParams.set('minPrice', filters.priceRange[0].toString());
     if (filters.priceRange[1] !== defaultFilters.priceRange[1]) newSearchParams.set('maxPrice', filters.priceRange[1].toString());
     if (filters.quickFilter) newSearchParams.set('quickFilter', filters.quickFilter);
@@ -57,16 +72,44 @@ const Products: React.FC = () => {
     setSearchParams(newSearchParams);
   }, [filters, sortBy, currentPage, setSearchParams]);
 
-  // Filter and sort products using utility functions
-  const filteredProducts = useMemo(() => {
-    // First apply all filters
-    const filtered = applyFilters(mockProducts, filters);
+  // Convert FilterState to AdvancedSearchFilters and perform search
+  const { searchResults, products: filteredProducts } = useMemo(() => {
+    const advancedFilters: AdvancedSearchFilters = {
+      query: filters.search,
+      categories: filters.categories || [],
+      brands: filters.brands || [],
+      origins: filters.origins || [],
+      priceRange: filters.priceRange,
+      rating: 0, // Not in current FilterState, could be added
+      availability: (filters.status && filters.status.includes('available')) ? 'inStock' : 
+                   (filters.status && filters.status.includes('preorder')) ? 'preorder' : 'all',
+      sortBy: sortBy as AdvancedSearchFilters['sortBy'],
+      tags: [] // Not in current FilterState, could be added
+    };
     
-    // Then apply sorting
-    const sorted = applySorting(filtered, sortBy as SortOption);
+    // Perform advanced search
+    const results = performAdvancedSearch(mockProducts, advancedFilters);
     
-    return sorted;
+    // Extract products from search results
+    const products = results.map(result => result.product);
+    
+    return {
+      searchResults: results,
+      products
+    };
   }, [filters, sortBy]);
+  
+  // Save search to history when there's a query
+  useEffect(() => {
+    if (filters.search && filters.search.length >= 2) {
+      // Debounce search history saving
+      const timeoutId = setTimeout(() => {
+        addToSearchHistory(filters.search, filteredProducts.length);
+      }, 1000);
+      
+      return () => clearTimeout(timeoutId);
+    }
+  }, [filters.search, filteredProducts.length]);
 
   const handleFiltersChange = (newFilters: FilterState) => {
     setFilters(newFilters);
@@ -202,6 +245,7 @@ const Products: React.FC = () => {
                 <FilterBar
                   filters={filters}
                   onFiltersChange={handleFiltersChange}
+                  products={mockProducts}
                   totalResults={filteredProducts.length}
                   isLoading={isLoading}
                 />

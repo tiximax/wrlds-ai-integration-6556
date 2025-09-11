@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { CartProvider } from "@/contexts/CartContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -23,6 +24,8 @@ const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const Blog = lazy(() => import("./pages/Blog"));
 const BlogPostDetail = lazy(() => import("./pages/BlogPostDetail"));
 const Products = lazy(() => import("./pages/Products"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -35,10 +38,11 @@ const App = () => {
 
   return (
     <LanguageProvider>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
+      <CartProvider>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
           <BrowserRouter>
           <Suspense fallback={
             <div className="flex items-center justify-center min-h-screen">
@@ -60,12 +64,16 @@ const App = () => {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPostDetail />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/products/:slug" element={<ProductDetail />} />
+            <Route path="/category/:categorySlug" element={<CategoryPage />} />
+            <Route path="/category/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
           </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </CartProvider>
     </LanguageProvider>
   );
 };

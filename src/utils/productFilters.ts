@@ -1,7 +1,9 @@
 import { Product } from '@/types/product';
+import { getCategoryById, getDescendants } from './categoryUtils';
 
 export interface FilterState {
   search: string;
+  categories: string[]; // Category IDs or slugs
   origins: string[];
   status: string[];
   types: string[];
@@ -12,6 +14,7 @@ export interface FilterState {
 
 export const defaultFilters: FilterState = {
   search: '',
+  categories: [],
   origins: [],
   status: [],
   types: [],
@@ -31,6 +34,30 @@ export const filterBySearch = (products: Product[], searchTerm: string): Product
     product.brand?.name.toLowerCase().includes(searchLower) ||
     product.tags.some(tag => tag.toLowerCase().includes(searchLower))
   );
+};
+
+// Category filter
+export const filterByCategories = (products: Product[], categoryIds: string[]): Product[] => {
+  if (!categoryIds || categoryIds.length === 0) return products;
+  
+  // Get all descendant category IDs for each selected category
+  const allCategoryIds = new Set(categoryIds);
+  
+  categoryIds.forEach(categoryId => {
+    const category = getCategoryById(categoryId);
+    if (category) {
+      // Include all descendants of this category
+      const descendants = getDescendants(category);
+      descendants.forEach(descendant => {
+        allCategoryIds.add(descendant.id);
+      });
+    }
+  });
+  
+  return products.filter(product => {
+    if (!product.category?.id) return false;
+    return allCategoryIds.has(product.category.id);
+  });
 };
 
 // Origin filter
@@ -76,6 +103,8 @@ export const filterByQuickFilter = (products: Product[], quickFilter: string): P
       return products.filter(product => product.featured);
     case 'flash-deal':
       return products.filter(product => product.type === 'flash_deal');
+    case 'all':
+    case '':
     default:
       return products;
   }
@@ -87,6 +116,7 @@ export const applyFilters = (products: Product[], filters: FilterState): Product
 
   // Apply each filter in sequence
   filteredProducts = filterBySearch(filteredProducts, filters.search);
+  filteredProducts = filterByCategories(filteredProducts, filters.categories);
   filteredProducts = filterByOrigins(filteredProducts, filters.origins);
   filteredProducts = filterByStatus(filteredProducts, filters.status);
   filteredProducts = filterByTypes(filteredProducts, filters.types);
