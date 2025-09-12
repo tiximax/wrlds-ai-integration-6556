@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
+import { WishlistProvider } from "@/contexts/WishlistContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
 // Lazy load pages for better performance
@@ -40,7 +41,8 @@ const App = () => {
   return (
     <LanguageProvider>
       <CartProvider>
-        <QueryClientProvider client={queryClient}>
+        <WishlistProvider>
+          <QueryClientProvider client={queryClient}>
           <TooltipProvider>
             <Toaster />
             <Sonner />
@@ -76,7 +78,8 @@ const App = () => {
           </Suspense>
           </BrowserRouter>
           </TooltipProvider>
-        </QueryClientProvider>
+          </QueryClientProvider>
+        </WishlistProvider>
       </CartProvider>
     </LanguageProvider>
   );
