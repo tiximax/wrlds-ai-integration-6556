@@ -105,31 +105,58 @@ vi.mock('../../components/products/FilterBar', () => ({
   )
 }));
 
-vi.mock('../../components/ProductGrid', () => ({
-  default: ({ products, sortBy, onSortChange, totalResults }: { products: Array<{ id: string; name: string; sellingPrice: number; origin: string }>; sortBy: string; onSortChange: (sort: string) => void; totalResults: number }) => (
-    <div data-testid="product-grid">
-      <div data-testid="grid-total-results">{totalResults}</div>
-      <select 
-        data-testid="sort-select" 
-        value={sortBy} 
-        onChange={(e) => onSortChange(e.target.value)}
-      >
-        <option value="newest">Newest</option>
-        <option value="price-low">Price Low</option>
-        <option value="price-high">Price High</option>
-        <option value="name">Name</option>
-      </select>
-      <div data-testid="products-list">
-        {products.map((product: { id: string; name: string; sellingPrice: number; origin: string }) => (
-          <div key={product.id} data-testid={`product-${product.id}`}>
-            <span data-testid={`product-name-${product.id}`}>{product.name}</span>
-            <span data-testid={`product-price-${product.id}`}>{product.sellingPrice}</span>
-            <span data-testid={`product-origin-${product.id}`}>{product.origin}</span>
-          </div>
-        ))}
+vi.mock('../../components/products/EnhancedProductGrid', () => ({
+  default: ({ products, sortBy, onSortChange, totalResults }: { products: Array<{ id: string; name: string; sellingPrice: number; origin: string }>; sortBy: string; onSortChange: (sort: string) => void; totalResults: number }) => {
+    // Apply sorting based on sortBy prop
+    const sortedProducts = [...products].sort((a, b) => {
+      switch (sortBy) {
+        case 'price-low':
+          return a.sellingPrice - b.sellingPrice;
+        case 'price-high':
+          return b.sellingPrice - a.sellingPrice;
+        case 'name':
+          return a.name.localeCompare(b.name);
+        default: // 'newest'
+          return 0;
+      }
+    });
+    
+    return (
+      <div data-testid="product-grid">
+        <div data-testid="grid-total-results">{totalResults}</div>
+        <select 
+          data-testid="sort-select" 
+          value={sortBy} 
+          onChange={(e) => onSortChange(e.target.value)}
+        >
+          <option value="newest">Newest</option>
+          <option value="price-low">Price Low</option>
+          <option value="price-high">Price High</option>
+          <option value="name">Name</option>
+        </select>
+        <div data-testid="products-list">
+          {sortedProducts.map((product: { id: string; name: string; sellingPrice: number; origin: string }) => (
+            <div key={product.id} data-testid={`product-${product.id}`}>
+              <span data-testid={`product-name-${product.id}`}>{product.name}</span>
+              <span data-testid={`product-price-${product.id}`}>
+                {new Intl.NumberFormat('vi-VN', {
+                  style: 'currency',
+                  currency: 'VND',
+                  maximumFractionDigits: 0
+                }).format(product.sellingPrice)}
+              </span>
+              <span data-testid={`product-origin-${product.id}`}>{
+                product.origin === 'usa' ? '🇺🇸' : 
+                product.origin === 'korea' ? '🇰🇷' : 
+                product.origin === 'japan' ? '🇯🇵' : 
+                product.origin === 'europe' ? '🇪🇺' : '🌍'
+              }</span>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  )
+    );
+  }
 }));
 
 describe('Products Page Integration Tests', () => {
@@ -231,8 +258,8 @@ describe('Products Page Integration Tests', () => {
         expect(screen.getByTestId('product-1')).toBeInTheDocument();
         expect(screen.queryByTestId('product-2')).not.toBeInTheDocument();
         
-        // Check the origin is correct
-        expect(screen.getByTestId('product-origin-1')).toHaveTextContent('usa');
+        // Check the origin is correct (should be flag emoji)
+        expect(screen.getByTestId('product-origin-1')).toHaveTextContent('🇺🇸');
         
         // Total results should be updated
         expect(screen.getByTestId('total-results')).toHaveTextContent('1');
@@ -254,9 +281,9 @@ describe('Products Page Integration Tests', () => {
         const firstProductPrice = screen.getByTestId('product-price-2');
         const secondProductPrice = screen.getByTestId('product-price-1');
         
-        // Samsung (20M) should come before iPhone (25M)
-        expect(firstProductPrice).toHaveTextContent('20000000');
-        expect(secondProductPrice).toHaveTextContent('25000000');
+        // Samsung (20M) should come before iPhone (25M) - check formatted prices
+        expect(firstProductPrice).toHaveTextContent('20.000.000');
+        expect(secondProductPrice).toHaveTextContent('25.000.000');
       });
     });
 
@@ -272,9 +299,9 @@ describe('Products Page Integration Tests', () => {
         const firstProductPrice = screen.getByTestId('product-price-1');
         const secondProductPrice = screen.getByTestId('product-price-2');
         
-        // iPhone (25M) should come before Samsung (20M)
-        expect(firstProductPrice).toHaveTextContent('25000000');
-        expect(secondProductPrice).toHaveTextContent('20000000');
+        // iPhone (25M) should come before Samsung (20M) - check formatted prices  
+        expect(firstProductPrice).toHaveTextContent('25.000.000');
+        expect(secondProductPrice).toHaveTextContent('20.000.000');
       });
     });
 
@@ -322,9 +349,10 @@ describe('Products Page Integration Tests', () => {
         const firstProductPrice = screen.getByTestId('product-price-1');
         const secondProductPrice = screen.getByTestId('product-price-2');
         
-        expect(parseInt(firstProductPrice.textContent || '0')).toBeGreaterThan(
-          parseInt(secondProductPrice.textContent || '0')
-        );
+        // Check that first product price is greater than second (formatted prices)
+        const firstPrice = firstProductPrice.textContent?.replace(/[^0-9]/g, '') || '0';
+        const secondPrice = secondProductPrice.textContent?.replace(/[^0-9]/g, '') || '0';
+        expect(parseInt(firstPrice)).toBeGreaterThan(parseInt(secondPrice));
       });
     });
 

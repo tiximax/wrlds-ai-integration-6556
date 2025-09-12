@@ -10,6 +10,16 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    // Exclude Playwright test files
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/cypress/**',
+      '**/.{idea,git,cache,output,temp}/**',
+      '**/tests/**', // Exclude Playwright tests directory
+      '**/*.spec.ts', // Exclude .spec.ts files
+      '**/*.e2e.ts' // Exclude e2e test files
+    ],
   },
   resolve: {
     alias: {

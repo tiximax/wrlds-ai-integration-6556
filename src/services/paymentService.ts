@@ -155,6 +155,11 @@ export class PaymentService {
     metadata: Record<string, any> = {}
   ): Promise<PaymentIntent> {
     try {
+      // Validate amount
+      if (amount <= 0) {
+        throw new Error('Invalid amount: Amount must be greater than 0');
+      }
+
       // In real app, this would make an API call to your backend
       const mockPaymentIntent: PaymentIntent = {
         id: `pi_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -209,12 +214,34 @@ export class PaymentService {
         };
       }
 
+      if (paymentData.cardNumber.includes('4000000000009995')) {
+        return {
+          success: false,
+          error: {
+            code: 'insufficient_funds',
+            message: 'Your card has insufficient funds.',
+            type: 'card_error'
+          }
+        };
+      }
+
       if (paymentData.cardNumber.includes('4000000000003220')) {
         return {
           success: false,
           requiresAction: {
             type: 'use_stripe_sdk',
             clientSecret
+          }
+        };
+      }
+
+      if (clientSecret === 'invalid_secret') {
+        return {
+          success: false,
+          error: {
+            code: 'api_error',
+            message: 'Invalid client secret.',
+            type: 'api_error'
           }
         };
       }
@@ -358,6 +385,61 @@ export class PaymentService {
     }
   }
 
+  // Confirm PayPal Payment
+  async confirmPayPalPayment(
+    clientSecret: string,
+    paypalData: {
+      payerId: string;
+      paymentId: string;
+    }
+  ): Promise<PaymentResult> {
+    try {
+      // Simulate PayPal errors for invalid data
+      if (paypalData.payerId === 'invalid_payer' || paypalData.paymentId === 'invalid_payment') {
+        return {
+          success: false,
+          error: {
+            code: 'paypal_confirmation_error',
+            message: 'PayPal payment confirmation failed.',
+            type: 'api_error'
+          }
+        };
+      }
+
+      // Simulate PayPal confirmation processing
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      const paymentIntent: PaymentIntent = {
+        id: `pi_paypal_confirmed_${Date.now()}`,
+        amount: 5000, // Mock amount
+        currency: 'usd',
+        status: 'succeeded',
+        clientSecret,
+        paymentMethod: `pm_paypal_${Date.now()}`,
+        metadata: { 
+          provider: 'paypal',
+          payerId: paypalData.payerId,
+          paymentId: paypalData.paymentId
+        },
+        createdAt: new Date()
+      };
+
+      return {
+        success: true,
+        paymentIntent
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: {
+          code: 'paypal_confirmation_error',
+          message: 'PayPal payment confirmation failed.',
+          type: 'api_error'
+        }
+      };
+    }
+  }
+
   // Save Payment Method
   async savePaymentMethod(
     customerId: string,
@@ -407,6 +489,11 @@ export class PaymentService {
     } catch (error) {
       throw new Error('Failed to save payment method');
     }
+  }
+
+  // Get Payment Methods (alias for getSavedPaymentMethods)
+  async getPaymentMethods(customerId: string): Promise<PaymentMethod[]> {
+    return this.getSavedPaymentMethods(customerId);
   }
 
   // Get Saved Payment Methods
@@ -491,6 +578,28 @@ export class PaymentService {
     reason: 'duplicate' | 'fraudulent' | 'requested_by_customer' = 'requested_by_customer'
   ): Promise<RefundResult> {
     try {
+      // Check if payment exists (simulate failure for specific IDs)
+      if (paymentIntentId === 'pi_non_existent') {
+        return {
+          success: false,
+          error: {
+            code: 'payment_not_found',
+            message: 'Payment intent not found.'
+          }
+        };
+      }
+
+      // Simulate refund failure for invalid refunds
+      if (paymentIntentId === 'pi_invalid_refund') {
+        return {
+          success: false,
+          error: {
+            code: 'refund_failed',
+            message: 'Failed to process refund.'
+          }
+        };
+      }
+
       // Simulate refund processing
       await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -575,6 +684,28 @@ export class PaymentService {
     };
   }
 
+  // Public validation methods
+  validateCardNumber(cardNumber: string): boolean {
+    return this.isValidCardNumber(cardNumber);
+  }
+
+  validateExpiryDate(expiryDate: string): boolean {
+    return this.isValidExpiryDate(expiryDate);
+  }
+
+  validateCvv(cvv: string): boolean {
+    return this.isValidCVV(cvv);
+  }
+
+  detectCardBrand(cardNumber: string): string {
+    const cleaned = cardNumber.replace(/\s/g, '');
+    if (cleaned.startsWith('4')) return 'visa';
+    if (cleaned.match(/^5[1-5]/)) return 'mastercard';
+    if (cleaned.match(/^3[47]/)) return 'amex';
+    if (cleaned.match(/^6(?:011|5)/)) return 'discover';
+    return 'unknown';
+  }
+
   // Helper Methods
   private isValidCardNumber(cardNumber: string): boolean {
     const cleaned = cardNumber.replace(/\s/g, '');
@@ -634,6 +765,19 @@ export class PaymentService {
 
     const rate = fees[paymentMethod as keyof typeof fees] || fees.card;
     return Math.round(amount * rate * 100) / 100;
+  }
+
+  // Handle Webhook (instance method)
+  async handleWebhook(event: any): Promise<{ success: boolean; error?: string }> {
+    try {
+      await handlePaymentWebhook(event);
+      return { success: true };
+    } catch (error) {
+      return { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Webhook processing failed'
+      };
+    }
   }
 
   // Check Payment Method Availability

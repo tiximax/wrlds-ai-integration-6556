@@ -362,7 +362,7 @@ export class EnhancedCartService {
         accessCount: 0,
         isPasswordProtected: !!options?.password,
         password: options?.password,
-        allowAnonymousAccess: options?.allowAnonymousAccess || true,
+        allowAnonymousAccess: options?.allowAnonymousAccess ?? true,
         customMessage: options?.customMessage
       };
 
