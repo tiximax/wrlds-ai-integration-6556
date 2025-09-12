@@ -2,6 +2,9 @@ import React, { ReactElement } from 'react'
 import { render, RenderOptions } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
+import { LanguageProvider } from '@/contexts/LanguageContext'
+import { CartProvider } from '@/contexts/CartContext'
+import { WishlistProvider } from '@/contexts/WishlistContext'
 
 // Mock i18next
 import '../mocks/i18nMock'
@@ -16,11 +19,17 @@ const AllTheProviders: React.FC<{ children: React.ReactNode; initialEntries?: st
   initialEntries = ['/']
 }) => {
   return (
-    <HelmetProvider>
-      <BrowserRouter>
-        {children}
-      </BrowserRouter>
-    </HelmetProvider>
+    <LanguageProvider>
+      <CartProvider>
+        <WishlistProvider>
+          <HelmetProvider>
+            <BrowserRouter>
+              {children}
+            </BrowserRouter>
+          </HelmetProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </LanguageProvider>
   )
 }
 

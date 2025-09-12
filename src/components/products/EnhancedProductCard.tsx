@@ -237,7 +237,10 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
                 
                 {/* Product Name */}
                 <Link to={`/products/${product.slug}`}>
-                  <h3 className="font-semibold text-lg text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                  <h3 
+                    className="font-semibold text-lg text-gray-900 mb-2 hover:text-blue-600 transition-colors"
+                    data-testid={`product-name-${product.id}`}
+                  >
                     {product.name}
                   </h3>
                 </Link>
@@ -253,7 +256,10 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
                 {/* Pricing */}
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <span className="text-xl font-bold text-gray-900">
+                    <span 
+                      className="text-xl font-bold text-gray-900"
+                      data-testid={`product-price-${product.id}`}
+                    >
                       {formatPrice(product.sellingPrice)}
                     </span>
                     {product.compareAtPrice && (
@@ -450,6 +456,7 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
               <motion.span 
                 className="text-lg filter drop-shadow-sm" 
                 title={product.origin}
+                data-testid={`product-origin-${product.id}`}
                 whileHover={{ scale: 1.2 }}
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
               >
@@ -500,7 +507,10 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
             
             {/* Product Name */}
             <Link to={`/products/${product.slug}`}>
-              <h3 className="font-semibold text-gray-900 line-clamp-2 hover:text-blue-600 transition-colors">
+              <h3 
+                className="font-semibold text-gray-900 line-clamp-2 hover:text-blue-600 transition-colors"
+                data-testid={`product-name-${product.id}`}
+              >
                 {product.name}
               </h3>
             </Link>
@@ -515,6 +525,7 @@ const EnhancedProductCard: React.FC<EnhancedProductCardProps> = ({
               <div className="flex items-center gap-2 flex-wrap">
                 <motion.span 
                   className="text-lg font-bold text-gray-900"
+                  data-testid={`product-price-${product.id}`}
                   whileHover={{ scale: 1.05 }}
                 >
                   {formatPrice(product.sellingPrice)}

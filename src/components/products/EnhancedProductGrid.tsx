@@ -276,7 +276,7 @@ const EnhancedProductGrid: React.FC<EnhancedProductGridProps> = ({
         transition={{ duration: 0.3 }}
       >
         <div className="flex items-center gap-3">
-          <Badge variant="outline" className="px-3 py-1 font-medium">
+          <Badge variant="outline" className="px-3 py-1 font-medium" data-testid="grid-total-results">
             {totalResults.toLocaleString()} products
           </Badge>
           <div className="w-px h-6 bg-gray-300" />
@@ -327,7 +327,7 @@ const EnhancedProductGrid: React.FC<EnhancedProductGridProps> = ({
           
           {/* Sort Dropdown */}
           <Select value={sortBy} onValueChange={onSortChange}>
-            <SelectTrigger className="w-48">
+            <SelectTrigger className="w-48" data-testid="sort-select">
               <SelectValue placeholder="Sort by..." />
             </SelectTrigger>
             <SelectContent>
@@ -344,6 +344,7 @@ const EnhancedProductGrid: React.FC<EnhancedProductGridProps> = ({
 
       {/* Enhanced Product Grid/List */}
       <motion.div 
+        data-testid="product-grid"
         className={cn(
           "grid gap-6",
           layout === 'grid' 
@@ -358,6 +359,7 @@ const EnhancedProductGrid: React.FC<EnhancedProductGridProps> = ({
           {products.map((product, index) => (
             <motion.div
               key={product.id}
+              data-testid={`product-${product.id}`}
               variants={itemVariants}
               layout
               layoutId={product.id}
