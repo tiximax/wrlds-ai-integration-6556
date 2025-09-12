@@ -58,6 +58,12 @@
     <link rel="canonical" href="https://wrlds.com" />
     <!-- Robots directive -->
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <!-- Disable Silktide in development to prevent UI interference -->
+    <script>
+      if (window.location.hostname === 'localhost') {
+        window.silktide = { disable: true };
+      }
+    </script>
   </head>
 
   <body>
