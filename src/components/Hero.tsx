@@ -98,31 +98,64 @@ const Hero = () => {
       </div>
       
       <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 mx-auto">
-        <motion.div className="mt-6 md:mt-8 grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4" variants={containerVariants} initial="hidden" animate="visible" transition={{
+          <motion.div className="mt-8 md:mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6" variants={containerVariants} initial="hidden" animate="visible" transition={{
         delay: 0.6
       }}>
-          <motion.div className="bg-white p-4 md:p-5 rounded-xl shadow-sm border border-gray-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-md" variants={itemVariants}>
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 flex items-center justify-center rounded-lg text-gray-500 mb-2 md:mb-3">
-              <ShoppingCart className="w-5 h-5 md:w-6 md:h-6" />
-            </div>
-            <h3 className="text-base md:text-lg font-semibold mb-1 md:mb-2 text-gray-800">{t('hero.globalShopping')}</h3>
-            <p className="text-gray-600 text-xs md:text-sm">{t('hero.globalShoppingDesc')}</p>
+          <motion.div 
+            className="group bg-white/95 backdrop-blur-sm p-5 md:p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl hover:border-blue-200/50 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden" 
+            variants={itemVariants}
+            whileHover={{ scale: 1.03 }}
+          >
+            {/* Animated background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-purple-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <motion.div 
+              className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center rounded-xl text-blue-600 mb-3 md:mb-4 relative z-10"
+              whileHover={{ rotate: 5, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <ShoppingCart className="w-6 h-6 md:w-7 md:h-7" />
+            </motion.div>
+            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-gray-800 relative z-10">{t('hero.globalShopping')}</h3>
+            <p className="text-gray-600 text-sm md:text-base leading-relaxed relative z-10">{t('hero.globalShoppingDesc')}</p>
           </motion.div>
           
-          <motion.div className="bg-white p-4 md:p-5 rounded-xl shadow-sm border border-gray-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-md" variants={itemVariants}>
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 flex items-center justify-center rounded-lg text-gray-500 mb-2 md:mb-3">
-              <Globe className="w-5 h-5 md:w-6 md:h-6" />
-            </div>
-            <h3 className="text-base md:text-lg font-semibold mb-1 md:mb-2 text-gray-800">{t('hero.internationalShipping')}</h3>
-            <p className="text-gray-600 text-xs md:text-sm">{t('hero.internationalShippingDesc')}</p>
+          <motion.div 
+            className="group bg-white/95 backdrop-blur-sm p-5 md:p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl hover:border-purple-200/50 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden" 
+            variants={itemVariants}
+            whileHover={{ scale: 1.03 }}
+          >
+            {/* Animated background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-pink-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <motion.div 
+              className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-purple-100 to-purple-200 flex items-center justify-center rounded-xl text-purple-600 mb-3 md:mb-4 relative z-10"
+              whileHover={{ rotate: -5, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <Globe className="w-6 h-6 md:w-7 md:h-7" />
+            </motion.div>
+            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-gray-800 relative z-10">{t('hero.internationalShipping')}</h3>
+            <p className="text-gray-600 text-sm md:text-base leading-relaxed relative z-10">{t('hero.internationalShippingDesc')}</p>
           </motion.div>
           
-          <motion.div className="bg-white p-4 md:p-5 rounded-xl shadow-sm border border-gray-100 transform transition-all duration-300 hover:-translate-y-1 hover:shadow-md" variants={itemVariants}>
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-gray-100 flex items-center justify-center rounded-lg text-gray-500 mb-2 md:mb-3">
-              <CreditCard className="w-5 h-5 md:w-6 md:h-6" />
-            </div>
-            <h3 className="text-base md:text-lg font-semibold mb-1 md:mb-2 text-gray-800">{t('hero.flexiblePayment')}</h3>
-            <p className="text-gray-600 text-xs md:text-sm">{t('hero.flexiblePaymentDesc')}</p>
+          <motion.div 
+            className="group bg-white/95 backdrop-blur-sm p-5 md:p-6 rounded-2xl shadow-lg border border-white/20 hover:shadow-xl hover:border-green-200/50 transition-all duration-500 hover:-translate-y-2 relative overflow-hidden" 
+            variants={itemVariants}
+            whileHover={{ scale: 1.03 }}
+          >
+            {/* Animated background gradient */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-emerald-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            
+            <motion.div 
+              className="w-12 h-12 md:w-14 md:h-14 bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center rounded-xl text-green-600 mb-3 md:mb-4 relative z-10"
+              whileHover={{ rotate: 5, scale: 1.1 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <CreditCard className="w-6 h-6 md:w-7 md:h-7" />
+            </motion.div>
+            <h3 className="text-lg md:text-xl font-bold mb-2 md:mb-3 text-gray-800 relative z-10">{t('hero.flexiblePayment')}</h3>
+            <p className="text-gray-600 text-sm md:text-base leading-relaxed relative z-10">{t('hero.flexiblePaymentDesc')}</p>
           </motion.div>
         </motion.div>
       </div>

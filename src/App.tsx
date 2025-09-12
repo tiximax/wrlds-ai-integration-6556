@@ -8,6 +8,7 @@ import { useState, useEffect, lazy, Suspense } from "react";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { CartProvider } from "@/contexts/CartContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
+import { LoadingAnimation } from "@/components/LoadingAnimation";
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -45,8 +46,11 @@ const App = () => {
             <Sonner />
           <BrowserRouter>
           <Suspense fallback={
-            <div className="flex items-center justify-center min-h-screen">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
+              <div className="text-center space-y-4">
+                <LoadingAnimation variant="wave" size="lg" />
+                <p className="text-gray-600 text-sm font-medium">Loading...</p>
+              </div>
             </div>
           }>
           <Routes>
