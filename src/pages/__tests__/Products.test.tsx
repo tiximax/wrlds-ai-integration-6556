@@ -105,7 +105,7 @@ vi.mock('../../components/products/FilterBar', () => ({
   )
 }));
 
-vi.mock('../../components/ProductGrid', () => ({
+vi.mock('../../components/products/EnhancedProductGrid', () => ({
   default: ({ products, sortBy, onSortChange, totalResults }: { products: Array<{ id: string; name: string; sellingPrice: number; origin: string }>; sortBy: string; onSortChange: (sort: string) => void; totalResults: number }) => (
     <div data-testid="product-grid">
       <div data-testid="grid-total-results">{totalResults}</div>

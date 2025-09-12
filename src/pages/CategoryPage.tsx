@@ -2,13 +2,15 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import PageLayout from '@/components/PageLayout';
-import ProductGrid from '@/components/ProductGrid';
+import EnhancedProductGrid from '@/components/products/EnhancedProductGrid';
 import FilterBar from '@/components/products/FilterBar';
+import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import { mockProducts } from '@/data/products';
 import { updateCategoryProductCounts, parseCategoryPath, getCategoryById, getChildren } from '@/utils/categoryUtils';
 import { applyFilters, defaultFilters, FilterState } from '@/utils/productFilters';
 import { applySorting } from '@/utils/productSorting';
-import { ProductSort, ProductCategory } from '@/types/product';
+import { Product, ProductSort, ProductCategory } from '@/types/product';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +32,8 @@ const CategoryPage: React.FC = () => {
   }>();
   const navigate = useNavigate();
   const { t } = useLanguage();
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   // State
   const [filters, setFilters] = useState<FilterState>(defaultFilters);
@@ -113,6 +117,14 @@ const CategoryPage: React.FC = () => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAddToCart = (product: Product, quantity: number = 1) => {
+    addToCart(product, quantity);
+  };
+
+  const handleWishlistToggle = (product: Product) => {
+    toggleWishlist(product);
   };
 
   // Get subcategories for navigation
@@ -297,7 +309,7 @@ const CategoryPage: React.FC = () => {
 
             {/* Products Grid */}
             <div className="lg:col-span-3">
-              <ProductGrid
+              <EnhancedProductGrid
                 products={paginatedProducts}
                 sortBy={sortBy}
                 onSortChange={handleSortChange}
@@ -306,6 +318,9 @@ const CategoryPage: React.FC = () => {
                 isLoading={isLoading}
                 totalResults={totalResults}
                 itemsPerPage={itemsPerPage}
+                onAddToCart={handleAddToCart}
+                onWishlistToggle={handleWishlistToggle}
+                isInWishlist={isInWishlist}
               />
             </div>
           </div>

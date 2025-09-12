@@ -1,7 +1,9 @@
 import React, { useMemo } from 'react';
 import { Product } from '@/types/product';
-import ProductCard from './products/ProductCard';
+import EnhancedProductCard from './products/EnhancedProductCard';
 import { useLanguage } from '../contexts/LanguageContext';
+import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import { mockProducts } from '../data/products';
 
 interface RelatedProductsProps {
@@ -14,6 +16,8 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
   maxItems = 4 
 }) => {
   const { t } = useLanguage();
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
 
   // Algorithm to find related products
   const relatedProducts = useMemo(() => {
@@ -79,6 +83,14 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
       .map(item => item.product);
   }, [currentProduct, maxItems]);
 
+  const handleAddToCart = (product: Product, quantity: number = 1) => {
+    addToCart(product, quantity);
+  };
+
+  const handleWishlistToggle = (product: Product) => {
+    toggleWishlist(product);
+  };
+
   if (relatedProducts.length === 0) {
     return null;
   }
@@ -98,7 +110,12 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {relatedProducts.map((product) => (
           <div key={product.id} className="group">
-            <ProductCard product={product} />
+            <EnhancedProductCard 
+              product={product} 
+              onAddToCart={handleAddToCart}
+              onWishlistToggle={handleWishlistToggle}
+              isWishlisted={isInWishlist(product.id)}
+            />
           </div>
         ))}
       </div>
@@ -108,7 +125,12 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
         <div className="flex gap-4 overflow-x-auto scrollbar-hide pb-4">
           {relatedProducts.map((product) => (
             <div key={`mobile-${product.id}`} className="flex-shrink-0 w-64">
-              <ProductCard product={product} />
+              <EnhancedProductCard 
+                product={product} 
+                onAddToCart={handleAddToCart}
+                onWishlistToggle={handleWishlistToggle}
+                isWishlisted={isInWishlist(product.id)}
+              />
             </div>
           ))}
         </div>
