@@ -574,6 +574,63 @@ export class OrderService {
     return order;
   }
 
+  // Confirm Order
+  async confirmOrder(orderId: string): Promise<boolean> {
+    try {
+      await this.updateOrderStatus(orderId, 'confirmed');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // Ship Order
+  async shipOrder(orderId: string, shippingData: {
+    trackingNumber?: string;
+    carrier?: string;
+    estimatedDelivery?: string;
+  }): Promise<boolean> {
+    try {
+      const order = await this.updateOrderStatus(orderId, 'shipped');
+      
+      // Update shipping details
+      if (shippingData.trackingNumber) {
+        order.shippingDetails.trackingNumber = shippingData.trackingNumber;
+      }
+      if (shippingData.carrier) {
+        order.shippingDetails.carrier = shippingData.carrier;
+      }
+      if (shippingData.estimatedDelivery) {
+        order.shippingDetails.estimatedDelivery = shippingData.estimatedDelivery;
+      }
+      
+      this.orders.set(orderId, order);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // Deliver Order
+  async deliverOrder(orderId: string): Promise<boolean> {
+    try {
+      await this.updateOrderStatus(orderId, 'delivered');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // Cancel Order
+  async cancelOrder(orderId: string, reason?: string): Promise<boolean> {
+    try {
+      await this.updateOrderStatus(orderId, 'cancelled', reason);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
   // Process refund
   async processRefund(orderId: string, amount?: number, reason?: string): Promise<Order> {
     const order = this.orders.get(orderId);
