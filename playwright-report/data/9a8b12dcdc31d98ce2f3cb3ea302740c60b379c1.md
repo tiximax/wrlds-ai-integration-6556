@@ -1,0 +1,633 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e6]:
+        - link "WRLDS Technologies Logo" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - img "WRLDS Technologies Logo" [ref=e9] [cursor=pointer]
+        - generic [ref=e10]:
+          - navigation "Main" [ref=e11]:
+            - list [ref=e13]:
+              - listitem [ref=e14]:
+                - link "Home" [ref=e15] [cursor=pointer]:
+                  - /url: /
+                  - generic [ref=e16] [cursor=pointer]: Home
+              - listitem [ref=e17]:
+                - link "About Us" [ref=e18] [cursor=pointer]:
+                  - /url: /about
+                  - generic [ref=e19] [cursor=pointer]: About Us
+              - listitem [ref=e20]:
+                - link "Products" [ref=e21] [cursor=pointer]:
+                  - /url: /products
+                  - generic [ref=e22] [cursor=pointer]: Products
+              - listitem [ref=e23]:
+                - button "Categories" [ref=e24] [cursor=pointer]:
+                  - img [ref=e25] [cursor=pointer]
+                  - text: Categories
+                  - img [ref=e29] [cursor=pointer]
+              - listitem [ref=e31]:
+                - button "Services" [ref=e32] [cursor=pointer]:
+                  - generic [ref=e33] [cursor=pointer]:
+                    - img [ref=e34] [cursor=pointer]
+                    - text: Services
+                  - img [ref=e36] [cursor=pointer]
+              - listitem [ref=e38]:
+                - button "Learn More" [ref=e39] [cursor=pointer]:
+                  - text: Learn More
+                  - img [ref=e40] [cursor=pointer]
+              - listitem [ref=e42]:
+                - link "News" [ref=e43] [cursor=pointer]:
+                  - /url: /blog
+                  - generic [ref=e44] [cursor=pointer]: News
+              - listitem [ref=e45]:
+                - link "Careers" [ref=e46] [cursor=pointer]:
+                  - /url: /careers
+                  - generic [ref=e47] [cursor=pointer]: Careers
+              - listitem [ref=e48]:
+                - button "Contact" [ref=e49] [cursor=pointer]
+          - generic [ref=e53]:
+            - img [ref=e54]
+            - textbox "Search products, brands..." [ref=e57]
+            - generic [ref=e59]:
+              - img [ref=e60]
+              - generic [ref=e62]: K
+          - generic [ref=e63]:
+            - button "🇺🇸 English" [ref=e64] [cursor=pointer]:
+              - img
+              - generic [ref=e65] [cursor=pointer]: 🇺🇸 English
+            - button "Shopping cart (empty)" [active] [ref=e67] [cursor=pointer]:
+              - generic [ref=e68] [cursor=pointer]:
+                - img
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - generic [ref=e72]:
+            - img [ref=e74]
+            - generic [ref=e77]:
+              - heading "Giỏ hàng" [level=2] [ref=e78]
+              - paragraph [ref=e79]: 0 sản phẩm
+          - generic [ref=e80]:
+            - button "Quản lý giỏ hàng" [ref=e82] [cursor=pointer]:
+              - img
+            - button [ref=e84] [cursor=pointer]:
+              - img
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - img [ref=e88]
+            - img [ref=e94]
+          - heading "Giỏ hàng trống" [level=3] [ref=e100]
+          - paragraph [ref=e101]: Hãy khám phá các sản phẩm tuyệt vời và thêm chúng vào giỏ hàng!
+          - button "Tiếp tục mua sắm" [ref=e103] [cursor=pointer]:
+            - img
+            - text: Tiếp tục mua sắm
+    - generic [ref=e104]:
+      - generic [ref=e112]:
+        - 'heading "Trusted International Shopping Service #1" [level=1] [ref=e113]'
+        - paragraph [ref=e114]: International shopping, shipping and payment services from Japan, Korea, USA to Southeast Asia. Fast - Reliable - Affordable prices.
+        - generic [ref=e115]:
+          - button "View Services" [ref=e116] [cursor=pointer]:
+            - text: View Services
+            - img [ref=e117] [cursor=pointer]
+          - button "Contact Now" [ref=e119] [cursor=pointer]:
+            - text: Contact Now
+            - img [ref=e120] [cursor=pointer]
+      - generic [ref=e123]:
+        - generic [ref=e124]:
+          - img [ref=e127]
+          - heading "Global Shopping" [level=3] [ref=e131]
+          - paragraph [ref=e132]: Shop all products from Japan, Korea and USA quickly and conveniently.
+        - generic [ref=e133]:
+          - img [ref=e136]
+          - heading "International Shipping" [level=3] [ref=e139]
+          - paragraph [ref=e140]: Dynamic and safe shipping system from countries to Southeast Asia.
+        - generic [ref=e141]:
+          - img [ref=e144]
+          - heading "Flexible Payment" [level=3] [ref=e146]
+          - paragraph [ref=e147]: Support diverse payment methods and smart order management.
+    - generic [ref=e148]:
+      - generic [ref=e149]:
+        - generic [ref=e150]:
+          - heading "International Shopping Services" [level=2] [ref=e151]
+          - generic [ref=e152]: Our Services
+          - paragraph [ref=e153]: We provide comprehensive shopping services from leading countries worldwide, helping you access quality products at reasonable prices.
+        - generic [ref=e154]:
+          - generic [ref=e155]:
+            - img "Shopping from Japan" [ref=e157]
+            - generic [ref=e160]:
+              - img [ref=e163]
+              - heading "Shopping from Japan" [level=3] [ref=e167]
+              - paragraph [ref=e168]: From famous websites like Amazon, Rakuten, Yahoo Auction. Authentic products, good prices, fast delivery.
+          - generic [ref=e169]:
+            - img "Shopping from Korea" [ref=e171]
+            - generic [ref=e174]:
+              - img [ref=e177]
+              - heading "Shopping from Korea" [level=3] [ref=e179]
+              - paragraph [ref=e180]: K-beauty, fashion, electronics and hot trend products from Korea. Gmarket, Coupang, 11st and many other websites.
+          - generic [ref=e181]:
+            - img "Shopping from USA" [ref=e183]
+            - generic [ref=e186]:
+              - img [ref=e189]
+              - heading "Shopping from USA" [level=3] [ref=e193]
+              - paragraph [ref=e194]: Amazon US, eBay, Best Buy, and thousands of other websites. Diverse products and the most competitive prices in the world.
+          - generic [ref=e195]:
+            - img "Payment & Shipping" [ref=e197]
+            - generic [ref=e200]:
+              - img [ref=e203]
+              - heading "Payment & Shipping" [level=3] [ref=e205]
+              - paragraph [ref=e206]: Support multiple payment methods, fast and safe shipping to Vietnam, Malaysia, Singapore, Indonesia.
+        - generic [ref=e207]:
+          - generic [ref=e208]:
+            - generic [ref=e209]: Danh mục Sản phẩm
+            - heading "Các Nhóm Hàng Phổ biến" [level=3] [ref=e210]
+            - paragraph [ref=e211]:
+              - text: Khám phá các danh mục sản phẩm được yêu thích nhất từ Nhật Bản, Hàn Quốc và Mỹ, từ thời trang, công nghệ đến sức khỏe và làm đẹp.
+              - generic [ref=e212]: Trượt ngang để xem thêm →
+          - generic [ref=e213]:
+            - region [ref=e214]:
+              - generic [ref=e216]:
+                - group [ref=e217]:
+                  - generic [ref=e219]:
+                    - img "Thời trang & Làm đẹp" [ref=e221]
+                    - generic [ref=e222]:
+                      - heading "Thời trang & Làm đẹp" [level=4] [ref=e223]
+                      - paragraph [ref=e224]: K-beauty, mỹ phẩm, quần áo thời trang từ Nhật, Hàn với giá cả hấp dẫn và chất lượng đảm bảo.
+                - group [ref=e225]:
+                  - generic [ref=e227]:
+                    - img "Điện tử & Công nghệ" [ref=e229]
+                    - generic [ref=e230]:
+                      - heading "Điện tử & Công nghệ" [level=4] [ref=e231]
+                      - paragraph [ref=e232]: Smartphone, laptop, phụ kiện công nghệ mới nhất từ các thương hiệu hàng đầu với giá cạnh tranh.
+                - group [ref=e233]:
+                  - generic [ref=e235]:
+                    - img "Thể thao & Sức khỏe" [ref=e237]
+                    - generic [ref=e238]:
+                      - heading "Thể thao & Sức khỏe" [level=4] [ref=e239]
+                      - paragraph [ref=e240]: Dụng cụ thể thao, thần phẩm bổ sung dinh dưỡng, thiết bị chăm sóc sức khỏe chất lượng cao.
+              - generic [ref=e241]:
+                - button "Previous slide" [disabled]:
+                  - img
+                  - generic: Previous slide
+                - button "Next slide" [disabled]:
+                  - img
+                  - generic: Next slide
+            - paragraph [ref=e243]: Những danh mục trên chỉ là một số ít trong hàng ngàn sản phẩm chúng tôi có thể mua hộ cho bạn
+      - generic [ref=e244]:
+        - button "Cần tư vấn riêng?" [ref=e245] [cursor=pointer]:
+          - text: Cần tư vấn riêng?
+          - img
+        - button "Tìm hiểu thêm về dịch vụ" [ref=e246] [cursor=pointer]:
+          - text: Tìm hiểu thêm về dịch vụ
+          - img
+    - generic [ref=e248]:
+      - generic [ref=e249]:
+        - generic [ref=e250]: Quy trình dịch vụ
+        - heading "Cách chúng tôi hoạt động" [level=2] [ref=e251]
+        - paragraph [ref=e252]: Chúng tôi kết hợp công nghệ hiện đại với mạng lưới đối tác toàn cầu, mang đến giải pháp mua hộ nhanh chóng, an toàn và tiết kiệm chi phí.
+      - generic [ref=e253]:
+        - generic [ref=e254]:
+          - generic [ref=e256] [cursor=pointer]:
+            - img [ref=e258] [cursor=pointer]
+            - heading "Tiếp nhận đơn hàng" [level=3] [ref=e262] [cursor=pointer]
+            - paragraph [ref=e263] [cursor=pointer]: Bạn gửi link sản phẩm hoặc yêu cầu, chúng tôi báo giá ngay lập tức
+          - generic [ref=e265] [cursor=pointer]:
+            - img [ref=e267] [cursor=pointer]
+            - heading "Thanh toán & Đặt hàng" [level=3] [ref=e269] [cursor=pointer]
+            - paragraph [ref=e270] [cursor=pointer]: Thanh toán linh hoạt, chúng tôi đặt hàng và theo dõi tình trạng
+          - generic [ref=e272] [cursor=pointer]:
+            - img [ref=e274] [cursor=pointer]
+            - heading "Vận chuyển về nhà" [level=3] [ref=e279] [cursor=pointer]
+            - paragraph [ref=e280] [cursor=pointer]: Hàng được đóng gói kỹ càng và gửi về địa chỉ của bạn
+        - img [ref=e285]
+        - generic [ref=e288]:
+          - generic [ref=e289]:
+            - heading "Quá trình đặt hàng" [level=3] [ref=e291]
+            - generic [ref=e292]:
+              - generic [ref=e293]: Theo dõi liên tục
+              - img [ref=e294]
+          - paragraph [ref=e299]: Làm việc trực tiếp với khách hàng để đảm bảo dịch vụ phù hợp với yêu cầu
+          - progressbar [ref=e301]
+          - generic [ref=e303]:
+            - generic [ref=e305]:
+              - img [ref=e307]
+              - generic [ref=e310]: Tiếp nhận
+            - generic [ref=e312]:
+              - img [ref=e314]
+              - generic [ref=e318]: Đặt hàng
+            - generic [ref=e320]:
+              - img [ref=e322]
+              - generic [ref=e325]: Kiểm tra
+            - generic [ref=e327]:
+              - img [ref=e329]
+              - generic [ref=e334]: Gửi hàng
+          - generic [ref=e335]:
+            - generic [ref=e336]:
+              - img [ref=e338]
+              - generic [ref=e341]: Phản hồi khách hàng được tích hợp ở mọi giai đoạn
+            - generic [ref=e343]: Cải tiến liên tục
+        - img [ref=e352]
+        - generic [ref=e354]:
+          - img [ref=e358]
+          - heading "Hàng về đến tay" [level=3] [ref=e363]
+          - paragraph [ref=e364]: Sẵn sàng giao hàng và hoàn thành đơn hàng
+      - generic [ref=e370]:
+        - link "Tìm hiểu thêm về dịch vụ" [ref=e371] [cursor=pointer]:
+          - /url: /tech-details
+          - text: Tìm hiểu thêm về dịch vụ
+          - img [ref=e372] [cursor=pointer]
+        - button "Liên hệ chuyên gia" [ref=e374] [cursor=pointer]:
+          - text: Liên hệ chuyên gia
+          - img
+    - generic [ref=e376]:
+      - generic [ref=e377]:
+        - generic [ref=e378]:
+          - heading "Tại sao chọn chúng tôi?" [level=2] [ref=e379]
+          - paragraph [ref=e380]: Chúng tôi cam kết mang đến dịch vụ mua hộ quốc tế an toàn, uy tín và chuyên nghiệp nhất
+        - generic [ref=e381]:
+          - generic [ref=e384]:
+            - img [ref=e386]
+            - heading "Bảo hiểm 100%" [level=3] [ref=e388]
+            - paragraph [ref=e389]: Bảo hiểm toàn bộ hàng hóa trong quá trình vận chuyển
+          - generic [ref=e392]:
+            - img [ref=e394]
+            - heading "Hỗ trợ 24/7" [level=3] [ref=e397]
+            - paragraph [ref=e398]: Đội ngũ tư vấn sẵn sàng hỗ trợ mọi lúc
+          - generic [ref=e401]:
+            - img [ref=e403]
+            - heading "Uy tín 5+ năm" [level=3] [ref=e406]
+            - paragraph [ref=e407]: Hơn 5 năm kinh nghiệm trong lĩnh vực mua hộ quốc tế
+          - generic [ref=e410]:
+            - img [ref=e412]
+            - heading "5,000+ khách hàng" [level=3] [ref=e417]
+            - paragraph [ref=e418]: Phục vụ hơn 5,000 khách hàng trên toàn khu vực
+      - generic [ref=e420]:
+        - generic [ref=e421]:
+          - generic [ref=e422]:
+            - img [ref=e423]
+            - generic [ref=e426]: 12,000+
+          - paragraph [ref=e427]: Đơn hàng thành công
+        - generic [ref=e428]:
+          - generic [ref=e429]:
+            - img [ref=e430]
+            - generic [ref=e432]: 98.5%
+          - paragraph [ref=e433]: Tỷ lệ hài lòng
+        - generic [ref=e434]:
+          - generic [ref=e435]:
+            - img [ref=e436]
+            - generic [ref=e439]: "15"
+          - paragraph [ref=e440]: Quốc gia phục vụ
+        - generic [ref=e441]:
+          - generic [ref=e442]:
+            - img [ref=e443]
+            - generic [ref=e446]: 3-5 ngày
+          - paragraph [ref=e447]: Vận chuyển nhanh
+      - generic [ref=e448]:
+        - generic [ref=e449]:
+          - heading "Khách hàng nói gì về chúng tôi" [level=2] [ref=e450]
+          - paragraph [ref=e451]: Những phản hồi thực tế từ khách hàng đã sử dụng dịch vụ
+        - generic [ref=e452]:
+          - generic [ref=e455]:
+            - generic [ref=e456]:
+              - img [ref=e457]
+              - img [ref=e459]
+              - img [ref=e461]
+              - img [ref=e463]
+              - img [ref=e465]
+            - paragraph [ref=e467]: "\"Dịch vụ tuyệt vời! Đặt mỹ phẩm Hàn Quốc và nhận được hàng chính hãng, đóng gói rất kỹ. Sẽ tiếp tục sử dụng.\""
+            - generic [ref=e468]:
+              - generic [ref=e469]: Nguyễn Thị Mai
+              - generic [ref=e470]: Hà Nội
+              - generic [ref=e471]: K-beauty set từ Hàn Quốc
+          - generic [ref=e474]:
+            - generic [ref=e475]:
+              - img [ref=e476]
+              - img [ref=e478]
+              - img [ref=e480]
+              - img [ref=e482]
+              - img [ref=e484]
+            - paragraph [ref=e486]: "\"Mua laptop từ Mỹ giá rẻ hơn trong nước rất nhiều. Nhân viên tư vấn nhiệt tình, giao hàng đúng hẹn.\""
+            - generic [ref=e487]:
+              - generic [ref=e488]: Trần Văn Hùng
+              - generic [ref=e489]: TP.HCM
+              - generic [ref=e490]: MacBook Pro từ Amazon US
+          - generic [ref=e493]:
+            - generic [ref=e494]:
+              - img [ref=e495]
+              - img [ref=e497]
+              - img [ref=e499]
+              - img [ref=e501]
+              - img [ref=e503]
+            - paragraph [ref=e505]: "\"Lần đầu sử dụng dịch vụ mua hộ, ban đầu có chút lo lắng nhưng kết quả rất hài lòng. Nhất định sẽ giới thiệu cho bạn bè.\""
+            - generic [ref=e506]:
+              - generic [ref=e507]: Lê Thị Hoa
+              - generic [ref=e508]: Đà Nẵng
+              - generic [ref=e509]: Đồ gia dụng từ Nhật Bản
+      - generic [ref=e511]:
+        - generic [ref=e514]:
+          - generic [ref=e516]:
+            - heading "🔥 Ưu đãi tháng này" [level=3] [ref=e517]
+            - paragraph [ref=e518]: Giảm 10% phí dịch vụ cho đơn hàng đầu tiên
+            - generic [ref=e519]: Còn 15 ngày
+          - button "Áp dụng ngay" [ref=e520] [cursor=pointer]
+        - generic [ref=e523]:
+          - generic [ref=e525]:
+            - heading "⚡ Miễn phí vận chuyển" [level=3] [ref=e526]
+            - paragraph [ref=e527]: Cho đơn hàng trên 2 triệu VNĐ
+            - generic [ref=e528]: Có thời hạn
+          - button "Mua ngay" [ref=e529] [cursor=pointer]
+      - generic [ref=e530]:
+        - heading "Sẵn sàng bắt đầu mua hộ quốc tế?" [level=2] [ref=e531]
+        - paragraph [ref=e532]: Hàng ngàn sản phẩm từ Nhật Bản, Hàn Quốc, Mỹ đang chờ bạn khám phá. Liên hệ ngay để được tư vấn miễn phí!
+        - generic [ref=e533]:
+          - 'button "Gọi ngay: 0123.456.789" [ref=e534] [cursor=pointer]':
+            - img
+            - text: "Gọi ngay: 0123.456.789"
+          - button "Chat tư vấn 24/7" [ref=e535] [cursor=pointer]:
+            - img
+            - text: Chat tư vấn 24/7
+    - generic [ref=e537]:
+      - generic [ref=e538]:
+        - heading "Tại sao chọn chúng tôi?" [level=2] [ref=e539]
+        - paragraph [ref=e540]: Trong lĩnh vực mua hộ quốc tế, chúng tôi mang đến sự đưn giản và chuyên nghiệp để đảm bảo thành công của bạn
+      - generic [ref=e541]:
+        - generic [ref=e542]:
+          - img [ref=e544]
+          - heading "0.1T USD" [level=3] [ref=e547]:
+            - generic [ref=e548]: 0.1T
+            - text: USD
+          - paragraph [ref=e549]: Thị trường thương mại điện tử xuyên biên giới dự kiến đạt mức này vào năm 2030
+        - generic [ref=e550]:
+          - img [ref=e552]
+          - heading "0+" [level=3] [ref=e557]:
+            - generic [ref=e558]: 0+
+          - paragraph [ref=e559]: Khách hàng đã tin tưởng và sử dụng dịch vụ mua hộ của chúng tôi
+        - generic [ref=e560]:
+          - img [ref=e562]
+          - heading "0%" [level=3] [ref=e564]:
+            - generic [ref=e565]: 0%
+          - paragraph [ref=e566]: Tiết kiệm chi phí so với việc mua trực tiếp tại các nước này
+      - generic [ref=e567]:
+        - generic [ref=e568]:
+          - heading "Chúng tôi mang lại gì cho bạn" [level=3] [ref=e569]
+          - paragraph [ref=e570]: Chúng tôi biến ý tưởng mua sắm của bạn thành hiện thực với những lợi ích cụ thể
+        - generic [ref=e571]:
+          - generic [ref=e573]:
+            - img [ref=e575]
+            - generic [ref=e579]:
+              - heading "Sản phẩm đa dạng" [level=4] [ref=e580]
+              - paragraph [ref=e581]: Tiếp cận hàng triệu sản phẩm từ các quốc gia hàng đầu thế giới.
+          - generic [ref=e583]:
+            - img [ref=e585]
+            - generic [ref=e587]:
+              - heading "Dịch vụ uy tín" [level=4] [ref=e588]
+              - paragraph [ref=e589]: Quy trình minh bạch, thông tin rõ ràng, hỗ trợ nhiệt tình 24/7.
+          - generic [ref=e591]:
+            - img [ref=e593]
+            - generic [ref=e595]:
+              - heading "Mua sắm tiện lợi" [level=4] [ref=e596]
+              - paragraph [ref=e597]: Chỉ cần gửi link sản phẩm, chúng tôi lo tất cả các thủ tục phức tạp.
+          - generic [ref=e599]:
+            - img [ref=e601]
+            - generic [ref=e606]:
+              - heading "Vận chuyển nhanh" [level=4] [ref=e607]
+              - paragraph [ref=e608]: Cam kết giao hàng nhanh nhất và an toàn nhất đến tay bạn.
+        - link "Tìm hiểu thêm về quy trình dịch vụ của chúng tôi" [ref=e610] [cursor=pointer]:
+          - /url: /development-process
+          - text: Tìm hiểu thêm về quy trình dịch vụ của chúng tôi
+          - img [ref=e611] [cursor=pointer]
+    - generic [ref=e614]:
+      - generic [ref=e615]:
+        - generic [ref=e616]: Dịch vụ của chúng tôi
+        - heading "Giải pháp Mua hộ Toàn diện" [level=2] [ref=e617]
+        - paragraph [ref=e618]: Khám phá dịch vụ mua hộ đa quốc gia của chúng tôi, từ việc tìm kiếm sản phẩm đến giao hàng tận nơi với giá cả tối ưu.
+      - generic [ref=e619]:
+        - generic [ref=e620]:
+          - generic [ref=e622]:
+            - generic [ref=e625]:
+              - heading "JAPAN SHOPPING" [level=3] [ref=e626]
+              - paragraph [ref=e628]: Mua hộ từ Nhật Bản
+            - generic [ref=e629]:
+              - generic [ref=e630]:
+                - heading "Mua hộ từ Nhật Bản" [level=3] [ref=e631]
+                - paragraph [ref=e632]: JAPAN SHOPPING
+              - paragraph [ref=e633]: "Dịch vụ mua hộ đa dạng sản phẩm từ Nhật Bản: điện tử, thời trang, mỹ phẩm, đồ chơi và hàng ngàn mặt hàng khác từ Amazon, Rakuten, Yahoo Auction."
+              - generic [ref=e634]:
+                - generic [ref=e635]:
+                  - generic [ref=e636]: Amazon Japan
+                  - generic [ref=e637]: Rakuten
+                  - generic [ref=e638]: Yahoo Auction
+                  - generic [ref=e639]: Mỹ phẩm Nhật
+                - link "Tìm hiểu thêm" [ref=e640] [cursor=pointer]:
+                  - /url: /projects/firecat
+                  - generic [ref=e641] [cursor=pointer]: Tìm hiểu thêm
+                  - img [ref=e642] [cursor=pointer]
+          - generic [ref=e645]:
+            - generic [ref=e648]:
+              - heading "KOREA SHOPPING" [level=3] [ref=e649]
+              - paragraph [ref=e651]: Mua hộ từ Hàn Quốc
+            - generic [ref=e652]:
+              - generic [ref=e653]:
+                - heading "Mua hộ từ Hàn Quốc" [level=3] [ref=e654]
+                - paragraph [ref=e655]: KOREA SHOPPING
+              - paragraph [ref=e656]: Chuyên mua hộ K-beauty, thời trang, điện tử và các sản phẩm hot trend từ Hàn Quốc qua Gmarket, Coupang, 11st và các website đáng tin cậy.
+              - generic [ref=e657]:
+                - generic [ref=e658]:
+                  - generic [ref=e659]: K-Beauty
+                  - generic [ref=e660]: Gmarket
+                  - generic [ref=e661]: Coupang
+                  - generic [ref=e662]: Thời trang Hàn
+                - link "Tìm hiểu thêm" [ref=e663] [cursor=pointer]:
+                  - /url: /projects/sport-retail
+                  - generic [ref=e664] [cursor=pointer]: Tìm hiểu thêm
+                  - img [ref=e665] [cursor=pointer]
+          - generic [ref=e668]:
+            - generic [ref=e671]:
+              - heading "USA SHOPPING" [level=3] [ref=e672]
+              - paragraph [ref=e674]: Mua hộ từ Mỹ
+            - generic [ref=e675]:
+              - generic [ref=e676]:
+                - heading "Mua hộ từ Mỹ" [level=3] [ref=e677]
+                - paragraph [ref=e678]: USA SHOPPING
+              - paragraph [ref=e679]: Từ Amazon US, eBay, Best Buy đến hàng ngàn website khác. Sản phẩm đa dạng và giá cả cạnh tranh nhất thế giới với phiến bản hàng đầy đủ.
+              - generic [ref=e680]:
+                - generic [ref=e681]:
+                  - generic [ref=e682]: Amazon US
+                  - generic [ref=e683]: eBay
+                  - generic [ref=e684]: Best Buy
+                  - generic [ref=e685]: Giá USA tốt nhất
+                - link "Tìm hiểu thêm" [ref=e686] [cursor=pointer]:
+                  - /url: /projects/workwear
+                  - generic [ref=e687] [cursor=pointer]: Tìm hiểu thêm
+                  - img [ref=e688] [cursor=pointer]
+          - generic [ref=e691]:
+            - generic [ref=e694]:
+              - heading "EXPRESS SHIPPING" [level=3] [ref=e695]
+              - paragraph [ref=e697]: Vận chuyển Nhanh chóng
+            - generic [ref=e698]:
+              - generic [ref=e699]:
+                - heading "Vận chuyển Nhanh chóng" [level=3] [ref=e700]
+                - paragraph [ref=e701]: EXPRESS SHIPPING
+              - paragraph [ref=e702]: Hệ thống vận chuyển đa dạng từ tiết kiệm đến siêu nhanh, đảm bảo hàng về tay bạn một cách an toàn và nguyên vẹn nhất.
+              - generic [ref=e703]:
+                - generic [ref=e704]:
+                  - generic [ref=e705]: Vận chuyển nhanh
+                  - generic [ref=e706]: An toàn
+                  - generic [ref=e707]: Theo dõi đơn hàng
+                  - generic [ref=e708]: Bảo hiểm
+                - link "Tìm hiểu thêm" [ref=e709] [cursor=pointer]:
+                  - /url: /projects/hockey
+                  - generic [ref=e710] [cursor=pointer]: Tìm hiểu thêm
+                  - img [ref=e711] [cursor=pointer]
+          - generic [ref=e714]:
+            - generic [ref=e717]:
+              - heading "FLEXIBLE PAYMENT" [level=3] [ref=e718]
+              - paragraph [ref=e720]: Thanh toán Linh hoạt
+            - generic [ref=e721]:
+              - generic [ref=e722]:
+                - heading "Thanh toán Linh hoạt" [level=3] [ref=e723]
+                - paragraph [ref=e724]: FLEXIBLE PAYMENT
+              - paragraph [ref=e725]: "Hỗ trợ đa dạng hình thức thanh toán: chuyển khoản, ví điện tử, thẻ tín dụng. Tính năng đặt cọc và thanh toán theo giai đoạn."
+              - generic [ref=e726]:
+                - generic [ref=e727]:
+                  - generic [ref=e728]: Thanh toán linh hoạt
+                  - generic [ref=e729]: Ví điện tử
+                  - generic [ref=e730]: Đặt cọc
+                  - generic [ref=e731]: Trả góp
+                - link "Tìm hiểu thêm" [ref=e732] [cursor=pointer]:
+                  - /url: /projects/pet-tracker
+                  - generic [ref=e733] [cursor=pointer]: Tìm hiểu thêm
+                  - img [ref=e734] [cursor=pointer]
+        - button "Previous project" [ref=e736] [cursor=pointer]:
+          - img [ref=e737] [cursor=pointer]
+        - button "Next project" [ref=e739] [cursor=pointer]:
+          - img [ref=e740] [cursor=pointer]
+        - generic [ref=e742]:
+          - button "Go to project 1" [ref=e743] [cursor=pointer]
+          - button "Go to project 2" [ref=e744] [cursor=pointer]
+          - button "Go to project 3" [ref=e745] [cursor=pointer]
+          - button "Go to project 4" [ref=e746] [cursor=pointer]
+          - button "Go to project 5" [ref=e747] [cursor=pointer]
+    - generic [ref=e749]:
+      - generic [ref=e750]:
+        - generic [ref=e751]:
+          - generic [ref=e752]:
+            - img [ref=e753]
+            - generic [ref=e756]: Our Blog
+          - heading "Latest Updates" [level=2] [ref=e757]
+          - paragraph [ref=e758]: Explore our latest insights on smart textile technology, industry trends, and innovation.
+        - link "View All Posts" [ref=e759] [cursor=pointer]:
+          - /url: /blog
+          - button "View All Posts" [ref=e760] [cursor=pointer]:
+            - text: View All Posts
+            - img
+      - generic [ref=e762]:
+        - 'link "Hướng dẫn June 12, 2025 Hướng dẫn Mua hộ từ Nhật Bản: Kinh nghiệm và Mẹo hay Khám phá cách mua hộ hiệu quả từ Nhật Bản, từ việc tìm kiếm sản phẩm trên Amazon Japan, Rakuten đến các mẹo tiết kiệm chi phí vận chuyển. Read more" [ref=e763] [cursor=pointer]':
+          - /url: /blog/huong-dan-mua-ho-tu-nhat-ban-kinh-nghiem-meo-hay
+          - generic [ref=e765] [cursor=pointer]:
+            - generic [ref=e768] [cursor=pointer]: Hướng dẫn
+            - generic [ref=e769] [cursor=pointer]:
+              - paragraph [ref=e770] [cursor=pointer]: June 12, 2025
+              - 'heading "Hướng dẫn Mua hộ từ Nhật Bản: Kinh nghiệm và Mẹo hay" [level=3] [ref=e771] [cursor=pointer]'
+              - paragraph [ref=e772] [cursor=pointer]: Khám phá cách mua hộ hiệu quả từ Nhật Bản, từ việc tìm kiếm sản phẩm trên Amazon Japan, Rakuten đến các mẹo tiết kiệm chi phí vận chuyển.
+              - button "Read more" [ref=e773] [cursor=pointer]:
+                - text: Read more
+                - img
+        - 'link "Làm đẹp June 5, 2025 K-Beauty 2025: Xu hướng Mỹ phẩm Hàn Quốc hot nhất Khám phá các xu hướng K-Beauty mới nhất năm 2025, từ skincare 10 bước đến makeup tự nhiên. Hướng dẫn mua hộ hiệu quả từ Gmarket và Olive Young. Read more" [ref=e774] [cursor=pointer]':
+          - /url: /blog/k-beauty-2025-xu-huong-my-pham-han-quoc-hot-nhat
+          - generic [ref=e776] [cursor=pointer]:
+            - generic [ref=e779] [cursor=pointer]: Làm đẹp
+            - generic [ref=e780] [cursor=pointer]:
+              - paragraph [ref=e781] [cursor=pointer]: June 5, 2025
+              - 'heading "K-Beauty 2025: Xu hướng Mỹ phẩm Hàn Quốc hot nhất" [level=3] [ref=e782] [cursor=pointer]'
+              - paragraph [ref=e783] [cursor=pointer]: Khám phá các xu hướng K-Beauty mới nhất năm 2025, từ skincare 10 bước đến makeup tự nhiên. Hướng dẫn mua hộ hiệu quả từ Gmarket và Olive Young.
+              - button "Read more" [ref=e784] [cursor=pointer]:
+                - text: Read more
+                - img
+        - 'link "Process May 15, 2025 From Idea to Launch: Our Smart Product Development Process Take a behind-the-scenes look at how WRLDS transforms ideas into market-ready smart products through our proven 5-step development process. Read more" [ref=e785] [cursor=pointer]':
+          - /url: /blog/from-idea-to-launch-development-process
+          - generic [ref=e787] [cursor=pointer]:
+            - generic [ref=e790] [cursor=pointer]: Process
+            - generic [ref=e791] [cursor=pointer]:
+              - paragraph [ref=e792] [cursor=pointer]: May 15, 2025
+              - 'heading "From Idea to Launch: Our Smart Product Development Process" [level=3] [ref=e793] [cursor=pointer]'
+              - paragraph [ref=e794] [cursor=pointer]: Take a behind-the-scenes look at how WRLDS transforms ideas into market-ready smart products through our proven 5-step development process.
+              - button "Read more" [ref=e795] [cursor=pointer]:
+                - text: Read more
+                - img
+    - generic [ref=e797]:
+      - generic [ref=e798]:
+        - generic [ref=e799]: Liên hệ chúng tôi
+        - heading "Liên hệ ngay hôm nay" [level=2] [ref=e800]
+        - paragraph [ref=e801]: Bản có thắc mắc về dịch vụ mua hộ quốc tế của chúng tôi? Hãy liên hệ để chúng tôi có thể tư vấn và hỗ trợ bản một cách tốt nhất.
+      - generic [ref=e802]:
+        - generic [ref=e804]:
+          - img "Nguyễn Minh Quân" [ref=e805]
+          - heading "Nguyễn Minh Quân" [level=3] [ref=e806]
+          - paragraph [ref=e807]: CEO & Founder
+          - generic [ref=e808]:
+            - link "contact@globalshoppingassistant.com" [ref=e809] [cursor=pointer]:
+              - /url: mailto:contact@globalshoppingassistant.com
+              - img [ref=e810] [cursor=pointer]
+              - text: contact@globalshoppingassistant.com
+            - link "LinkedIn Profile" [ref=e813] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e814] [cursor=pointer]
+              - text: LinkedIn Profile
+        - generic [ref=e819]:
+          - img "Phạm Văn Đức" [ref=e820]
+          - heading "Phạm Văn Đức" [level=3] [ref=e821]
+          - paragraph [ref=e822]: COO
+          - generic [ref=e823]:
+            - link "support@globalshoppingassistant.com" [ref=e824] [cursor=pointer]:
+              - /url: mailto:support@globalshoppingassistant.com
+              - img [ref=e825] [cursor=pointer]
+              - text: support@globalshoppingassistant.com
+            - link "LinkedIn Profile" [ref=e828] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e829] [cursor=pointer]
+              - text: LinkedIn Profile
+            - link "090 123 4567" [ref=e833] [cursor=pointer]:
+              - /url: tel:+84901234567
+              - img [ref=e834] [cursor=pointer]
+              - text: 090 123 4567
+    - contentinfo [ref=e836]:
+      - generic [ref=e837]:
+        - generic [ref=e838]:
+          - generic [ref=e839]:
+            - generic [ref=e840]:
+              - heading "Global Shopping Assistant" [level=2] [ref=e841]
+              - paragraph [ref=e842]: "Dịch vụ Mua hộ Quốc tế Uy tín #1"
+            - paragraph [ref=e843]: Chúng tôi cung cấp dịch vụ mua hộ toàn diện từ Nhật Bản, Hàn Quốc và Mỹ, giúp khách hàng tiếp cận các sản phẩm chất lượng cao với giá cả hợp lý và dịch vụ chuyên nghiệp.
+            - paragraph [ref=e844]:
+              - text: Tầng 12, Tòa nhà Vietcombank
+              - text: 198 Trần Quốc Toản, Cầu Giấy, Hà Nội
+            - link [ref=e846] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e847] [cursor=pointer]
+          - generic [ref=e851]:
+            - heading "Công ty" [level=3] [ref=e852]
+            - list [ref=e853]:
+              - listitem [ref=e854]:
+                - link "Về chúng tôi" [ref=e855] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e856]:
+                - link "Tuyển dụng" [ref=e857] [cursor=pointer]:
+                  - /url: /careers
+              - listitem [ref=e858]:
+                - link "Chính sách bảo mật" [ref=e859] [cursor=pointer]:
+                  - /url: /privacy-policy
+          - generic [ref=e860]:
+            - heading "Liên hệ" [level=3] [ref=e861]
+            - generic [ref=e862]:
+              - textbox "Email của bạn" [ref=e864]
+              - button "Đăng ký nhận tin" [ref=e865] [cursor=pointer]:
+                - text: Đăng ký nhận tin
+                - img [ref=e866] [cursor=pointer]
+        - generic [ref=e868]:
+          - paragraph [ref=e869]: © 2025 Global Shopping Assistant. Tất cả quyền được bảo lưu.
+          - link "Chính sách bảo mật" [ref=e871] [cursor=pointer]:
+            - /url: /privacy-policy
+```
