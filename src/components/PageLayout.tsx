@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import EnhancedFooter from '@/components/EnhancedFooter';
 import ContactInfo from '@/components/ContactInfo';
 import FloatingContactButton from '@/components/FloatingContactButton';
 
@@ -24,7 +24,7 @@ const PageLayout = ({ children, showContact = true }: PageLayoutProps) => {
       <Navbar />
       {children}
       {showContact && <ContactInfo />}
-      <Footer />
+      <EnhancedFooter />
       {showContact && <FloatingContactButton />}
     </div>
   );
