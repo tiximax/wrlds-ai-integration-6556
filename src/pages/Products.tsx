@@ -2,8 +2,10 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useCart } from '@/contexts/CartContext';
+import { useWishlist } from '@/contexts/WishlistContext';
 import FilterBar from '../components/products/FilterBar';
-import ProductGrid from '../components/ProductGrid';
+import EnhancedProductGrid from '../components/products/EnhancedProductGrid';
 import { mockProducts } from '../data/products';
 import { Product } from '@/types/product';
 import { FilterState, defaultFilters } from '@/utils/productFilters';
@@ -19,6 +21,8 @@ import {
 const Products: React.FC = () => {
   const { t, i18n } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const { addToCart } = useCart();
+  const { toggleWishlist, isInWishlist } = useWishlist();
   
   // Update category product counts when component mounts
   React.useEffect(() => {
@@ -125,6 +129,14 @@ const Products: React.FC = () => {
     setCurrentPage(page);
     // Scroll to top when page changes
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAddToCart = (product: Product, quantity: number = 1) => {
+    addToCart(product, quantity);
+  };
+
+  const handleWishlistToggle = (product: Product) => {
+    toggleWishlist(product);
   };
 
   // Generate SEO metadata
@@ -254,7 +266,7 @@ const Products: React.FC = () => {
 
             {/* Product Grid */}
             <div className="lg:col-span-3 mt-8 lg:mt-0">
-              <ProductGrid
+              <EnhancedProductGrid
                 products={filteredProducts}
                 sortBy={sortBy}
                 onSortChange={handleSortChange}
@@ -262,6 +274,9 @@ const Products: React.FC = () => {
                 onPageChange={handlePageChange}
                 isLoading={isLoading}
                 totalResults={filteredProducts.length}
+                onAddToCart={handleAddToCart}
+                onWishlistToggle={handleWishlistToggle}
+                isInWishlist={isInWishlist}
               />
             </div>
           </div>
