@@ -1,17 +1,19 @@
 
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
-import { Menu, X, ChevronDown } from "lucide-react";
-import { motion } from "framer-motion";
+import { Menu, X, ChevronDown, Sparkles } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { CartButton } from './CartButton';
 import { ShoppingCartSidebar } from './ShoppingCartSidebar';
-import SearchBar from './SearchBar';
+import { EnhancedSearch } from '@/components/ui/enhanced-search';
 import CategoryMenu from './CategoryMenu';
 import MobileCategoryMenu from './MobileCategoryMenu';
+import { MegaMenu } from '@/components/ui/mega-menu';
+import { servicesSections, featuredService } from '@/data/mega-menu-data';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -46,13 +48,23 @@ const Navbar = () => {
   };
 
   return (
-    <motion.nav className={cn("fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full", isScrolled ? "bg-white shadow-sm" : "bg-black")} initial={{
-      opacity: 1,
-      y: 0
-    }} animate={{
-      opacity: 1,
-      y: 0
-    }}>
+    <motion.nav 
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500 w-full",
+        isScrolled 
+          ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200/50" 
+          : "bg-gradient-to-r from-black/90 via-black/95 to-black/90 backdrop-blur-sm"
+      )} 
+      initial={{ opacity: 1, y: 0 }}
+      animate={{ 
+        opacity: 1, 
+        y: 0,
+        transition: { 
+          duration: 0.3,
+          ease: "easeInOut"
+        }
+      }}
+    >
       <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
@@ -92,43 +104,27 @@ const Navbar = () => {
                 <CategoryMenu isScrolled={isScrolled} />
                 
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className={cn(isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800")}>
-                    {t('navigation.services')}
+                  <NavigationMenuTrigger 
+                    className={cn(
+                      "group transition-all duration-200",
+                      isScrolled 
+                        ? "text-gray-700 hover:text-blue-600 data-[state=open]:text-blue-600" 
+                        : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800 data-[state=open]:bg-gray-800 data-[state=open]:text-white"
+                    )}
+                  >
+                    <motion.div 
+                      className="flex items-center gap-2"
+                      whileHover={{ scale: 1.02 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform duration-200" />
+                      {t('navigation.services')}
+                    </motion.div>
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <ul className="grid gap-3 p-4 w-[400px]">
-                      <li>
-                        <Link to="/projects/firecat" className="block p-3 space-y-1 rounded-md hover:bg-gray-100">
-                          <div className="font-medium">FireCat 6th SENSE</div>
-                          <p className="text-sm text-gray-500">Smart textiles for firefighter safety</p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/projects/sport-retail" className="block p-3 space-y-1 rounded-md hover:bg-gray-100">
-                          <div className="font-medium">Sports Performance</div>
-                          <p className="text-sm text-gray-500">Advanced tracking for athletes</p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/projects/workwear" className="block p-3 space-y-1 rounded-md hover:bg-gray-100">
-                          <div className="font-medium">Workwear Climate Control</div>
-                          <p className="text-sm text-gray-500">Temperature regulation for extreme environments</p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/projects/hockey" className="block p-3 space-y-1 rounded-md hover:bg-gray-100">
-                          <div className="font-medium">Ice Hockey Elite Tracker</div>
-                          <p className="text-sm text-gray-500">Performance tracking for ice hockey</p>
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="/projects/pet-tracker" className="block p-3 space-y-1 rounded-md hover:bg-gray-100">
-                          <div className="font-medium">Pet Activity Counter</div>
-                          <p className="text-sm text-gray-500">Smart collars for pet activity monitoring</p>
-                        </Link>
-                      </li>
-                    </ul>
-                  </NavigationMenuContent>
+                  <MegaMenu 
+                    sections={servicesSections} 
+                    featured={featuredService}
+                  />
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
@@ -180,16 +176,15 @@ const Navbar = () => {
               </NavigationMenuList>
             </NavigationMenu>
             
-            {/* Search Bar */}
-            <div className="w-80">
-              <SearchBar
-                placeholder="Search products..."
-                className={cn(
-                  "transition-colors",
-                  isScrolled
-                    ? "bg-gray-100 text-gray-900 placeholder-gray-500"
-                    : "bg-gray-800 text-white placeholder-gray-400"
-                )}
+            {/* Enhanced Search Bar */}
+            <div className="w-96">
+              <EnhancedSearch
+                placeholder="Search products, brands..."
+                variant={isScrolled ? "navbar" : "navbar"}
+                className="transition-all duration-200"
+                compact={true}
+                showHistory={true}
+                showSuggestions={true}
               />
             </div>
             
@@ -210,91 +205,163 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Navigation Menu - Reduced height and simplified */}
-      <div className={cn("md:hidden transition-all duration-300 overflow-hidden w-full", isMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0")}>
-        <div className={cn("px-3 pt-2 pb-3 space-y-2 shadow-sm overflow-y-auto max-h-96", isScrolled ? "bg-white" : "bg-black")}>
-          {/* Mobile Search Bar */}
-          <div className="px-1 pb-2">
-            <SearchBar
-              placeholder="Search products..."
-              className={cn(
-                "transition-colors w-full",
-                isScrolled
-                  ? "bg-gray-100 text-gray-900 placeholder-gray-500"
-                  : "bg-gray-800 text-white placeholder-gray-400"
-              )}
-            />
-          </div>
+      {/* Enhanced Mobile Navigation Menu */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div
+            className="md:hidden w-full overflow-hidden"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ 
+              height: "auto", 
+              opacity: 1,
+              transition: {
+                duration: 0.3,
+                ease: "easeOut",
+                staggerChildren: 0.05
+              }
+            }}
+            exit={{ 
+              height: 0, 
+              opacity: 0,
+              transition: { duration: 0.2, ease: "easeIn" }
+            }}
+          >
+            <div className={cn(
+              "px-4 pt-4 pb-6 space-y-3 shadow-xl border-t",
+              isScrolled 
+                ? "bg-white/95 backdrop-blur-md border-gray-200/50" 
+                : "bg-black/95 backdrop-blur-md border-gray-800/50"
+            )}>
+              {/* Mobile Enhanced Search Bar */}
+              <motion.div 
+                className="pb-4"
+                initial={{ y: -10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                <EnhancedSearch
+                  placeholder="Search products, brands..."
+                  variant="default"
+                  className="w-full"
+                  compact={false}
+                  showHistory={true}
+                  showSuggestions={true}
+                />
+              </motion.div>
           
-          <Link to="/" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
-            setIsMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-            {t('navigation.home')}
-          </Link>
-          
-          <Link to="/about" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
-            setIsMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-            {t('navigation.about')}
-          </Link>
-          
-          <Link to="/products" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
-            setIsMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-            {t('navigation.products')}
-          </Link>
-          
-          {/* Mobile Category Menu */}
-          <MobileCategoryMenu 
-            isScrolled={isScrolled} 
-            onLinkClick={() => {
-              setIsMenuOpen(false);
-              window.scrollTo(0, 0);
-            }} 
-          />
-          
-          {/* Simplified Customer Cases - no dropdown */}
-          <Link to="/projects/firecat" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
-            setIsMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-            {t('navigation.services')}
-          </Link>
-          
-          {/* Simplified Learn More - no dropdown */}
-          <Link to="/tech-details" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
-            setIsMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-            {t('navigation.learnMore')}
-          </Link>
-          
-          <Link to="/blog" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
-            setIsMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-            {t('navigation.news')}
-          </Link>
-          
-          <Link to="/careers" className={cn("block px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 hover:bg-gray-50" : "text-gray-200 hover:bg-gray-900")} onClick={() => {
-            setIsMenuOpen(false);
-            window.scrollTo(0, 0);
-          }}>
-            {t('navigation.careers')}
-          </Link>
-          
-          <button onClick={() => scrollToSection('contact')} className={cn("block w-full text-left px-3 py-1.5 rounded-md text-sm", isScrolled ? "text-gray-700 bg-gray-200 hover:bg-gray-300" : "text-white bg-gray-700 hover:bg-gray-600")}>
-            {t('navigation.contact')}
-          </button>
-          
-          <div className="px-3 py-2">
-            <LanguageSwitcher />
-          </div>
-        </div>
-      </div>
+              {/* Mobile Navigation Links */}
+              <div className="space-y-2">
+                {[
+                  { href: "/", label: t('navigation.home') },
+                  { href: "/about", label: t('navigation.about') },
+                  { href: "/products", label: t('navigation.products') },
+                ].map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 + index * 0.05 }}
+                  >
+                    <Link 
+                      to={link.href} 
+                      className={cn(
+                        "block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105",
+                        isScrolled 
+                          ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600" 
+                          : "text-gray-200 hover:bg-gray-800 hover:text-white"
+                      )} 
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Mobile Category Menu */}
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.25 }}
+              >
+                <MobileCategoryMenu 
+                  isScrolled={isScrolled} 
+                  onLinkClick={() => {
+                    setIsMenuOpen(false);
+                    window.scrollTo(0, 0);
+                  }} 
+                />
+              </motion.div>
+              
+              {/* Additional Links */}
+              <div className="space-y-2 pt-2">
+                {[
+                  { href: "/projects/firecat", label: t('navigation.services') },
+                  { href: "/tech-details", label: t('navigation.learnMore') },
+                  { href: "/blog", label: t('navigation.news') },
+                  { href: "/careers", label: t('navigation.careers') },
+                ].map((link, index) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 + index * 0.05 }}
+                  >
+                    <Link 
+                      to={link.href} 
+                      className={cn(
+                        "block px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 hover:scale-105",
+                        isScrolled 
+                          ? "text-gray-700 hover:bg-blue-50 hover:text-blue-600" 
+                          : "text-gray-200 hover:bg-gray-800 hover:text-white"
+                      )}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        window.scrollTo(0, 0);
+                      }}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+              
+              {/* Contact Button */}
+              <motion.div
+                initial={{ x: -20, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+                className="pt-4"
+              >
+                <button 
+                  onClick={() => scrollToSection('contact')} 
+                  className={cn(
+                    "w-full px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105",
+                    isScrolled 
+                      ? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg" 
+                      : "bg-white text-gray-900 hover:bg-gray-100 shadow-lg"
+                  )}
+                >
+                  {t('navigation.contact')}
+                </button>
+              </motion.div>
+              
+              {/* Language Switcher */}
+              <motion.div 
+                className="pt-4 border-t border-gray-200/20"
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.6 }}
+              >
+                <LanguageSwitcher />
+              </motion.div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Shopping Cart Sidebar */}
       <ShoppingCartSidebar
