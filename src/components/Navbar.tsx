@@ -8,7 +8,7 @@ import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMe
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { CartButton } from './CartButton';
-import { ShoppingCartSidebar } from './ShoppingCartSidebar';
+import EnhancedShoppingCartSidebar from "./EnhancedShoppingCartSidebar";
 import { EnhancedSearch } from '@/components/ui/enhanced-search';
 import CategoryMenu from './CategoryMenu';
 import MobileCategoryMenu from './MobileCategoryMenu';
@@ -363,8 +363,8 @@ const Navbar = () => {
         )}
       </AnimatePresence>
       
-      {/* Shopping Cart Sidebar */}
-      <ShoppingCartSidebar
+      {/* Enhanced Shopping Cart Sidebar */}
+      <EnhancedShoppingCartSidebar
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
       />

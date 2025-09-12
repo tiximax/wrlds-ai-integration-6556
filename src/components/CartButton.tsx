@@ -42,6 +42,8 @@ export const CartButton: React.FC<CartButtonProps> = ({
         variant={variant === 'floating' ? 'default' : 'outline'}
         onClick={onClick}
         className={cn(buttonVariants[variant], className)}
+        data-testid="cart-button"
+        aria-label={`Shopping cart${totalItems > 0 ? ` (${totalItems} items)` : ' (empty)'}`}
       >
         <motion.div
           animate={totalItems > 0 ? { rotate: [0, -10, 10, 0] } : {}}
