@@ -8,8 +8,7 @@ import { simpleProducts as mockProducts } from '@/data/simpleProducts';
 import { SimpleProduct } from '@/types/simple';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { ShoppingCart, Plus, Minus } from 'lucide-react';
-// Related products temporarily disabled
-import { buildBreadcrumbs, generateCategoryUrl } from '@/utils/categoryUtils';
+// Temporarily removed category utils to fix TypeScript timeout
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -73,10 +72,8 @@ const ProductDetail: React.FC = () => {
     return foundProduct;
   }, [slug, currentPrice]);
 
-  // Get category breadcrumbs
-  const categoryBreadcrumbs = useMemo(() => {
-    return [];
-  }, [product]);
+  // Simplified breadcrumbs without complex category utils
+  const categoryBreadcrumbs: any[] = [];
 
   // Handle product not found
   if (!product) {
