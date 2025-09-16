@@ -396,53 +396,7 @@ const ProductDetail: React.FC = () => {
                   </div>
                 )}
 
-                {/* Deal Information */}
-                {product.deal?.isActive && (
-                  <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-                    <h3 className="text-lg font-medium text-red-900 mb-2">🔥 Special Deal</h3>
-                    <div className="space-y-2">
-                      <p className="text-red-800">
-                        <span className="font-bold">{product.deal.discountPercent}% OFF</span> - {product.deal.type.replace('_', ' ').toUpperCase()}
-                      </p>
-                      <div className="flex justify-between text-sm text-red-700">
-                        <span>Starts: {new Date(product.deal.startDate).toLocaleDateString()}</span>
-                        <span>Ends: {new Date(product.deal.endDate).toLocaleDateString()}</span>
-                      </div>
-                      {product.deal.type === 'group_buy' && (
-                        <div className="text-sm text-red-700">
-                          Current: {product.deal.currentQuantity || 0}/{product.deal.minQuantity || 0} orders
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {/* Preorder Information */}
-                {product.preorderInfo && (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h3 className="text-lg font-medium text-blue-900 mb-2">📅 Preorder Information</h3>
-                    <div className="space-y-2 text-sm text-blue-800">
-                      <div className="flex justify-between">
-                        <span>Expected Arrival:</span>
-                        <span className="font-medium">{new Date(product.preorderInfo.expectedArrival).toLocaleDateString()}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Deposit Required:</span>
-                        <span className="font-medium">{product.preorderInfo.depositPercent}%</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Current Preorders:</span>
-                        <span className="font-medium">{product.preorderInfo.currentPreorderCount}/{product.preorderInfo.minPreorderQuantity}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span>Estimated Price Range:</span>
-                        <span className="font-medium">
-                          {product.preorderInfo.estimatedPrice.min.toLocaleString('vi-VN')} - {product.preorderInfo.estimatedPrice.max.toLocaleString('vi-VN')} VND
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                {/* Deal and preorder info temporarily disabled for SimpleProduct */}
 
                 {/* Add to Cart Section */}
                 <div className="pt-6 border-t space-y-4">
@@ -501,10 +455,10 @@ const ProductDetail: React.FC = () => {
                   </Button>
 
                   {/* Current cart status */}
-                  {isInCart(product.id, selectedVariants) && (
+                  {isInCart(product.id) && (
                     <div className="text-center p-2 bg-green-50 border border-green-200 rounded">
                       <p className="text-sm text-green-800">
-                        ✅ {getItemQuantity(product.id, selectedVariants)} item(s) in cart
+                        ✅ {getItemQuantity(product.id)} item(s) in cart
                       </p>
                     </div>
                   )}
@@ -527,10 +481,7 @@ const ProductDetail: React.FC = () => {
           </div>
         </div>
         
-        {/* Related Products Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
-          <RelatedProducts currentProduct={product} maxItems={4} />
-        </div>
+        {/* Related Products temporarily disabled */}
       </div>
     </>
   );
