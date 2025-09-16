@@ -5,11 +5,10 @@ import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { simpleProducts as mockProducts } from '@/data/simpleProducts';
-import { Product } from '@/types/product';
-import ProductVariants from '@/components/ProductVariants';
-import { useCart } from '@/contexts/CartContext';
+import { SimpleProduct } from '@/types/simple';
+import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { ShoppingCart, Plus, Minus } from 'lucide-react';
-import { RelatedProducts } from '@/components/RelatedProducts';
+// Related products temporarily disabled
 import { buildBreadcrumbs, generateCategoryUrl } from '@/utils/categoryUtils';
 
 const ProductDetail: React.FC = () => {
@@ -24,7 +23,7 @@ const ProductDetail: React.FC = () => {
   const [isAddingToCart, setIsAddingToCart] = useState<boolean>(false);
   
   // Cart context
-  const { addToCart, isInCart, getItemQuantity } = useCart();
+  const { addToCart, isInCart, getItemQuantity } = useSimpleCart();
 
   // Variant handlers
   const handleVariantChange = (variantType: string, value: string) => {
@@ -42,7 +41,7 @@ const ProductDetail: React.FC = () => {
     
     try {
       // Add to cart with current selections
-      addToCart(product, quantity, selectedVariants, currentPrice);
+      addToCart(product, quantity);
       
       // Show success message
       // You can replace this with a toast notification
@@ -66,7 +65,7 @@ const ProductDetail: React.FC = () => {
   };
 
   // Find product by slug
-  const product: Product | undefined = useMemo(() => {
+  const product = useMemo(() => {
     const foundProduct = mockProducts.find(p => p.slug === slug);
     if (foundProduct && currentPrice === 0) {
       setCurrentPrice(foundProduct.sellingPrice);
@@ -76,8 +75,7 @@ const ProductDetail: React.FC = () => {
 
   // Get category breadcrumbs
   const categoryBreadcrumbs = useMemo(() => {
-    if (!product?.category) return [];
-    return buildBreadcrumbs(product.category);
+    return [];
   }, [product]);
 
   // Handle product not found
@@ -122,7 +120,7 @@ const ProductDetail: React.FC = () => {
 
   // Generate SEO data
   const pageTitle = `${product.name} | Global Shopping Assistant`;
-  const pageDescription = product.shortDescription || product.description.substring(0, 160);
+  const pageDescription = product.description.substring(0, 160);
   const canonicalUrl = `${window.location.origin}/products/${product.slug}`;
   const primaryImage = product.images?.[0]?.url || '/placeholder-product.jpg';
 
@@ -285,12 +283,7 @@ const ProductDetail: React.FC = () => {
                     {product.category && (
                       <>
                         <span>•</span>
-                        <button
-                          onClick={() => navigate(generateCategoryUrl(product.category!))}
-                          className="hover:text-gsa-primary transition-colors"
-                        >
-                          Category: {product.category.name}
-                        </button>
+                        <span>Category: {product.category.name}</span>
                       </>
                     )}
                     <span>•</span>
@@ -310,14 +303,11 @@ const ProductDetail: React.FC = () => {
                       Base price: {product.sellingPrice.toLocaleString('vi-VN')} {product.currency}
                     </div>
                   )}
-                  {product.compareAtPrice && (
-                    <div className="text-lg text-gray-500 line-through">
-                      {product.compareAtPrice.toLocaleString('vi-VN')} {product.currency}
+                  {product.originalPrice && (
+                    <div className="text-sm text-gray-600">
+                      Original: ${product.originalPrice}
                     </div>
                   )}
-                  <div className="text-sm text-gray-600">
-                    Original: ${product.originalPrice}
-                  </div>
                 </div>
 
                 {/* Status & Stock */}
@@ -351,13 +341,7 @@ const ProductDetail: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Product Variants */}
-                <ProductVariants
-                  product={product}
-                  selectedVariants={selectedVariants}
-                  onVariantChange={handleVariantChange}
-                  onPriceChange={handlePriceChange}
-                />
+                {/* Product Variants - Temporarily disabled */}
 
                 {/* Description */}
                 <div>
@@ -365,11 +349,6 @@ const ProductDetail: React.FC = () => {
                   <p className="text-gray-600 leading-relaxed mb-4">
                     {product.description}
                   </p>
-                  {product.shortDescription && (
-                    <p className="text-sm text-gray-500 italic">
-                      {product.shortDescription}
-                    </p>
-                  )}
                 </div>
 
                 {/* Specifications */}
@@ -400,20 +379,6 @@ const ProductDetail: React.FC = () => {
                       <span className="text-gray-600">Category:</span>
                       <span className="font-medium">{product.category.name}</span>
                     </div>
-                    {product.weight && (
-                      <div className="flex justify-between border-b border-gray-200 pb-1">
-                        <span className="text-gray-600">Weight:</span>
-                        <span className="font-medium">{product.weight}kg</span>
-                      </div>
-                    )}
-                    {product.dimensions && (
-                      <div className="flex justify-between border-b border-gray-200 pb-1">
-                        <span className="text-gray-600">Dimensions:</span>
-                        <span className="font-medium">
-                          {product.dimensions.length}×{product.dimensions.width}×{product.dimensions.height}cm
-                        </span>
-                      </div>
-                    )}
                   </div>
                 </div>
 
