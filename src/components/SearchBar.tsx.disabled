@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { mockProducts } from '@/data/products';
+import { simpleProducts as mockProducts } from '@/data/simpleProducts';
 import {
   generateSearchSuggestions,
   getSearchHistory,

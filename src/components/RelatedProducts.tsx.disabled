@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { Product } from '@/types/product';
 import ProductCard from './products/ProductCard';
 import { useLanguage } from '../contexts/LanguageContext';
-import { mockProducts } from '../data/products';
+import { simpleProducts as mockProducts } from '../data/simpleProducts';
 
 interface RelatedProductsProps {
   currentProduct: Product;

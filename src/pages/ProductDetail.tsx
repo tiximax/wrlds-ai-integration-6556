@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Share2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { mockProducts } from '@/data/products';
+import { simpleProducts as mockProducts } from '@/data/simpleProducts';
 import { Product } from '@/types/product';
 import ProductVariants from '@/components/ProductVariants';
 import { useCart } from '@/contexts/CartContext';
