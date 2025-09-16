@@ -84,27 +84,19 @@ export const mockProducts: Product[] = [
     variants: [
       {
         id: 'var-1-1',
-        name: 'Size',
-        type: 'size',
-        required: true,
-        options: [
-          { id: 'size-39', value: '39', label: 'Size 39', stock: 5, priceAdjustment: 0 },
-          { id: 'size-40', value: '40', label: 'Size 40', stock: 8, priceAdjustment: 0 },
-          { id: 'size-41', value: '41', label: 'Size 41', stock: 6, priceAdjustment: 0 },
-          { id: 'size-42', value: '42', label: 'Size 42', stock: 4, priceAdjustment: 0 },
-          { id: 'size-43', value: '43', label: 'Size 43', stock: 2, priceAdjustment: 0 }
-        ]
+        name: 'Size: 39',
+        value: '39',
+        priceAdjustment: 0,
+        stock: 5,
+        sku: 'SHOE-39'
       },
       {
         id: 'var-1-2',
-        name: 'Màu sắc',
-        type: 'color',
-        required: true,
-        options: [
-          { id: 'color-black', value: 'black', label: 'Đen', stock: 12, priceAdjustment: 0 },
-          { id: 'color-white', value: 'white', label: 'Trắng', stock: 8, priceAdjustment: 0 },
-          { id: 'color-blue', value: 'blue', label: 'Xanh dương', stock: 5, priceAdjustment: 0 }
-        ]
+        name: 'Màu sắc: Đen',
+        value: 'black',
+        priceAdjustment: 0,
+        stock: 12,
+        sku: 'SHOE-BLACK'
       }
     ],
     specifications: [

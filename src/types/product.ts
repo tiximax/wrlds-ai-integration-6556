@@ -25,9 +25,13 @@ export interface ProductVariantOption {
 export interface ProductVariant {
   id: string;
   name: string;
-  type: 'color' | 'size' | 'style' | 'capacity' | 'other';
-  required: boolean;
-  options: ProductVariantOption[];
+  value: string;
+  priceAdjustment: number;
+  stock: number;
+  sku: string;
+  type?: 'color' | 'size' | 'style' | 'capacity' | 'other';
+  required?: boolean;
+  options?: ProductVariantOption[];
 }
 
 // Keep legacy variant for backward compatibility
@@ -215,13 +219,14 @@ export interface ProductSort {
 }
 
 export interface CartItem {
-  productId: string;
+  id: string;
   product: Product;
   quantity: number;
-  variantId?: string;
+  selectedVariants?: Record<string, string>;
   variant?: ProductVariant;
   notes?: string;
   addedAt: Date;
+  finalPrice: number;
 }
 
 export interface PreorderRegistration {

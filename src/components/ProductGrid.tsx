@@ -182,7 +182,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       ) : (
         <div className="space-y-4">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} layout="list" />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}

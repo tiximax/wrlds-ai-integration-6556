@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useReducer, useEffect, useRef } from 'react';
-import { Product, CartItem, CartState } from '@/types/product';
+import { Product } from '@/types/product';
 import {
   saveCart as persistSaveCart,
   loadCart as persistLoadCart,
@@ -21,6 +21,16 @@ export interface CartMetadata {
   createdAt: Date;
   updatedAt: Date;
   version: string;
+}
+
+// Product Variant Interface for Cart
+interface ProductVariant {
+  id: string;
+  name: string;
+  value: string;
+  priceAdjustment: number;
+  stock: number;
+  sku: string;
 }
 
 // Cart Item Interface
@@ -204,7 +214,7 @@ interface CartContextType extends CartState {
   cartMetadata: CartMetadata | null;
 }
 
-const CartContext = createContext<CartContextType | undefined>(undefined);
+export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 // Cart Provider
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -227,7 +237,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const cartData = persistLoadCart();
       if (cartData) {
         dispatch({ type: 'LOAD_CART', payload: cartData.items });
-        setCartMetadata(cartData.metadata);
+        if (cartData.metadata) {
+          setCartMetadata(cartData.metadata);
+        }
       } else {
         // Check for abandoned carts and show recovery notification
         const abandonedCarts = getAbandonedCarts();
