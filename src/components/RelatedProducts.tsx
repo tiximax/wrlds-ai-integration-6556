@@ -50,12 +50,12 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
       score += commonTags.length * 10;
       
       // Higher rating products get bonus
-      if (product.rating >= 4.5) {
+      if (product.rating.average >= 4.5) {
         score += 10;
       }
       
       // Popular products get small bonus
-      if (product.ratingCount > 100) {
+      if (product.rating.count > 100) {
         score += 5;
       }
       
@@ -138,7 +138,7 @@ export const RelatedProducts: React.FC<RelatedProductsProps> = ({
           <div>
             <p className="text-sm text-gray-500">{t('productDetail.avgRating')}</p>
             <p className="font-semibold text-primary">
-              {(relatedProducts.reduce((sum, p) => sum + p.rating, 0) / relatedProducts.length).toFixed(1)}
+              {(relatedProducts.reduce((sum, p) => sum + p.rating.average, 0) / relatedProducts.length).toFixed(1)}
             </p>
           </div>
         </div>

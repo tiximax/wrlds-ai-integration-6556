@@ -228,7 +228,7 @@ export const ShoppingCartSidebar: React.FC<ShoppingCartSidebarProps> = ({
                       <div className="text-xs text-gray-500 bg-gray-50 rounded p-2">
                         <div className="flex justify-between">
                           <span>Lưu lần cuối:</span>
-                          <span>{new Date(cartMetadata.lastSaved).toLocaleTimeString('vi-VN')}</span>
+                          <span>{new Date(cartMetadata.updatedAt).toLocaleTimeString('vi-VN')}</span>
                         </div>
                         <div className="flex justify-between">
                           <span>Phiên bản:</span>

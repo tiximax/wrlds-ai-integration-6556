@@ -661,10 +661,10 @@ const PaymentStep: React.FC<CheckoutStepProps> = ({ onNext, onBack, data, errors
 
 // Step 4: Order Review
 const ReviewStep: React.FC<CheckoutStepProps> = ({ onNext, onBack, data }) => {
-  const { cart } = useContext(CartContext);
+  const { items } = useContext(CartContext);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  const subtotal = items.reduce((sum, item) => sum + (item.finalPrice * item.quantity), 0);
   const shippingCost = data.shippingCost || 0;
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + shippingCost + tax;
@@ -677,7 +677,7 @@ const ReviewStep: React.FC<CheckoutStepProps> = ({ onNext, onBack, data }) => {
       orderId: `ORDER-${Date.now()}`,
       total,
       orderDetails: {
-        items: cart,
+        items: items,
         subtotal,
         shipping: shippingCost,
         tax,
@@ -697,19 +697,19 @@ const ReviewStep: React.FC<CheckoutStepProps> = ({ onNext, onBack, data }) => {
         
         {/* Order Items */}
         <div className="border rounded-lg divide-y">
-          {cart.map((item) => (
+          {items.map((item) => (
             <div key={item.id} className="p-4 flex items-center gap-4">
               <img
-                src={item.image || '/placeholder-product.jpg'}
-                alt={item.name}
+                src={item.product.images[0]?.url || '/placeholder-product.jpg'}
+                alt={item.product.name}
                 className="w-16 h-16 object-cover rounded-lg"
               />
               <div className="flex-1">
-                <h4 className="font-medium text-gray-900">{item.name}</h4>
+                <h4 className="font-medium text-gray-900">{item.product.name}</h4>
                 <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
               </div>
               <p className="font-semibold text-gray-900">
-                ${(item.price * item.quantity).toFixed(2)}
+                ${(item.finalPrice * item.quantity).toFixed(2)}
               </p>
             </div>
           ))}

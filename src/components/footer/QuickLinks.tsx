@@ -15,7 +15,7 @@ import {
 interface QuickLink {
   title: string;
   href: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: any;
   description: string;
   isExternal?: boolean;
 }

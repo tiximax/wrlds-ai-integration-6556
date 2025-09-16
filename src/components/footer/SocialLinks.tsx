@@ -14,7 +14,7 @@ import {
 interface SocialLink {
   name: string;
   href: string;
-  icon: React.ComponentType<{ size?: number; className?: string }>;
+  icon: any;
   color: string;
   hoverColor: string;
   description: string;

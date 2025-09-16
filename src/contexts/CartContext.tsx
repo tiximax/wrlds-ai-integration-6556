@@ -21,6 +21,7 @@ export interface CartMetadata {
   createdAt: Date;
   updatedAt: Date;
   version: string;
+  lastSaved?: Date;
 }
 
 // Product Variant Interface for Cart
@@ -237,9 +238,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const cartData = persistLoadCart();
       if (cartData) {
         dispatch({ type: 'LOAD_CART', payload: cartData.items });
-        if (cartData.metadata) {
-          setCartMetadata(cartData.metadata);
-        }
+        // setCartMetadata(cartData.metadata);
       } else {
         // Check for abandoned carts and show recovery notification
         const abandonedCarts = getAbandonedCarts();
