@@ -7,8 +7,9 @@ import { Link } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import { useLanguage } from '@/contexts/LanguageContext';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import { CartButton } from './CartButton';
-import EnhancedShoppingCartSidebar from "./EnhancedShoppingCartSidebar";
+import { SimpleCartSidebar } from './SimpleCartSidebar';
+import { useSimpleCart } from '@/contexts/SimpleCartContext';
+import { ShoppingCart } from 'lucide-react';
 import { EnhancedSearch } from '@/components/ui/enhanced-search';
 import CategoryMenu from './CategoryMenu';
 import MobileCategoryMenu from './MobileCategoryMenu';
@@ -20,6 +21,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { t } = useLanguage();
+  const { totalItems } = useSimpleCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -191,13 +193,40 @@ const Navbar = () => {
             {/* Right side controls */}
             <div className="flex items-center space-x-2">
               <LanguageSwitcher />
-              <CartButton onClick={() => setIsCartOpen(true)} />
+              <button
+                onClick={() => setIsCartOpen(true)}
+                className={cn(
+                  "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
+                  isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
+                )}
+              >
+                <ShoppingCart className="w-5 h-5" />
+                <span className="hidden sm:inline">Cart</span>
+                {totalItems > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                    {totalItems}
+                  </span>
+                )}
+              </button>
             </div>
           </div>
           
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
-            <CartButton onClick={() => setIsCartOpen(true)} />
+            <button
+              onClick={() => setIsCartOpen(true)}
+              className={cn(
+                "relative p-2 rounded-md transition-colors",
+                isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
+              )}
+            >
+              <ShoppingCart className="w-5 h-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </button>
             <button onClick={toggleMenu} className={cn("focus:outline-none", isScrolled ? "text-gray-700" : "text-white")}>
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -363,8 +392,8 @@ const Navbar = () => {
         )}
       </AnimatePresence>
       
-      {/* Enhanced Shopping Cart Sidebar */}
-      <EnhancedShoppingCartSidebar
+      {/* Shopping Cart Sidebar */}
+      <SimpleCartSidebar
         isOpen={isCartOpen}
         onClose={() => setIsCartOpen(false)}
       />
