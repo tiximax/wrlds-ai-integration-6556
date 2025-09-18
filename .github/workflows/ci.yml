@@ -24,8 +24,8 @@ jobs:
       - name: Run unit tests (Vitest)
         run: npm test --silent
 
-      - name: Install Playwright Browsers
-        uses: microsoft/playwright-github-action@v1
+      - name: Install Playwright browsers and OS dependencies
+        run: npx playwright install --with-deps
 
       - name: Run E2E smoke (dev server)
         run: npm run test:e2e -- tests/working-cart.spec.ts --reporter=line
