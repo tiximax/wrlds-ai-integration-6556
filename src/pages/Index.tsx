@@ -6,6 +6,7 @@ import Projects from '@/components/Projects';
 import WhyWrlds from '@/components/WhyWrlds';
 import BlogPreview from '@/components/BlogPreview';
 import TrustSignals from '@/components/TrustSignals';
+import FeaturedProducts from '@/components/FeaturedProducts';
 import SEO from '@/components/SEO';
 import { useEffect } from 'react';
 
@@ -29,6 +30,7 @@ const Index = () => {
       />
       <Hero />
       <Features />
+      <FeaturedProducts />
       <TrustSignals />
       <WhyWrlds />
       <Projects />
