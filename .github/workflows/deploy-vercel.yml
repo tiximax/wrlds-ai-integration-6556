@@ -37,19 +37,32 @@ jobs:
         run: npm i -g vercel@latest
 
       - name: Pull Vercel Environment Information
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
         run: |
           vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel (prebuilt)
         id: deploy
-        run: |
-          # Deploy the prebuilt output and capture the deployment URL
-          URL=$(vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }} | tail -n1)
-          echo "Deploy URL: $URL"
-          echo "deploy_url=$URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          # Deploy prebuilt output; parse JSON to extract URL reliably
+          OUT=$(vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }} --json)
+          echo "$OUT" > vercel-deploy.json
+          URL=$(node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('vercel-deploy.json','utf8'));console.log((j.url || '').startsWith('http')?j.url:`https://${j.url}`)")
+          echo "Deploy URL: $URL"
+          echo "deploy_url=$URL" >> $GITHUB_OUTPUT
+
+      - name: Upload deploy metadata
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vercel-deploy-json
+          path: vercel-deploy.json
+          if-no-files-found: warn
 
   e2e:
     needs: deploy
