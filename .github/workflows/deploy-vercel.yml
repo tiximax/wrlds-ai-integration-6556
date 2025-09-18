@@ -1,0 +1,86 @@
+name: Deploy to Vercel + E2E Remote
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_e2e:
+        description: 'Run E2E remote after deploy?'
+        required: false
+        default: 'true'
+        type: choice
+        options: ['true', 'false']
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    outputs:
+      deploy_url: ${{ steps.deploy.outputs.deploy_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build (Vite)
+        run: npm run build
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Pull Vercel Environment Information
+        run: |
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy to Vercel (prebuilt)
+        id: deploy
+        run: |
+          # Deploy the prebuilt output and capture the deployment URL
+          URL=$(vercel deploy --prebuilt --prod --yes --token=${{ secrets.VERCEL_TOKEN }} | tail -n1)
+          echo "Deploy URL: $URL"
+          echo "deploy_url=$URL" >> $GITHUB_OUTPUT
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  e2e:
+    needs: deploy
+    if: github.event_name == 'push' || inputs.run_e2e == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        uses: microsoft/playwright-github-action@v1
+
+      - name: Run E2E remote
+        env:
+          BASE_URL: ${{ needs.deploy.outputs.deploy_url }}
+        run: npm run test:e2e:remote -- tests/working-cart.spec.ts --reporter=line
+
+      - name: Upload Playwright report (if generated)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-remote
+          path: playwright-report/
+          if-no-files-found: ignore
+

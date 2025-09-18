@@ -1,0 +1,38 @@
+name: E2E Preview
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [ labeled ]
+
+jobs:
+  e2e-preview:
+    if: github.event.action == 'labeled' && github.event.label.name == 'run-e2e-preview' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        uses: microsoft/playwright-github-action@v1
+
+      - name: Run E2E on build preview
+        run: npm run test:e2e:preview -- tests/working-cart.spec.ts --reporter=line
+
+      - name: Upload Playwright report (if generated)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-preview
+          path: playwright-report/
+          if-no-files-found: ignore
+

@@ -1,0 +1,42 @@
+name: E2E Remote
+
+on:
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Remote BASE_URL to test against (e.g., https://your-domain)'
+        required: true
+        type: string
+
+jobs:
+  e2e-remote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        uses: microsoft/playwright-github-action@v1
+
+      - name: Run E2E remote
+        env:
+          BASE_URL: ${{ inputs.base_url }}
+        run: npm run test:e2e:remote -- tests/working-cart.spec.ts --reporter=line
+
+      - name: Upload Playwright report (if generated)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-remote
+          path: playwright-report/
+          if-no-files-found: ignore
+
