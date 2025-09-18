@@ -75,6 +75,226 @@ export const simpleProducts: SimpleProduct[] = [
     trending: true,
     createdAt: new Date('2024-01-10'),
     updatedAt: new Date('2024-01-18')
+  },
+  {
+    id: '3',
+    name: 'American Tech Gadget',
+    slug: 'american-tech-gadget',
+    description: 'Latest technology gadget from the USA with premium features.',
+    sellingPrice: 3500000,
+    originalPrice: 4000000,
+    currency: 'VND',
+    stock: 8,
+    sku: 'TECH-001',
+    images: [
+      {
+        id: 'img-3',
+        url: '/lovable-uploads/14ea3fe0-19d6-425c-b95b-4117bc41f3ca.png',
+        alt: 'American Tech Gadget',
+        isPrimary: true
+      }
+    ],
+    category: {
+      id: 'cat-3',
+      name: 'Electronics',
+      slug: 'electronics'
+    },
+    origin: 'usa',
+    status: 'available',
+    rating: {
+      average: 4.3,
+      count: 67
+    },
+    type: 'ready_stock',
+    sourceSite: 'usa-tech.com',
+    tags: ['electronics', 'tech', 'gadget', 'usa'],
+    featured: true,
+    trending: false,
+    createdAt: new Date('2024-01-12'),
+    updatedAt: new Date('2024-01-22')
+  },
+  {
+    id: '4',
+    name: 'European Fashion Watch',
+    slug: 'european-fashion-watch',
+    description: 'Elegant European watch with sophisticated design.',
+    sellingPrice: 5200000,
+    originalPrice: 6000000,
+    currency: 'VND',
+    stock: 12,
+    sku: 'WATCH-001',
+    images: [
+      {
+        id: 'img-4',
+        url: '/lovable-uploads/1cd5a3da-7a58-4374-abc1-d7b02b0c5fd5.png',
+        alt: 'European Fashion Watch',
+        isPrimary: true
+      }
+    ],
+    category: {
+      id: 'cat-4',
+      name: 'Fashion',
+      slug: 'fashion'
+    },
+    origin: 'europe',
+    status: 'available',
+    rating: {
+      average: 4.7,
+      count: 143
+    },
+    type: 'ready_stock',
+    sourceSite: 'europe-fashion.com',
+    tags: ['fashion', 'watch', 'luxury', 'europe'],
+    featured: false,
+    trending: true,
+    createdAt: new Date('2024-01-08'),
+    updatedAt: new Date('2024-01-25')
+  },
+  {
+    id: '5',
+    name: 'Japanese Gaming Console',
+    slug: 'japanese-gaming-console',
+    description: 'Latest gaming console from Japan with exclusive games.',
+    sellingPrice: 8500000,
+    currency: 'VND',
+    stock: 5,
+    sku: 'GAME-001',
+    images: [
+      {
+        id: 'img-5',
+        url: '/lovable-uploads/30473baa-85f4-4931-aad9-c722ae7a4918.png',
+        alt: 'Japanese Gaming Console',
+        isPrimary: true
+      }
+    ],
+    category: {
+      id: 'cat-5',
+      name: 'Gaming',
+      slug: 'gaming'
+    },
+    origin: 'japan',
+    status: 'preorder',
+    rating: {
+      average: 4.9,
+      count: 234
+    },
+    type: 'pre_order',
+    sourceSite: 'japan-games.com',
+    tags: ['gaming', 'console', 'japanese', 'preorder'],
+    featured: true,
+    trending: true,
+    createdAt: new Date('2024-01-05'),
+    updatedAt: new Date('2024-01-28')
+  },
+  {
+    id: '6',
+    name: 'Korean Home Appliance',
+    slug: 'korean-home-appliance',
+    description: 'Smart home appliance with advanced Korean technology.',
+    sellingPrice: 4200000,
+    originalPrice: 4800000,
+    currency: 'VND',
+    stock: 18,
+    sku: 'HOME-001',
+    images: [
+      {
+        id: 'img-6',
+        url: '/lovable-uploads/39605e90-8478-4fee-b1b9-cee41df66f10.png',
+        alt: 'Korean Home Appliance',
+        isPrimary: true
+      }
+    ],
+    category: {
+      id: 'cat-6',
+      name: 'Home & Living',
+      slug: 'home-living'
+    },
+    origin: 'korea',
+    status: 'available',
+    rating: {
+      average: 4.4,
+      count: 89
+    },
+    type: 'ready_stock',
+    sourceSite: 'korea-home.com',
+    tags: ['home', 'appliance', 'smart', 'korean'],
+    featured: false,
+    trending: false,
+    createdAt: new Date('2024-01-14'),
+    updatedAt: new Date('2024-01-19')
+  },
+  {
+    id: '7',
+    name: 'USA Premium Headphones',
+    slug: 'usa-premium-headphones',
+    description: 'High-quality headphones with premium sound from USA.',
+    sellingPrice: 3200000,
+    currency: 'VND',
+    stock: 0,
+    sku: 'AUDIO-001',
+    images: [
+      {
+        id: 'img-7',
+        url: '/lovable-uploads/39671993-1bb4-4bb6-8819-3ca5c07c0042.png',
+        alt: 'USA Premium Headphones',
+        isPrimary: true
+      }
+    ],
+    category: {
+      id: 'cat-7',
+      name: 'Audio',
+      slug: 'audio'
+    },
+    origin: 'usa',
+    status: 'out_of_stock',
+    rating: {
+      average: 4.6,
+      count: 156
+    },
+    type: 'ready_stock',
+    sourceSite: 'usa-audio.com',
+    tags: ['audio', 'headphones', 'premium', 'usa'],
+    featured: false,
+    trending: false,
+    createdAt: new Date('2024-01-03'),
+    updatedAt: new Date('2024-01-30')
+  },
+  {
+    id: '8',
+    name: 'European Luxury Bag',
+    slug: 'european-luxury-bag',
+    description: 'Designer luxury bag from Europe with premium materials.',
+    sellingPrice: 6800000,
+    originalPrice: 7500000,
+    currency: 'VND',
+    stock: 7,
+    sku: 'BAG-001',
+    images: [
+      {
+        id: 'img-8',
+        url: '/lovable-uploads/3de85ddd-15e1-4216-9697-f91abb9a47ce.png',
+        alt: 'European Luxury Bag',
+        isPrimary: true
+      }
+    ],
+    category: {
+      id: 'cat-8',
+      name: 'Accessories',
+      slug: 'accessories'
+    },
+    origin: 'europe',
+    status: 'available',
+    rating: {
+      average: 4.8,
+      count: 78
+    },
+    type: 'ready_stock',
+    sourceSite: 'europe-luxury.com',
+    tags: ['accessories', 'bag', 'luxury', 'designer'],
+    featured: true,
+    trending: false,
+    createdAt: new Date('2024-01-07'),
+    updatedAt: new Date('2024-01-26')
   }
 ];
 
