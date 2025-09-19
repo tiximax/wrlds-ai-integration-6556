@@ -1,7 +1,7 @@
-import { SimpleProduct } from '@/types/simple';
+import { Product } from '@/types/simple';
 
 // Simplified product data that actually works
-export const simpleProducts: SimpleProduct[] = [
+export const simpleProducts: Product[] = [
   {
     id: '1',
     name: 'Premium Japanese Sneakers',
@@ -17,13 +17,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-1',
         url: '/lovable-uploads/078a129e-0f98-4d91-af61-873687db1a04.png',
         alt: 'Premium Japanese Sneakers',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-1',
       name: 'Shoes',
-      slug: 'shoes'
+      slug: 'shoes',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'japan',
     status: 'available',
@@ -54,13 +58,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-2',
         url: '/lovable-uploads/11e92b89-ed02-453a-9888-56cd91807f2d.png',
         alt: 'Korean Beauty Set',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-2',
       name: 'Beauty',
-      slug: 'beauty'
+      slug: 'beauty',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'korea',
     status: 'available',
@@ -91,13 +99,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-3',
         url: '/lovable-uploads/14ea3fe0-19d6-425c-b95b-4117bc41f3ca.png',
         alt: 'American Tech Gadget',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-3',
       name: 'Electronics',
-      slug: 'electronics'
+      slug: 'electronics',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'usa',
     status: 'available',
@@ -128,13 +140,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-4',
         url: '/lovable-uploads/1cd5a3da-7a58-4374-abc1-d7b02b0c5fd5.png',
         alt: 'European Fashion Watch',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-4',
       name: 'Fashion',
-      slug: 'fashion'
+      slug: 'fashion',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'europe',
     status: 'available',
@@ -156,6 +172,7 @@ export const simpleProducts: SimpleProduct[] = [
     slug: 'japanese-gaming-console',
     description: 'Latest gaming console from Japan with exclusive games.',
     sellingPrice: 8500000,
+    originalPrice: 9000000,
     currency: 'VND',
     stock: 5,
     sku: 'GAME-001',
@@ -164,13 +181,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-5',
         url: '/lovable-uploads/30473baa-85f4-4931-aad9-c722ae7a4918.png',
         alt: 'Japanese Gaming Console',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-5',
       name: 'Gaming',
-      slug: 'gaming'
+      slug: 'gaming',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'japan',
     status: 'preorder',
@@ -201,13 +222,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-6',
         url: '/lovable-uploads/39605e90-8478-4fee-b1b9-cee41df66f10.png',
         alt: 'Korean Home Appliance',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-6',
       name: 'Home & Living',
-      slug: 'home-living'
+      slug: 'home-living',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'korea',
     status: 'available',
@@ -229,6 +254,7 @@ export const simpleProducts: SimpleProduct[] = [
     slug: 'usa-premium-headphones',
     description: 'High-quality headphones with premium sound from USA.',
     sellingPrice: 3200000,
+    originalPrice: 3600000,
     currency: 'VND',
     stock: 0,
     sku: 'AUDIO-001',
@@ -237,13 +263,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-7',
         url: '/lovable-uploads/39671993-1bb4-4bb6-8819-3ca5c07c0042.png',
         alt: 'USA Premium Headphones',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-7',
       name: 'Audio',
-      slug: 'audio'
+      slug: 'audio',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'usa',
     status: 'out_of_stock',
@@ -274,13 +304,17 @@ export const simpleProducts: SimpleProduct[] = [
         id: 'img-8',
         url: '/lovable-uploads/3de85ddd-15e1-4216-9697-f91abb9a47ce.png',
         alt: 'European Luxury Bag',
-        isPrimary: true
+        isPrimary: true,
+        order: 1
       }
     ],
     category: {
       id: 'cat-8',
       name: 'Accessories',
-      slug: 'accessories'
+      slug: 'accessories',
+      isActive: true,
+      createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01')
     },
     origin: 'europe',
     status: 'available',

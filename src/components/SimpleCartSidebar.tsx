@@ -117,7 +117,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                                 key={key}
                                 className="text-xs text-gray-500 mr-2"
                               >
-                                {key}: {value}
+                                {key}: {String(value)}
                               </span>
                             ))}
                           </div>

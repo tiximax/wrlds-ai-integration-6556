@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
-import { SimpleProduct, SimpleCartItem, SimpleCartState } from '@/types/simple';
+import { Product, CartItem, SimpleCartState } from '@/types/simple';
 import toast from 'react-hot-toast';
 
 // Simple cart actions
 type CartAction = 
-  | { type: 'ADD_TO_CART'; payload: { product: SimpleProduct; quantity: number; finalPrice: number } }
+  | { type: 'ADD_TO_CART'; payload: { product: Product; quantity: number; finalPrice: number } }
   | { type: 'REMOVE_FROM_CART'; payload: { itemId: string } }
   | { type: 'UPDATE_QUANTITY'; payload: { itemId: string; quantity: number } }
   | { type: 'CLEAR_CART' }
@@ -26,7 +26,7 @@ const cartReducer = (state: SimpleCartState, action: CartAction): SimpleCartStat
       const itemId = `${product.id}`;
       
       const existingItemIndex = state.items.findIndex(item => item.id === itemId);
-      let newItems: SimpleCartItem[];
+      let newItems: CartItem[];
       
       if (existingItemIndex >= 0) {
         newItems = [...state.items];
@@ -35,7 +35,7 @@ const cartReducer = (state: SimpleCartState, action: CartAction): SimpleCartStat
           quantity: newItems[existingItemIndex].quantity + quantity,
         };
       } else {
-        const newItem: SimpleCartItem = {
+        const newItem: CartItem = {
           id: itemId,
           product,
           quantity,
@@ -98,7 +98,7 @@ const cartReducer = (state: SimpleCartState, action: CartAction): SimpleCartStat
 
 // Simple cart context interface
 interface SimpleCartContextType extends SimpleCartState {
-  addToCart: (product: SimpleProduct, quantity?: number) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -118,7 +118,7 @@ export const SimpleCartProvider: React.FC<{ children: React.ReactNode }> = ({ ch
       const savedCart = localStorage.getItem('simple-cart');
       if (savedCart) {
         const cartData = JSON.parse(savedCart);
-        cartData.items.forEach((item: SimpleCartItem) => {
+        cartData.items.forEach((item: CartItem) => {
           dispatch({
             type: 'ADD_TO_CART',
             payload: {
@@ -143,7 +143,7 @@ export const SimpleCartProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     }
   }, [state]);
 
-  const addToCart = (product: SimpleProduct, quantity = 1) => {
+  const addToCart = (product: Product, quantity = 1) => {
     dispatch({
       type: 'ADD_TO_CART',
       payload: {
