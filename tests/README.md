@@ -19,7 +19,7 @@ This directory contains end-to-end tests using Playwright.
 
 ### Prerequisites
 1. Install Playwright browsers: `npx playwright install`
-2. Start dev server: `npm run dev` (runs on http://localhost:3000)
+2. Start dev server: `npm run dev` (runs on http://localhost:8080)
 
 ### Commands
 ```bash
