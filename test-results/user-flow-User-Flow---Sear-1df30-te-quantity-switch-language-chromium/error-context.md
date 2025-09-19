@@ -1,0 +1,438 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - region "Notifications (F8)":
+    - list
+  - generic [ref=e3]:
+    - navigation [ref=e4]:
+      - generic [ref=e6]:
+        - link "WRLDS Technologies Logo" [ref=e8] [cursor=pointer]:
+          - /url: /
+          - img "WRLDS Technologies Logo" [ref=e9] [cursor=pointer]
+        - generic [ref=e10]:
+          - navigation "Main" [ref=e11]:
+            - list [ref=e13]:
+              - listitem [ref=e14]:
+                - link "Home" [ref=e15] [cursor=pointer]:
+                  - /url: /
+              - listitem [ref=e16]:
+                - link "About Us" [ref=e17] [cursor=pointer]:
+                  - /url: /about
+              - listitem [ref=e18]:
+                - link "Products" [ref=e19] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=e20]:
+                - button "Categories" [ref=e21] [cursor=pointer]:
+                  - img [ref=e22] [cursor=pointer]
+                  - text: Categories
+                  - img [ref=e26] [cursor=pointer]
+              - listitem [ref=e28]:
+                - button "Services" [ref=e29] [cursor=pointer]:
+                  - generic [ref=e30] [cursor=pointer]:
+                    - img [ref=e31] [cursor=pointer]
+                    - text: Services
+                  - img [ref=e37] [cursor=pointer]
+              - listitem [ref=e39]:
+                - button "Learn More" [ref=e40] [cursor=pointer]:
+                  - text: Learn More
+                  - img [ref=e41] [cursor=pointer]
+              - listitem [ref=e43]:
+                - link "News" [ref=e44] [cursor=pointer]:
+                  - /url: /blog
+              - listitem [ref=e45]:
+                - link "Careers" [ref=e46] [cursor=pointer]:
+                  - /url: /careers
+              - listitem [ref=e47]:
+                - button "Contact" [ref=e48] [cursor=pointer]
+          - generic [ref=e52]:
+            - img [ref=e53]
+            - textbox "Search products, brands..." [ref=e56]
+            - generic [ref=e58]:
+              - img [ref=e59]
+              - generic [ref=e61]: K
+          - generic [ref=e62]:
+            - button "🇺🇸 English" [ref=e63] [cursor=pointer]:
+              - img
+              - generic [ref=e64] [cursor=pointer]: 🇺🇸 English
+            - button "Open cart" [ref=e65] [cursor=pointer]:
+              - img [ref=e66] [cursor=pointer]
+              - generic [ref=e70] [cursor=pointer]: Cart
+              - generic [ref=e71] [cursor=pointer]: "1"
+      - generic [ref=e72]:
+        - generic [ref=e73]:
+          - generic [ref=e74]:
+            - img [ref=e75]
+            - heading "Cart (1 items)" [level=2] [ref=e78]
+          - button [ref=e79] [cursor=pointer]:
+            - img
+        - generic [ref=e80]:
+          - generic [ref=e81]:
+            - generic [ref=e83]:
+              - link "Japanese Gaming Console" [ref=e84] [cursor=pointer]:
+                - /url: /products/japanese-gaming-console
+                - img "Japanese Gaming Console" [ref=e86] [cursor=pointer]
+              - generic [ref=e87]:
+                - link "Japanese Gaming Console" [ref=e88] [cursor=pointer]:
+                  - /url: /products/japanese-gaming-console
+                  - heading "Japanese Gaming Console" [level=4] [ref=e89] [cursor=pointer]
+                - paragraph [ref=e90]: Gaming
+                - generic [ref=e91]:
+                  - generic [ref=e92]: 8.500.000 ₫
+                  - generic [ref=e93]:
+                    - button [ref=e94] [cursor=pointer]:
+                      - img
+                    - generic [ref=e95]: "1"
+                    - button [ref=e96] [cursor=pointer]:
+                      - img
+                - generic [ref=e97]:
+                  - generic [ref=e98]: "Subtotal: 8.500.000 ₫"
+                  - button [ref=e99] [cursor=pointer]:
+                    - img
+            - button "Clear Cart" [ref=e101] [cursor=pointer]:
+              - img
+              - text: Clear Cart
+          - generic [ref=e102]:
+            - generic [ref=e103]:
+              - generic [ref=e104]: "Total:"
+              - generic [ref=e105]: 8.500.000 ₫
+            - generic [ref=e106]:
+              - button "Checkout (1 items)" [ref=e107] [cursor=pointer]
+              - button "Continue Shopping" [ref=e108] [cursor=pointer]
+            - paragraph [ref=e109]: Free shipping on orders over 500.000 ₫
+    - generic [ref=e110]:
+      - generic [ref=e111]:
+        - heading "Products" [level=1] [ref=e112]
+        - paragraph [ref=e113]: Discover amazing products from around the world
+      - generic [ref=e114]:
+        - generic [ref=e115]:
+          - img [ref=e116]
+          - textbox "Search products..." [ref=e119]: japan
+        - generic [ref=e120]:
+          - generic [ref=e121]:
+            - combobox [ref=e122] [cursor=pointer]:
+              - generic: All Origins
+              - img [ref=e123] [cursor=pointer]
+            - combobox [ref=e125] [cursor=pointer]:
+              - generic: All Status
+              - img [ref=e126] [cursor=pointer]
+            - combobox [ref=e128] [cursor=pointer]:
+              - generic: Name
+              - img [ref=e129] [cursor=pointer]
+          - generic [ref=e131]:
+            - button [ref=e132] [cursor=pointer]:
+              - img
+            - button [ref=e133] [cursor=pointer]:
+              - img
+        - generic [ref=e135]:
+          - text: "Search: japan"
+          - button "×" [ref=e136] [cursor=pointer]
+      - paragraph [ref=e138]: Showing 2 of 2 products
+      - generic [ref=e139]:
+        - link "Japanese Gaming Console Pre-order Featured Trending Gaming Japanese Gaming Console Latest gaming console from Japan with exclusive games. (234) 8.500.000 ₫ JAPAN Only 5 left In Cart (1)" [ref=e141] [cursor=pointer]:
+          - /url: /products/japanese-gaming-console
+          - generic [ref=e142] [cursor=pointer]:
+            - generic [ref=e143] [cursor=pointer]:
+              - img "Japanese Gaming Console" [ref=e144] [cursor=pointer]
+              - generic [ref=e145] [cursor=pointer]:
+                - generic [ref=e146] [cursor=pointer]: Pre-order
+                - generic [ref=e147] [cursor=pointer]: Featured
+                - generic [ref=e148] [cursor=pointer]: Trending
+              - button [ref=e149] [cursor=pointer]:
+                - img [ref=e150] [cursor=pointer]
+            - generic [ref=e152] [cursor=pointer]:
+              - paragraph [ref=e153] [cursor=pointer]: Gaming
+              - heading "Japanese Gaming Console" [level=3] [ref=e154] [cursor=pointer]:
+                - mark [ref=e155] [cursor=pointer]: Japan
+                - text: ese Gaming Console
+              - paragraph [ref=e156] [cursor=pointer]:
+                - text: Latest gaming console from
+                - mark [ref=e157] [cursor=pointer]: Japan
+                - text: with exclusive games.
+              - generic [ref=e158] [cursor=pointer]:
+                - generic [ref=e159] [cursor=pointer]:
+                  - img [ref=e160] [cursor=pointer]
+                  - img [ref=e162] [cursor=pointer]
+                  - img [ref=e164] [cursor=pointer]
+                  - img [ref=e166] [cursor=pointer]
+                  - img [ref=e168] [cursor=pointer]
+                - generic [ref=e170] [cursor=pointer]: (234)
+              - generic [ref=e172] [cursor=pointer]: 8.500.000 ₫
+              - generic [ref=e173] [cursor=pointer]:
+                - generic [ref=e174] [cursor=pointer]: JAPAN
+                - generic [ref=e175] [cursor=pointer]: Only 5 left
+              - button "In Cart (1)" [active] [ref=e176] [cursor=pointer]:
+                - img
+                - text: In Cart (1)
+        - link "Premium Japanese Sneakers Featured Shoes Premium Japanese Sneakers High-quality sneakers from Japan with excellent comfort and style. (128) 2.500.000 ₫ 3.000.000 ₫ JAPAN Add to Cart" [ref=e178] [cursor=pointer]:
+          - /url: /products/premium-japanese-sneakers
+          - generic [ref=e179] [cursor=pointer]:
+            - generic [ref=e180] [cursor=pointer]:
+              - img "Premium Japanese Sneakers" [ref=e181] [cursor=pointer]
+              - generic [ref=e183] [cursor=pointer]: Featured
+              - button [ref=e184] [cursor=pointer]:
+                - img [ref=e185] [cursor=pointer]
+            - generic [ref=e187] [cursor=pointer]:
+              - paragraph [ref=e188] [cursor=pointer]: Shoes
+              - heading "Premium Japanese Sneakers" [level=3] [ref=e189] [cursor=pointer]:
+                - text: Premium
+                - mark [ref=e190] [cursor=pointer]: Japan
+                - text: ese Sneakers
+              - paragraph [ref=e191] [cursor=pointer]:
+                - text: High-quality sneakers from
+                - mark [ref=e192] [cursor=pointer]: Japan
+                - text: with excellent comfort and style.
+              - generic [ref=e193] [cursor=pointer]:
+                - generic [ref=e194] [cursor=pointer]:
+                  - img [ref=e195] [cursor=pointer]
+                  - img [ref=e197] [cursor=pointer]
+                  - img [ref=e199] [cursor=pointer]
+                  - img [ref=e201] [cursor=pointer]
+                  - img [ref=e203] [cursor=pointer]
+                - generic [ref=e205] [cursor=pointer]: (128)
+              - generic [ref=e206] [cursor=pointer]:
+                - generic [ref=e207] [cursor=pointer]: 2.500.000 ₫
+                - generic [ref=e208] [cursor=pointer]: 3.000.000 ₫
+              - generic [ref=e210] [cursor=pointer]: JAPAN
+              - button "Add to Cart" [ref=e211] [cursor=pointer]:
+                - img
+                - text: Add to Cart
+    - generic [ref=e213]:
+      - generic [ref=e214]:
+        - generic [ref=e215]: Liên hệ chúng tôi
+        - heading "Liên hệ ngay hôm nay" [level=2] [ref=e216]
+        - paragraph [ref=e217]: Bản có thắc mắc về dịch vụ mua hộ quốc tế của chúng tôi? Hãy liên hệ để chúng tôi có thể tư vấn và hỗ trợ bản một cách tốt nhất.
+      - generic [ref=e218]:
+        - generic [ref=e220]:
+          - img "Nguyễn Minh Quân" [ref=e221]
+          - heading "Nguyễn Minh Quân" [level=3] [ref=e222]
+          - paragraph [ref=e223]: CEO & Founder
+          - generic [ref=e224]:
+            - link "contact@globalshoppingassistant.com" [ref=e225] [cursor=pointer]:
+              - /url: mailto:contact@globalshoppingassistant.com
+              - img [ref=e226] [cursor=pointer]
+              - text: contact@globalshoppingassistant.com
+            - link "LinkedIn Profile" [ref=e229] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e230] [cursor=pointer]
+              - text: LinkedIn Profile
+        - generic [ref=e235]:
+          - img "Phạm Văn Đức" [ref=e236]
+          - heading "Phạm Văn Đức" [level=3] [ref=e237]
+          - paragraph [ref=e238]: COO
+          - generic [ref=e239]:
+            - link "support@globalshoppingassistant.com" [ref=e240] [cursor=pointer]:
+              - /url: mailto:support@globalshoppingassistant.com
+              - img [ref=e241] [cursor=pointer]
+              - text: support@globalshoppingassistant.com
+            - link "LinkedIn Profile" [ref=e244] [cursor=pointer]:
+              - /url: "#"
+              - img [ref=e245] [cursor=pointer]
+              - text: LinkedIn Profile
+            - link "090 123 4567" [ref=e249] [cursor=pointer]:
+              - /url: tel:+84901234567
+              - img [ref=e250] [cursor=pointer]
+              - text: 090 123 4567
+    - contentinfo [ref=e252]:
+      - generic [ref=e255]:
+        - generic [ref=e256]:
+          - generic [ref=e257]:
+            - img [ref=e259]
+            - generic [ref=e261]: 50K+
+            - generic [ref=e262]: Khách hàng
+          - generic [ref=e263]:
+            - img [ref=e265]
+            - generic [ref=e268]: 200K+
+            - generic [ref=e269]: Đơn hàng
+          - generic [ref=e270]:
+            - img [ref=e272]
+            - generic [ref=e275]: 15+
+            - generic [ref=e276]: Quốc gia
+          - generic [ref=e277]:
+            - img [ref=e279]
+            - generic [ref=e282]: 8+
+            - generic [ref=e283]: Năm kinh nghiệm
+        - generic [ref=e284]:
+          - generic [ref=e285]:
+            - generic [ref=e286]:
+              - heading "Global Shopping Assistant" [level=2] [ref=e287]
+              - paragraph [ref=e288]: "🚀 Dịch vụ Mua hộ Quốc tế Uy tín #1"
+              - paragraph [ref=e289]: Chúng tôi cung cấp dịch vụ mua hộ toàn diện từ Nhật Bản, Hàn Quốc và Mỹ, giúp khách hàng tiếp cận các sản phẩm chất lượng cao với giá cả hợp lý và dịch vụ chuyên nghiệp.
+            - generic [ref=e290]:
+              - generic [ref=e291] [cursor=pointer]:
+                - img [ref=e293] [cursor=pointer]
+                - generic [ref=e296] [cursor=pointer]:
+                  - paragraph [ref=e297] [cursor=pointer]: Tầng 12, Tòa nhà Vietcombank
+                  - paragraph [ref=e298] [cursor=pointer]: 198 Trần Quốc Toản, Cầu Giấy, Hà Nội
+              - generic [ref=e299] [cursor=pointer]:
+                - img [ref=e301] [cursor=pointer]
+                - generic [ref=e303] [cursor=pointer]:
+                  - paragraph [ref=e304] [cursor=pointer]: +84 24 1234 5678
+                  - paragraph [ref=e305] [cursor=pointer]: Hotline 24/7
+              - generic [ref=e306] [cursor=pointer]:
+                - img [ref=e308] [cursor=pointer]
+                - generic [ref=e311] [cursor=pointer]:
+                  - paragraph [ref=e312] [cursor=pointer]: support@globalshopping.vn
+                  - paragraph [ref=e313] [cursor=pointer]: Email hỗ trợ
+          - generic [ref=e315]:
+            - generic [ref=e316]:
+              - generic [ref=e317]:
+                - img [ref=e319]
+                - heading "Công ty" [level=3] [ref=e323]
+                - img [ref=e325]
+              - list [ref=e331]:
+                - listitem [ref=e332]:
+                  - link "Về chúng tôi Tìm hiểu về Global Shopping Assistant" [ref=e333] [cursor=pointer]:
+                    - /url: /about
+                    - generic [ref=e334] [cursor=pointer]:
+                      - img [ref=e338] [cursor=pointer]
+                      - generic [ref=e342] [cursor=pointer]:
+                        - generic [ref=e344] [cursor=pointer]: Về chúng tôi
+                        - paragraph [ref=e345] [cursor=pointer]: Tìm hiểu về Global Shopping Assistant
+                - listitem [ref=e347]:
+                  - link "Tuyển dụng Cơ hội nghề nghiệp tại GSA" [ref=e348] [cursor=pointer]:
+                    - /url: /careers
+                    - generic [ref=e349] [cursor=pointer]:
+                      - img [ref=e353] [cursor=pointer]
+                      - generic [ref=e358] [cursor=pointer]:
+                        - generic [ref=e360] [cursor=pointer]: Tuyển dụng
+                        - paragraph [ref=e361] [cursor=pointer]: Cơ hội nghề nghiệp tại GSA
+                - listitem [ref=e363]:
+                  - link "Chính sách Chính sách bảo mật và điều khoản" [ref=e364] [cursor=pointer]:
+                    - /url: /privacy-policy
+                    - generic [ref=e365] [cursor=pointer]:
+                      - img [ref=e369] [cursor=pointer]
+                      - generic [ref=e372] [cursor=pointer]:
+                        - generic [ref=e374] [cursor=pointer]: Chính sách
+                        - paragraph [ref=e375] [cursor=pointer]: Chính sách bảo mật và điều khoản
+              - paragraph [ref=e378]: 💡 Tìm hiểu thêm về chúng tôi
+            - generic [ref=e379]:
+              - generic [ref=e380]:
+                - img [ref=e382]
+                - heading "Dịch vụ" [level=3] [ref=e386]
+                - img [ref=e388]
+              - list [ref=e394]:
+                - listitem [ref=e395]:
+                  - link "Sản phẩm Khám phá sản phẩm từ khắp thế giới" [ref=e396] [cursor=pointer]:
+                    - /url: /products
+                    - generic [ref=e397] [cursor=pointer]:
+                      - img [ref=e401] [cursor=pointer]
+                      - generic [ref=e404] [cursor=pointer]:
+                        - generic [ref=e406] [cursor=pointer]: Sản phẩm
+                        - paragraph [ref=e407] [cursor=pointer]: Khám phá sản phẩm từ khắp thế giới
+                - listitem [ref=e409]:
+                  - link "Blog Tin tức và hướng dẫn mua hàng" [ref=e410] [cursor=pointer]:
+                    - /url: /blog
+                    - generic [ref=e411] [cursor=pointer]:
+                      - img [ref=e415] [cursor=pointer]
+                      - generic [ref=e417] [cursor=pointer]:
+                        - generic [ref=e419] [cursor=pointer]: Blog
+                        - paragraph [ref=e420] [cursor=pointer]: Tin tức và hướng dẫn mua hàng
+                - listitem [ref=e422]:
+                  - link "Liên hệ Thông tin liên hệ và hỗ trợ" [ref=e423] [cursor=pointer]:
+                    - /url: /products#contact
+                    - generic [ref=e424] [cursor=pointer]:
+                      - img [ref=e428] [cursor=pointer]
+                      - generic [ref=e432] [cursor=pointer]:
+                        - generic [ref=e434] [cursor=pointer]: Liên hệ
+                        - paragraph [ref=e435] [cursor=pointer]: Thông tin liên hệ và hỗ trợ
+              - paragraph [ref=e438]: 💡 Khám phá dịch vụ đa dạng
+          - generic [ref=e439]:
+            - generic [ref=e440]:
+              - generic [ref=e441]:
+                - generic [ref=e442]:
+                  - img [ref=e444]
+                  - heading "Newsletter" [level=3] [ref=e447]
+                - paragraph [ref=e448]: Nhận thông tin mới nhất về sản phẩm và ưu đãi đặc biệt
+              - generic [ref=e449]:
+                - textbox "email@example.com" [ref=e451]
+                - generic [ref=e452]:
+                  - button "Đăng ký nhận tin" [disabled]:
+                    - generic:
+                      - generic:
+                        - text: Đăng ký nhận tin
+                        - generic:
+                          - img
+            - generic [ref=e453]:
+              - generic [ref=e454]:
+                - generic [ref=e455]:
+                  - img [ref=e457]
+                  - heading "Kết nối với chúng tôi" [level=3] [ref=e460]
+                - paragraph [ref=e461]: Theo dõi để nhận thông tin và ưu đãi mới nhất
+              - generic [ref=e462]:
+                - link "Facebook" [ref=e464] [cursor=pointer]:
+                  - /url: https://facebook.com/globalshopping
+                  - img [ref=e466] [cursor=pointer]
+                  - generic:
+                    - generic:
+                      - img
+                  - generic:
+                    - generic: Facebook
+                - link "Instagram" [ref=e469] [cursor=pointer]:
+                  - /url: https://instagram.com/globalshopping
+                  - img [ref=e471] [cursor=pointer]
+                  - generic:
+                    - generic:
+                      - img
+                  - generic:
+                    - generic: Instagram
+                - link "Twitter" [ref=e475] [cursor=pointer]:
+                  - /url: https://twitter.com/globalshopping
+                  - img [ref=e477] [cursor=pointer]
+                  - generic:
+                    - generic:
+                      - img
+                  - generic:
+                    - generic: Twitter
+                - link "LinkedIn" [ref=e480] [cursor=pointer]:
+                  - /url: https://linkedin.com/company/globalshopping
+                  - img [ref=e482] [cursor=pointer]
+                  - generic:
+                    - generic:
+                      - img
+                  - generic:
+                    - generic: LinkedIn
+                - link "YouTube" [ref=e487] [cursor=pointer]:
+                  - /url: https://youtube.com/@globalshopping
+                  - img [ref=e489] [cursor=pointer]
+                  - generic:
+                    - generic:
+                      - img
+                  - generic:
+                    - generic: YouTube
+                - link "Zalo" [ref=e493] [cursor=pointer]:
+                  - /url: https://zalo.me/globalshopping
+                  - img [ref=e495] [cursor=pointer]
+                  - generic:
+                    - generic:
+                      - img
+                  - generic:
+                    - generic: Zalo
+              - paragraph [ref=e498]:
+                - generic [ref=e499]: 🚀 Theo dõi để không bỏ lỡ ưu đãi đặc biệt!
+              - generic [ref=e500]:
+                - generic [ref=e501]:
+                  - generic [ref=e502]: 10K+
+                  - generic [ref=e503]: Người theo dõi
+                - generic [ref=e504]:
+                  - generic [ref=e505]: 98%
+                  - generic [ref=e506]: Hài lòng
+        - generic [ref=e507]:
+          - generic [ref=e508]:
+            - paragraph [ref=e509]:
+              - text: © 2025 Global Shopping Assistant.
+              - generic [ref=e510]: Tất cả quyền được bảo lưu.
+            - generic [ref=e511]:
+              - link "Chính sách bảo mật" [ref=e512] [cursor=pointer]:
+                - /url: "#"
+                - text: Chính sách bảo mật
+              - link "Điều khoản sử dụng" [ref=e513] [cursor=pointer]:
+                - /url: "#"
+                - text: Điều khoản sử dụng
+              - link "Cookies" [ref=e514] [cursor=pointer]:
+                - /url: "#"
+                - text: Cookies
+          - button "↑ Về đầu trang" [ref=e516] [cursor=pointer]:
+            - generic [ref=e517] [cursor=pointer]: ↑
+            - generic [ref=e518] [cursor=pointer]: Về đầu trang
+```

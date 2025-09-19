@@ -2,13 +2,18 @@ import React, { useMemo, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
-import { ArrowLeft, Share2 } from 'lucide-react';
+import { ArrowLeft, Share2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { simpleProducts as mockProducts } from '@/data/simpleProducts';
 import { SimpleProduct } from '@/types/simple';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { ShoppingCart, Plus, Minus } from 'lucide-react';
-// Temporarily removed category utils to fix TypeScript timeout
+import ProductImageGallery from '@/components/ProductImageGallery';
+import ProductSpecifications from '@/components/ProductSpecifications';
+import ProductBreadcrumbs from '@/components/ProductBreadcrumbs';
+import RelatedProducts from '@/components/RelatedProducts';
+import ProductReviews from '@/components/ProductReviews';
+import ProductVariants from '@/components/ProductVariants';
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -72,8 +77,7 @@ const ProductDetail: React.FC = () => {
     return foundProduct;
   }, [slug, currentPrice]);
 
-  // Simplified breadcrumbs without complex category utils
-  const categoryBreadcrumbs: any[] = [];
+  // Simplified breadcrumbs moved to component
 
   // Handle product not found
   if (!product) {
@@ -184,37 +188,9 @@ const ProductDetail: React.FC = () => {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center justify-between">
               {/* Breadcrumb */}
-              <nav className="flex items-center space-x-2 text-sm text-gray-500 flex-wrap">
-                <button 
-                  onClick={() => navigate('/')}
-                  className="hover:text-gsa-primary transition-colors"
-                >
-                  {t('common.home')}
-                </button>
-                <span>/</span>
-                <button 
-                  onClick={() => navigate('/products')}
-                  className="hover:text-gsa-primary transition-colors"
-                >
-                  {t('products.title')}
-                </button>
-                
-                {/* Category breadcrumbs */}
-                {categoryBreadcrumbs.slice(1).map((breadcrumb, index) => (
-                  <React.Fragment key={breadcrumb.id}>
-                    <span>/</span>
-                    <button 
-                      onClick={() => navigate(breadcrumb.url)}
-                      className="hover:text-gsa-primary transition-colors"
-                    >
-                      {breadcrumb.name}
-                    </button>
-                  </React.Fragment>
-                ))}
-                
-                <span>/</span>
-                <span className="text-gray-900 font-medium truncate max-w-xs">{product.name}</span>
-              </nav>
+              <div className="flex-1 min-w-0">
+                <ProductBreadcrumbs product={product as any} />
+              </div>
 
               {/* Action buttons */}
               <div className="flex items-center space-x-3">
@@ -244,6 +220,19 @@ const ProductDetail: React.FC = () => {
                   <Share2 className="w-4 h-4 mr-2" />
                   Share
                 </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    const current = JSON.parse(localStorage.getItem('compare-list') || '[]');
+                    if (!current.includes(product.id)) {
+                      localStorage.setItem('compare-list', JSON.stringify([...current, product.id]));
+                    }
+                  }}
+                >
+                  <Copy className="w-4 h-4 mr-2" />
+                  Compare
+                </Button>
               </div>
             </div>
           </div>
@@ -253,21 +242,8 @@ const ProductDetail: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
-              {/* Product Image Placeholder */}
-              <div className="aspect-square bg-gray-100 rounded-lg flex items-center justify-center">
-                {primaryImage ? (
-                  <img 
-                    src={primaryImage} 
-                    alt={product.name}
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                ) : (
-                  <div className="text-gray-400 text-center">
-                    <div className="text-6xl mb-4">📦</div>
-                    <p>Product Image</p>
-                  </div>
-                )}
-              </div>
+              {/* Product Image Gallery */}
+              <ProductImageGallery images={product.images} productName={product.name} />
 
               {/* Product Info */}
               <div className="space-y-6">
@@ -338,7 +314,13 @@ const ProductDetail: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Product Variants - Temporarily disabled */}
+                {/* Product Variants */}
+                <ProductVariants 
+                  product={product as any} 
+                  selectedVariants={selectedVariants} 
+                  onVariantChange={handleVariantChange}
+                  onPriceChange={handlePriceChange}
+                />
 
                 {/* Description */}
                 <div>
@@ -349,35 +331,7 @@ const ProductDetail: React.FC = () => {
                 </div>
 
                 {/* Specifications */}
-                <div className="border rounded-lg p-4 bg-gray-50">
-                  <h3 className="text-lg font-medium text-gray-900 mb-3">Product Specifications</h3>
-                  <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
-                    <div className="flex justify-between border-b border-gray-200 pb-1">
-                      <span className="text-gray-600">Origin:</span>
-                      <span className="font-medium">{product.origin.toUpperCase()}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-gray-200 pb-1">
-                      <span className="text-gray-600">Type:</span>
-                      <span className="font-medium capitalize">{product.type.replace('_', ' ')}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-gray-200 pb-1">
-                      <span className="text-gray-600">Status:</span>
-                      <span className="font-medium capitalize">{product.status}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-gray-200 pb-1">
-                      <span className="text-gray-600">Stock:</span>
-                      <span className="font-medium">{product.stock} units</span>
-                    </div>
-                    <div className="flex justify-between border-b border-gray-200 pb-1">
-                      <span className="text-gray-600">Source:</span>
-                      <span className="font-medium">{product.sourceSite}</span>
-                    </div>
-                    <div className="flex justify-between border-b border-gray-200 pb-1">
-                      <span className="text-gray-600">Category:</span>
-                      <span className="font-medium">{product.category.name}</span>
-                    </div>
-                  </div>
-                </div>
+                <ProductSpecifications product={product as any} />
 
                 {/* Tags */}
                 {product.tags.length > 0 && (
@@ -477,8 +431,11 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
         </div>
-        
-        {/* Related Products temporarily disabled */}
+        {/* Related Products and Reviews */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <RelatedProducts current={product as any} />
+          <ProductReviews product={product as any} />
+        </div>
       </div>
     </>
   );
