@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
+import WishlistButton from '@/components/WishlistButton';
 import { SimpleProduct } from '@/types/simple';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -11,12 +12,14 @@ interface SimpleProductCardProps {
   product: SimpleProduct;
   className?: string;
   showWishlist?: boolean;
+  highlightQuery?: string;
 }
 
 const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
   product,
   className = '',
   showWishlist = true,
+  highlightQuery,
 }) => {
   const { addToCart, isInCart, getItemQuantity } = useSimpleCart();
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
@@ -26,6 +29,25 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addToCart(product);
+  };
+
+  const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  const renderHighlighted = (text: string) => {
+    if (!highlightQuery || !text) return text;
+    try {
+      const pattern = new RegExp(`(${escapeRegExp(highlightQuery)})`, 'ig');
+      const parts = text.split(pattern);
+      return (
+        <>
+          {parts.map((part, i) =>
+            pattern.test(part) ? <mark key={i}>{part}</mark> : <React.Fragment key={i}>{part}</React.Fragment>
+          )}
+        </>
+      );
+    } catch {
+      return text;
+    }
   };
 
   const formatPrice = (price: number) => {
@@ -44,7 +66,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
             <img
               src={primaryImage?.url || '/placeholder.svg'}
               alt={primaryImage?.alt || product.name}
-              className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+              className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-200"
               loading="lazy"
             />
             
@@ -69,12 +91,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
 
             {/* Wishlist Button */}
             {showWishlist && (
-              <button
-                onClick={(e) => e.preventDefault()}
-                className="absolute top-2 right-2 p-2 rounded-full bg-white/80 hover:bg-white transition-colors"
-              >
-                <Heart className="w-4 h-4 text-gray-600 hover:text-red-500" />
-              </button>
+              <WishlistButton product={product as any} className="absolute top-2 right-2" />
             )}
           </div>
 
@@ -84,9 +101,14 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
             <p className="text-sm text-gray-500 mb-1">{product.category.name}</p>
             
             {/* Product Name */}
-            <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-primary transition-colors">
-              {product.name}
+            <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-primary transition-colors">
+              {renderHighlighted(product.name)}
             </h3>
+
+            {/* Description (snippet) */}
+            <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+              {renderHighlighted(product.description)}
+            </p>
 
             {/* Rating */}
             <div className="flex items-center gap-1 mb-2">
@@ -121,11 +143,11 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
 
             {/* Origin */}
             <div className="flex items-center gap-2 mb-3">
-              <Badge variant="outline" className="text-xs">
+              <Badge variant="outline" className="text-[10px] sm:text-xs">
                 {product.origin.toUpperCase()}
               </Badge>
               {product.stock < 10 && product.stock > 0 && (
-                <Badge variant="outline" className="text-xs text-orange-600">
+                <Badge variant="outline" className="text-[10px] sm:text-xs text-orange-600">
                   Only {product.stock} left
                 </Badge>
               )}

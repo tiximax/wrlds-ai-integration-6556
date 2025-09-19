@@ -41,12 +41,13 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
 
       {/* Sidebar */}
       <div
+        data-testid="cart-sidebar"
         className={`fixed top-0 right-0 h-full w-full max-w-md bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b">
+        <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white z-10">
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-6 h-6" />
             <h2 className="text-lg font-semibold">
@@ -57,7 +58,8 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="p-2"
+            className="p-2 w-10 h-10"
+            aria-label="Close cart"
           >
             <X className="w-5 h-5" />
           </Button>
@@ -130,12 +132,13 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                           </span>
                           
                           {/* Quantity Controls */}
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-3">
                             <Button
                               variant="outline"
                               size="sm"
-                              className="w-8 h-8 p-0"
+                              className="w-10 h-10 sm:w-8 sm:h-8 p-0"
                               onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              aria-label="Decrease quantity"
                             >
                               <Minus className="w-3 h-3" />
                             </Button>
@@ -145,8 +148,9 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                             <Button
                               variant="outline"
                               size="sm"
-                              className="w-8 h-8 p-0"
+                              className="w-10 h-10 sm:w-8 sm:h-8 p-0"
                               onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              aria-label="Increase quantity"
                             >
                               <Plus className="w-3 h-3" />
                             </Button>
@@ -188,7 +192,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
               </div>
 
               {/* Footer */}
-              <div className="border-t p-4 bg-white">
+              <div className="border-t p-4 bg-white" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1rem)' }}>
                 {/* Total */}
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-lg font-semibold">Total:</span>
