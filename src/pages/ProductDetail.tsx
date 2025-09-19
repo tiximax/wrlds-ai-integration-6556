@@ -360,6 +360,8 @@ const ProductDetail: React.FC = () => {
                       <Button
                         variant="outline"
                         size="sm"
+                        className="w-10 h-10 sm:w-8 sm:h-8 p-0"
+                        aria-label="Decrease quantity"
                         disabled={quantity <= 1}
                         onClick={() => handleQuantityChange(quantity - 1)}
                       >
@@ -373,6 +375,8 @@ const ProductDetail: React.FC = () => {
                       <Button
                         variant="outline"
                         size="sm"
+                        className="w-10 h-10 sm:w-8 sm:h-8 p-0"
+                        aria-label="Increase quantity"
                         disabled={quantity >= product.stock}
                         onClick={() => handleQuantityChange(quantity + 1)}
                       >
