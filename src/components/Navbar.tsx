@@ -5,12 +5,13 @@ import { Menu, X, ChevronDown, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger, navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { SimpleCartSidebar } from './SimpleCartSidebar';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
-import { ShoppingCart } from 'lucide-react';
+import { ShoppingCart, Heart } from 'lucide-react';
 import { EnhancedSearch } from '@/components/ui/enhanced-search';
+import { useWishlist } from '@/contexts/WishlistContext';
 import CategoryMenu from './CategoryMenu';
 import MobileCategoryMenu from './MobileCategoryMenu';
 import { MegaMenu } from '@/components/ui/mega-menu';
@@ -20,8 +21,9 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const { totalItems } = useSimpleCart();
+  const { getWishlistCount } = useWishlist();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,27 +82,45 @@ const Navbar = () => {
             <NavigationMenu className={cn(isScrolled ? "" : "text-white")}>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <Link to="/">
-                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800")}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/"
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800"
+                      )}
+                    >
                       {t('navigation.home')}
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link to="/about">
-                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800")}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/about"
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800"
+                      )}
+                    >
                       {t('navigation.about')}
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link to="/products">
-                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800")}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/products"
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800"
+                      )}
+                    >
                       {t('navigation.products')}
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 
                 <CategoryMenu isScrolled={isScrolled} />
@@ -155,19 +175,31 @@ const Navbar = () => {
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link to="/blog">
-                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800")}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/blog"
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800"
+                      )}
+                    >
                       {t('navigation.news')}
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <Link to="/careers">
-                    <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800")}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/careers"
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800"
+                      )}
+                    >
                       {t('navigation.careers')}
-                    </NavigationMenuLink>
-                  </Link>
+                    </Link>
+                  </NavigationMenuLink>
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
@@ -193,12 +225,30 @@ const Navbar = () => {
             {/* Right side controls */}
             <div className="flex items-center space-x-2">
               <LanguageSwitcher />
+              <Link
+                to="/wishlist"
+                className={cn(
+                  "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
+                  isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
+                )}
+                aria-label="Open wishlist"
+              >
+                <Heart className="w-5 h-5" />
+                <span className="hidden sm:inline">Wishlist</span>
+                {getWishlistCount() > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-5 h-5 px-1 flex items-center justify-center">
+                    {getWishlistCount()}
+                  </span>
+                )}
+              </Link>
               <button
+                data-testid="cart-button"
                 onClick={() => setIsCartOpen(true)}
                 className={cn(
                   "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
                   isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
                 )}
+                aria-label="Open cart"
               >
                 <ShoppingCart className="w-5 h-5" />
                 <span className="hidden sm:inline">Cart</span>
@@ -214,11 +264,13 @@ const Navbar = () => {
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
             <button
+              data-testid="cart-button"
               onClick={() => setIsCartOpen(true)}
               className={cn(
                 "relative p-2 rounded-md transition-colors",
                 isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
               )}
+              aria-label="Open cart"
             >
               <ShoppingCart className="w-5 h-5" />
               {totalItems > 0 && (
