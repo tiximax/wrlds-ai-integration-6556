@@ -26,7 +26,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { Product } from '@/types/product';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import LazyImage from '@/components/LazyImage';
 import { cn } from '@/lib/utils';
 
@@ -49,7 +49,7 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({
   onShare,
   isWishlisted = false
 }) => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isCartLoading, setIsCartLoading] = useState(false);

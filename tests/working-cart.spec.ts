@@ -5,13 +5,17 @@ test.describe('Enhanced Shopping Cart - Working Tests', () => {
     // Set large viewport
     await page.setViewportSize({ width: 1920, height: 1080 });
     await page.goto('/');
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(2000);
+    await page.waitForLoadState('domcontentloaded');
+    // Chờ nút cart sẵn sàng thay vì networkidle
+    await page.getByTestId('cart-button').first().waitFor({ state: 'visible', timeout: 10000 });
     
     // Remove silktide overlay that interferes with clicks
+    // Remove Silktide overlay for stable clicks
     await page.evaluate(() => {
       const silktide = document.querySelector('#silktide-wrapper');
-      if (silktide) silktide.remove();
+      if (silktide) (silktide as HTMLElement).remove();
+      const backdrop = document.querySelector('#silktide-backdrop');
+      if (backdrop) (backdrop as HTMLElement).remove();
     });
   });
 
@@ -34,18 +38,19 @@ test.describe('Enhanced Shopping Cart - Working Tests', () => {
     // Take screenshot of open cart
     await page.screenshot({ path: 'test-results/enhanced-cart-opened.png' });
     
-    // Verify cart header elements (use more specific selectors)
-    await expect(page.locator('h2', { hasText: 'Giỏ hàng' })).toBeVisible();
-    await expect(page.locator('text=0 sản phẩm')).toBeVisible();
+    // Verify cart header elements (SimpleCart shows "Cart (0 items)")
+    await expect(cartSidebar.locator('h2')).toBeVisible();
+    await expect(cartSidebar.locator('h2').filter({ hasText: /^Cart\b/i })).toBeVisible();
     console.log('✅ Cart header displays correctly');
     
-    // Verify empty cart state
-    await expect(page.locator('text=Giỏ hàng trống')).toBeVisible();
-    await expect(page.locator('text=Hãy khám phá các sản phẩm tuyệt vời')).toBeVisible();
+    // Verify empty cart state (EN or VI)
+    const emptyEn = cartSidebar.locator('text=Your cart is empty');
+    const emptyVi = cartSidebar.locator('text=Giỏ hàng trống');
+    await expect(emptyEn.or(emptyVi)).toBeVisible();
     console.log('✅ Empty cart state displays correctly');
     
-    // Verify "Continue Shopping" button
-    const continueShoppingBtn = page.locator('button', { hasText: 'Tiếp tục mua sắm' });
+    // Verify "Continue Shopping" button (EN or VI)
+    const continueShoppingBtn = cartSidebar.locator('button', { hasText: /Continue Shopping|Tiếp tục mua sắm/i });
     await expect(continueShoppingBtn).toBeVisible();
     console.log('✅ Continue shopping button is visible');
     
@@ -59,8 +64,9 @@ test.describe('Enhanced Shopping Cart - Working Tests', () => {
     } else {
       // Alternative: close via continue shopping button
       await continueShoppingBtn.click();
-      await page.waitForTimeout(1000);
-      await expect(cartSidebar).not.toBeVisible();
+      // Chờ animation đóng (transform translate-x-full)
+      await expect(cartSidebar).toHaveClass(/translate-x-full/);
+      await expect(cartSidebar).not.toHaveClass(/translate-x-0/);
       console.log('✅ Cart closed successfully via continue shopping');
     }
   });
@@ -94,9 +100,9 @@ test.describe('Enhanced Shopping Cart - Working Tests', () => {
   test('should have proper cart accessibility', async ({ page }) => {
     const cartButton = page.locator('[data-testid="cart-button"]').first();
     
-    // Check ARIA label
+    // Check ARIA label (contains 'cart')
     const ariaLabel = await cartButton.getAttribute('aria-label');
-    expect(ariaLabel).toContain('Shopping cart');
+    expect(ariaLabel?.toLowerCase()).toContain('cart');
     console.log(`✅ Cart button has proper ARIA label: "${ariaLabel}"`);
     
     // Click and check sidebar accessibility

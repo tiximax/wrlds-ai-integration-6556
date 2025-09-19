@@ -229,6 +229,7 @@ const SimpleProducts: React.FC = () => {
                 key={product.id}
                 product={product}
                 className={viewMode === 'list' ? 'flex' : ''}
+                highlightQuery={searchTerm}
               />
             ))}
           </div>

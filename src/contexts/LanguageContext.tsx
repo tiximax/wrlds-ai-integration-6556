@@ -19,6 +19,7 @@ const translations = {
   vi: viTranslations,
 };
 
+// NOTE: Legacy LanguageProvider is now deprecated in favor of react-i18next.
 export const LanguageProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [language, setLanguage] = useState<Language>('en');
 

@@ -44,17 +44,13 @@ export const addResourceHints = (): void => {
   
   // Prefetch important pages
   prefetchResource('/about');
-  prefetchResource('/services');
+  prefetchResource('/products');
 };
 
 /**
  * Critical resource preloading
  */
 export const preloadCriticalResources = (): void => {
-  // Preload fonts
-  preloadResource('/fonts/inter-var.woff2', 'font', 'font/woff2');
-  
-  // Preload hero images
-  preloadResource('/hero-background.webp', 'image');
-  preloadResource('/logo.svg', 'image');
+  // Preload primary Open Graph image
+  preloadResource('/og-image.png', 'image');
 };

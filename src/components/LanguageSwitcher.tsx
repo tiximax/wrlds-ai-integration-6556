@@ -1,6 +1,6 @@
 import React from 'react';
 import { Globe } from 'lucide-react';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -10,7 +10,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const LanguageSwitcher = () => {
-  const { language, setLanguage } = useLanguage();
+  const { i18n } = useTranslation();
+  const language = (i18n.language || 'en').startsWith('vi') ? 'vi' : 'en';
+  const setLanguage = (lang: 'en' | 'vi') => i18n.changeLanguage(lang);
 
   const languages = [
     { code: 'en', name: 'English', flag: '🇺🇸' },

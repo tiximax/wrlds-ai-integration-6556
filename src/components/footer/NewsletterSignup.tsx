@@ -7,7 +7,7 @@ import { ArrowRight, Mail, CheckCircle, AlertCircle, Loader2 } from 'lucide-reac
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
-import emailjs from 'emailjs-com';
+import { subscribeEmail } from '@/services/subscribe';
 
 // Validation schema
 const newsletterSchema = z.object({
@@ -37,26 +37,11 @@ export const NewsletterSignup: React.FC = () => {
     setIsSubmitting(true);
     
     try {
-      // EmailJS configuration
-      const EMAILJS_SERVICE_ID = "service_i3h66xg";
-      const EMAILJS_TEMPLATE_ID = "template_fgq53nh";
-      const EMAILJS_PUBLIC_KEY = "wQmcZvoOqTAhGnRZ3";
-      
-      const templateParams = {
-        from_name: "Website Subscriber",
-        from_email: data.email,
-        message: `New newsletter subscription from enhanced footer.`,
-        to_name: 'Global Shopping Assistant Team',
-        reply_to: data.email
-      };
-      
-      await emailjs.send(
-        EMAILJS_SERVICE_ID,
-        EMAILJS_TEMPLATE_ID,
-        templateParams,
-        EMAILJS_PUBLIC_KEY
-      );
-      
+      const result = await subscribeEmail(data.email);
+      if (!result.ok) {
+        throw new Error(`Subscribe failed with status ${result.status}`);
+      }
+
       toast.success('Cảm ơn bạn đã đăng ký newsletter!', {
         description: 'Chúng tôi sẽ gửi thông tin mới nhất đến email của bạn.',
       });

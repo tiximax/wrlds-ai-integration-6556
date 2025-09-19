@@ -175,19 +175,19 @@ const SEO: React.FC<SEOProps> = ({
     dateModified: modifiedDate || publishDate,
     author: {
       '@type': 'Organization',
-      name: author || 'WRLDS Technologies',
-      url: 'https://wrlds.com'
+      name: author || 'Global Shopping Assistant',
+      url: 'https://globalshoppingassistant.com'
     },
     publisher: {
       '@type': 'Organization',
-      name: 'WRLDS Technologies',
+      name: 'Global Shopping Assistant',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://wrlds.com/lovable-uploads/14ea3fe0-19d6-425c-b95b-4117bc41f3ca.png',
-        width: 512,
-        height: 512
+        url: 'https://globalshoppingassistant.com/og-image.png',
+        width: 1200,
+        height: 630
       },
-      url: 'https://wrlds.com'
+      url: 'https://globalshoppingassistant.com'
     },
     description: description,
     keywords: enhancedKeywords.join(', '),

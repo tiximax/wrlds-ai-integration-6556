@@ -6,7 +6,7 @@ import { Product } from '@/types/simple';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import LazyImage from '@/components/LazyImage';
 import { format, differenceInDays } from 'date-fns';
 import { vi } from 'date-fns/locale';
@@ -26,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
   onAddToWishlist
 }) => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
 
   // Format price to VND

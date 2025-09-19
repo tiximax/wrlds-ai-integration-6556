@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { getRootCategories, getChildren } from '@/utils/categoryUtils';
 import { NavigationMenuContent, NavigationMenuItem, NavigationMenuTrigger } from '@/components/ui/navigation-menu';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { ChevronRight, Package, Tag } from 'lucide-react';
 
 interface CategoryMenuProps {
@@ -11,7 +11,7 @@ interface CategoryMenuProps {
 }
 
 const CategoryMenu: React.FC<CategoryMenuProps> = ({ isScrolled }) => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const rootCategories = getRootCategories();
 
   return (

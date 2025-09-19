@@ -1,5 +1,7 @@
 # Welcome to your Lovable project
 
+[![CI](https://github.com/tiximax/wrlds-ai-integration-6556/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/tiximax/wrlds-ai-integration-6556/actions/workflows/ci.yml) [![E2E Preview](https://github.com/tiximax/wrlds-ai-integration-6556/actions/workflows/e2e-preview.yml/badge.svg)](https://github.com/tiximax/wrlds-ai-integration-6556/actions/workflows/e2e-preview.yml)
+
 ## Project info
 
 **URL**: https://lovable.dev/projects/ec1d4f1e-2506-4da5-a91b-34afa90cceb6
@@ -62,8 +64,47 @@ This project is built with .
 
 ## How can I deploy this project?
 
-Simply open [Lovable](https://lovable.dev/projects/ec1d4f1e-2506-4da5-a91b-34afa90cceb6) and click on Share -> Publish.
+See docs/DEPLOY.md for step-by-step deploy and remote E2E verification.
+
+GitHub Actions (Vercel deploy + E2E)
+- Workflow: `.github/workflows/deploy-vercel.yml`
+- Secrets required (repo settings > Actions secrets):
+  - VERCEL_TOKEN
+  - VERCEL_ORG_ID
+  - VERCEL_PROJECT_ID
+- Trigger: push to main hoặc workflow_dispatch (có thể chọn chạy E2E sau deploy)
+
+You can deploy to Vercel or Netlify. This project includes serverless endpoints for newsletter subscribe on both platforms, and SPA fallback for Netlify.
+
+- Vercel
+  - Endpoint: `api/subscribe.ts` (deployed at `/api/subscribe`)
+  - Steps:
+    1. npm i && npm run build
+    2. vercel (or connect repo to Vercel and deploy)
+    3. Optional: set environment variables like `SUBSCRIBE_API_KEY` at Vercel project settings
+
+- Netlify
+  - Endpoint: `netlify/functions/subscribe.ts` with redirect in `netlify.toml`
+  - SPA fallback: `/* -> /index.html` is already configured in `netlify.toml`
+  - Steps:
+    1. npm i && npm run build
+    2. netlify deploy --build (or connect repo to Netlify and deploy)
+    3. Optional: set environment variables in Netlify site settings
+
+Local E2E (smoke) before/after deploy
+- Dev: `npm run test:e2e -- tests/working-cart.spec.ts --reporter=line`
+- Preview (build + preview): `npm run test:e2e:preview -- tests/working-cart.spec.ts --reporter=line`
+
+### CI usage
+- CI auto-runs on push/PR: unit tests (Vitest) + E2E dev (Playwright) via `.github/workflows/ci.yml`.
+- E2E preview workflow: `.github/workflows/e2e-preview.yml`.
+  - Kích hoạt thủ công (Actions > E2E Preview > Run workflow), hoặc
+  - Trong PR, thêm nhãn `run-e2e-preview` để chạy tự động.
+- E2E remote workflow: `.github/workflows/e2e-remote.yml` (workflow_dispatch, nhập BASE_URL để test môi trường đã deploy)
+- Scripts tiện dụng:
+  - PowerShell: `./scripts/e2e-remote.ps1 -BaseUrl https://your-domain`
+  - Bash: `bash ./scripts/e2e-remote.sh https://your-domain`
 
 ## I want to use a custom domain - is that possible?
 
-We don't support custom domains (yet). If you want to deploy your project under your own domain then we recommend using Netlify. Visit our docs for more details: [Custom domains](https://docs.lovable.dev/tips-tricks/custom-domain/)
+Yes, both Vercel and Netlify support custom domains. Follow the respective provider docs to configure your domain and DNS records.

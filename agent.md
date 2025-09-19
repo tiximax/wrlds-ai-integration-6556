@@ -416,3 +416,87 @@ Checklist CI/Deploy
 **Current Status**: M4 Complete ✅ - Architecture Clean, Ready for M5
 **Next Priority**: Product Detail Page Enhancement
 
+Cập nhật 2025-09-19 08:10 UTC
+- Đã triển khai Task 5.2 (Search Integration) mức cơ bản hoạt động thực tế:
+  - Tạo mới:
+    + src/pages/SearchResults.tsx — Trang kết quả tìm kiếm với phân trang, sort (relevance/price asc/desc/rating/popularity/newest), highlight query, hiển thị badge filter.
+    + src/components/SearchFilters.tsx — Wrapper dùng lại FilterBar hiện có để tránh trùng lặp logic.
+    + src/utils/searchUtils.ts — parse/serialize URL params; sortProducts; paginate; performSearch.
+  - Cập nhật:
+    + src/App.tsx — thêm route /search (lazy load).
+    + src/components/ui/enhanced-search.tsx — điều hướng về /search?query=... thay vì /products?search=...
+- Build: PASS (vite build)
+- E2E smoke (working-cart.spec.ts): PASS 15/15 — không hồi quy giỏ hàng.
+
+Ghi chú:
+- Trang /products vẫn hoạt động bình thường; trang /search phục vụ kết quả tìm kiếm chuyên dụng với filter nâng cao (tận dụng sẵn FilterBar + productFilters + categoryUtils).
+- Highlight từ khóa vẫn được hỗ trợ qua SimpleProductCard.
+- Có thể mở rộng SearchFilters (filter theo category nhiều cấp, brand) nếu cần.
+
+Cập nhật 2025-09-19 08:16 UTC
+- Task 5.3 (Category Navigation) — cập nhật trang danh mục:
+  - Tạo src/components/CategoryBreadcrumbs.tsx dùng shadcn/ui breadcrumb.
+  - Nâng cấp src/pages/CategoryPage.tsx:
+    + Hỗ trợ route /category/:categorySlug và /category/:categorySlug/:subcategorySlug.
+    + Tích hợp breadcrumbs (dùng buildBreadcrumbs từ categoryUtils khi có taxonomy match; fallback đơn giản khi không khớp).
+    + Lọc sản phẩm theo slug danh mục/subdanh mục hiện tại (đảm bảo tương thích với simpleProducts hiện tại).
+- Build: PASS (vite build)
+- E2E smoke: PASS 15/15 (working-cart.spec.ts) — không hồi quy.
+
+Cập nhật 2025-09-19 08:20 UTC
+- Task 5.4 (Mobile Optimization) — bước 1: tối ưu gallery mobile
+  - Cập nhật src/components/ProductImageGallery.tsx:
+    + Ẩn nút điều hướng (arrows) trên màn hình nhỏ (sm:hidden) để tối ưu không gian.
+    + Thumbnails dạng hàng ngang cuộn được trên mobile (overflow-x-auto), grid 6 cột trên desktop.
+    + Đồng bộ thumbnail click với carousel (scrollTo) thông qua CarouselApi (setApi + api.scrollTo(idx)).
+  - Kết quả: UX tốt hơn trên mobile; swipe của Embla vẫn hoạt động.
+- Build: PASS (vite build)
+- E2E smoke: PASS 15/15 (working-cart.spec.ts)
+
+Cập nhật 2025-09-19 08:44 UTC
+- Task 5.5 (Wishlist System):
+  - Tạo mới:
+    + src/components/WishlistButton.tsx — nút toggle yêu thích (Heart), đồng bộ với WishlistContext.
+    + src/pages/Wishlist.tsx — trang danh sách yêu thích (remove item, thêm vào giỏ, link tới chi tiết sản phẩm).
+  - Cập nhật:
+    + src/components/SimpleProductCard.tsx — thay nút Heart cũ bằng WishlistButton (overlay trên ảnh).
+    + src/components/Navbar.tsx — thêm nút Wishlist với badge tổng số; điều hướng /wishlist.
+    + src/App.tsx — thêm route /wishlist (lazy load).
+- Build: PASS (vite build)
+- E2E smoke (working-cart.spec.ts): PASS 15/15 — xác nhận không hồi quy giỏ hàng.
+
+### Cập nhật phiên: Chạy server dev (2025-09-19)
+- Khởi chạy: npm run dev (Vite)
+- Cổng: 8080
+- PID: 8124
+- Log (stdout): C:\Users\pc\Documents\GitHub\wrlds-ai-integration-6556\server-dev-8080.out.log
+- Log (stderr): C:\Users\pc\Documents\GitHub\wrlds-ai-integration-6556\server-dev-8080.err.log
+- Kiểm tra: http://localhost:8080 trả về mã 200
+
+Cách dừng:
+- PowerShell: Stop-Process -Id 8124
+- Hoặc: taskkill /PID 8124 /F
+
+
+Cập nhật 2025-09-19 08:00 UTC
+- Đã triển khai một phần Task 5.1 (Product Detail Page Enhancement):
+  - Tạo mới các component:
+    + src/components/ProductImageGallery.tsx (gallery + zoom bằng Dialog + Carousel)
+    + src/components/ProductSpecifications.tsx (specs tách riêng)
+    + src/components/ProductBreadcrumbs.tsx (breadcrumbs dùng shadcn/ui)
+    + src/components/RelatedProducts.tsx (gợi ý cùng danh mục, dùng SimpleProductCard)
+    + src/components/ProductReviews.tsx (tóm tắt rating, placeholder review)
+  - Cập nhật src/pages/ProductDetail.tsx:
+    + Tích hợp ProductImageGallery, ProductSpecifications, ProductBreadcrumbs, RelatedProducts, ProductReviews
+    + Bật lại phần chọn biến thể qua ProductVariants (giá cập nhật theo onPriceChange; hiện dữ liệu simple chưa có variants nên hoạt động như base price)
+    + Thêm nút Compare (lưu localStorage 'compare-list')
+  - Sửa trùng định nghĩa trong src/components/ui/dialog.tsx (loại bỏ block duplicate) để build pass.
+- Build: PASS (vite build)
+- E2E smoke: PASS 15/15 (tests/working-cart.spec.ts) sau thay đổi, xác nhận không hồi quy giỏ hàng.
+
+Việc cần làm tiếp (M5 - còn lại):
+- Bổ sung ProductVariantSelector nâng cao nếu cần UI riêng (hiện đang dùng ProductVariants sẵn có)
+- Bổ sung social sharing nâng cao (hiện đã có share/copy link cơ bản)
+- Implement RelatedProducts logic đa tiêu chí (origin, tags) + slider mobile
+- Reviews: thêm form submit giả/lưu localStorage nếu muốn demo
+- Chuẩn bị Task 5.2 (Search Integration): tạo SearchResults.tsx, SearchFilters.tsx, utils/searchUtils.ts và gắn routing từ enhanced-search

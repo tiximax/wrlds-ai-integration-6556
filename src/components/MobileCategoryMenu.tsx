@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { getRootCategories, getChildren } from '@/utils/categoryUtils';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronUp, Package, Tag } from 'lucide-react';
 
 interface MobileCategoryMenuProps {
@@ -11,7 +11,7 @@ interface MobileCategoryMenuProps {
 }
 
 const MobileCategoryMenu: React.FC<MobileCategoryMenuProps> = ({ isScrolled, onLinkClick }) => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
   const rootCategories = getRootCategories();
 

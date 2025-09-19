@@ -2,11 +2,11 @@ import { ArrowRight, ShoppingCart, Globe, CreditCard, MessageSquare } from "luci
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
   const isMobile = useIsMobile();
-  const { t } = useLanguage();
+  const { t } = useTranslation();
   const containerVariants = {
     hidden: {
       opacity: 0

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { removeSilktide, clearStorage, openCartFromNavbar } from './helpers';
 
 // E2E for Wishlist basic flows
 // Notes:
@@ -10,15 +11,8 @@ test.beforeEach(async ({ page }) => {
   // Navigate to site origin and clear storage once per test
   await page.goto('/');
   await page.waitForLoadState('domcontentloaded');
-  await page.evaluate(() => {
-    try {
-      localStorage.removeItem('wishlist_items');
-      localStorage.removeItem('simple-cart');
-    } catch {}
-    // Remove silktide overlay if it appears
-    const silktide = document.querySelector('#silktide-wrapper');
-    if (silktide) (silktide as HTMLElement).remove();
-  });
+  await clearStorage(page);
+  await removeSilktide(page);
 });
 
 test('wishlist shows empty state initially', async ({ page }) => {
@@ -34,11 +28,7 @@ test('can add product to wishlist from home and see it on wishlist page, then re
   await page.waitForLoadState('domcontentloaded');
   // Wait until product grid likely rendered (look for any product card action)
 
-  // Remove silktide overlay if present
-  await page.evaluate(() => {
-    const silktide = document.querySelector('#silktide-wrapper');
-    if (silktide) (silktide as HTMLElement).remove();
-  });
+  await removeSilktide(page);
   // Click the first Add to wishlist button
   const addToWishlistBtn = page.locator('button[aria-label="Add to wishlist"]').first();
   await expect(addToWishlistBtn).toBeVisible();
@@ -49,10 +39,7 @@ test('can add product to wishlist from home and see it on wishlist page, then re
   // Navigate to wishlist page and verify item exists
   await page.goto('/wishlist');
   await page.waitForLoadState('domcontentloaded');
-  await page.evaluate(() => {
-    const silktide = document.querySelector('#silktide-wrapper');
-    if (silktide) (silktide as HTMLElement).remove();
-  });
+  await removeSilktide(page);
 
   // There should be at least one Add to cart button in wishlist
   const addToCartInWishlist = page.locator('[data-testid="wishlist-add-to-cart"]').first();
@@ -78,34 +65,23 @@ test('adding to cart from wishlist updates cart sidebar', async ({ page }) => {
   await page.goto('/products');
   await page.waitForLoadState('domcontentloaded');
   await page.waitForSelector('button[aria-label="Add to wishlist"]', { timeout: 10000 });
-  await page.evaluate(() => {
-    const silktide = document.querySelector('#silktide-wrapper');
-    if (silktide) (silktide as HTMLElement).remove();
-  });
+  await removeSilktide(page);
   const addToWishlistBtn = page.locator('button[aria-label="Add to wishlist"]').first();
   await addToWishlistBtn.click();
   await expect(page.locator('button[aria-label="Remove from wishlist"]').first()).toBeVisible();
 
   // Go to wishlist and add that item to cart
   await page.goto('/wishlist');
+  await removeSilktide(page);
+  const addToCartInWishlist = page.locator('[data-testid=\"wishlist-add-to-cart\"]').first();
+  // Use DOM click to avoid overlay/pointer issues on Mobile Safari
   await page.evaluate(() => {
-    const silktide = document.querySelector('#silktide-wrapper');
-    if (silktide) (silktide as HTMLElement).remove();
+    const btn = document.querySelector('[data-testid=\"wishlist-add-to-cart\"]') as HTMLButtonElement | null;
+    if (btn) btn.click();
   });
-  const addToCartInWishlist = page.locator('[data-testid="wishlist-add-to-cart"]').first();
-  await addToCartInWishlist.click();
 
   // Open the cart sidebar from navbar
-  const cartButton = page.locator('[data-testid=\"cart-button\"]').first();
-  await cartButton.scrollIntoViewIfNeeded();
-  await page.evaluate(() => {
-    window.scrollTo(0, 0);
-    const silktide = document.querySelector('#silktide-wrapper');
-    if (silktide) (silktide as HTMLElement).remove();
-    const backdrop = document.querySelector('#silktide-backdrop');
-    if (backdrop) (backdrop as HTMLElement).remove();
-    (document.querySelector('[data-testid=\"cart-button\"]') as HTMLButtonElement)?.click();
-  });
+  await openCartFromNavbar(page);
 
   // Verify the cart sidebar is visible
   const cartSidebar = page.locator('[data-testid="cart-sidebar"]');

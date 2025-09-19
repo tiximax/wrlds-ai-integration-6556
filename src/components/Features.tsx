@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from "@/components/ui/button";
 import { useScrollHijack } from '@/hooks/useScrollHijack';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { useTranslation } from 'react-i18next';
 
 const Features = () => {
   const featuresRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ const Features = () => {
   const [currentSprint, setCurrentSprint] = useState(1);
   const totalSprints = 3;
   const isMobile = useIsMobile();
-  const { t } = useLanguage();
+  const { t } = useTranslation();
 
   const features = [
     {

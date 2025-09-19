@@ -1,12 +1,12 @@
 import { Shield, Clock, Award, Users, Star, CheckCircle, Phone, MessageCircle, Globe } from "lucide-react";
 import { motion } from "framer-motion";
-import { useLanguage } from "@/contexts/LanguageContext";
+import { useTranslation } from 'react-i18next';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const TrustSignals = () => {
-  const { t } = useLanguage();
+  const { t } = useTranslation();
 
   const trustFeatures = [
     {
