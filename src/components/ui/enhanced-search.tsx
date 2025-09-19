@@ -16,6 +16,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { simpleProducts } from '@/data/simpleProducts';
+import { generateSearchSuggestions as genSuggestions, getSearchHistory, addToSearchHistory, performAdvancedSearch, defaultSearchFilters } from '@/utils/advancedSearch';
 
 interface SearchSuggestion {
   id: string;
@@ -44,46 +46,7 @@ interface EnhancedSearchProps {
   variant?: 'default' | 'navbar' | 'hero';
 }
 
-// Mock data - in real app, this would come from API
-const mockSuggestions: SearchSuggestion[] = [
-  {
-    id: '1',
-    text: 'Smart Textiles',
-    type: 'category',
-    url: '/category/smart-textiles',
-    description: '127 products',
-    count: 127
-  },
-  {
-    id: '2', 
-    text: 'FireCat Safety Gear',
-    type: 'product',
-    url: '/products/firecat-gear',
-    description: 'Advanced firefighter equipment',
-    image: '/product-thumb.jpg'
-  },
-  {
-    id: '3',
-    text: 'WRLDS Technologies',
-    type: 'brand',
-    url: '/brand/wrlds',
-    description: '89 products',
-    count: 89
-  },
-  {
-    id: '4',
-    text: 'temperature-monitoring',
-    type: 'tag',
-    url: '/tag/temperature-monitoring',
-    count: 24
-  }
-];
-
-const mockRecentSearches: SearchHistoryItem[] = [
-  { query: 'smart textiles', timestamp: new Date(), resultCount: 45 },
-  { query: 'firefighter gear', timestamp: new Date(), resultCount: 12 },
-  { query: 'sports tracker', timestamp: new Date(), resultCount: 33 }
-];
+// Suggestions and recent searches will be computed dynamically from data & history.
 
 // Animation variants
 const dropdownVariants = {
@@ -143,7 +106,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<SearchSuggestion[]>([]);
-  const [recentSearches, setRecentSearches] = useState<SearchHistoryItem[]>(mockRecentSearches);
+  const [recentSearches, setRecentSearches] = useState<SearchHistoryItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
   
@@ -151,7 +114,12 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  // Debounced search effect
+  // Initialize recent searches from history
+  useEffect(() => {
+    setRecentSearches(getSearchHistory());
+  }, []);
+
+  // Debounced search effect using advanced search suggestions
   useEffect(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -160,13 +128,18 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     if (query.length >= 2 && showSuggestions) {
       setIsLoading(true);
       timeoutRef.current = setTimeout(() => {
-        // Simulate API call
-        const filtered = mockSuggestions.filter(item =>
-          item.text.toLowerCase().includes(query.toLowerCase())
-        );
-        setSuggestions(filtered);
+        const generated = genSuggestions(simpleProducts as any, query);
+        const mapped: SearchSuggestion[] = generated.map((s, idx) => ({
+          id: `${s.type}-${idx}-${s.text}`,
+          text: s.text,
+          type: s.type as any,
+          url: `/products?search=${encodeURIComponent(s.text)}`,
+          description: s.count ? `${s.count} results` : undefined,
+          count: s.count,
+        }));
+        setSuggestions(mapped);
         setIsLoading(false);
-      }, 150);
+      }, 200);
     } else {
       setSuggestions([]);
       setIsLoading(false);
@@ -216,18 +189,16 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     setIsOpen(false);
     setSelectedIndex(-1);
 
-    // Add to recent searches
-    const newSearch: SearchHistoryItem = {
-      query: trimmedQuery,
-      timestamp: new Date(),
-      resultCount: Math.floor(Math.random() * 100)
-    };
-    setRecentSearches(prev => [newSearch, ...prev.slice(0, 4)]);
+    // Compute result count and add to search history
+    const filters = { ...defaultSearchFilters, query: trimmedQuery };
+    const results = performAdvancedSearch(simpleProducts as any, filters);
+    addToSearchHistory(trimmedQuery, results.length);
+    setRecentSearches(getSearchHistory());
 
     if (onSearch) {
       onSearch(trimmedQuery);
     } else {
-      navigate(`/products?search=${encodeURIComponent(trimmedQuery)}`);
+      navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
     }
   }, [onSearch, navigate]);
 

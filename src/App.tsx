@@ -4,7 +4,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect, lazy, Suspense } from "react";
-import { LanguageProvider } from "@/contexts/LanguageContext";
 import { SimpleCartProvider } from "@/contexts/SimpleCartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
@@ -28,6 +27,8 @@ const BlogPostDetail = lazy(() => import("./pages/BlogPostDetail"));
 const SimpleProducts = lazy(() => import("./pages/SimpleProducts"));
 const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
+const SearchResults = lazy(() => import("./pages/SearchResults"));
+const Wishlist = lazy(() => import("./pages/Wishlist"));
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -39,14 +40,13 @@ const App = () => {
   }, []);
 
   return (
-    <LanguageProvider>
-      <SimpleCartProvider>
-        <WishlistProvider>
-          <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <Toaster />
-            <Sonner />
-          <BrowserRouter>
+    <SimpleCartProvider>
+      <WishlistProvider>
+        <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+        <BrowserRouter>
           <Suspense fallback={
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
               <div className="text-center space-y-4">
@@ -71,17 +71,18 @@ const App = () => {
             <Route path="/blog/:slug" element={<BlogPostDetail />} />
             <Route path="/products" element={<SimpleProducts />} />
             <Route path="/products/:slug" element={<ProductDetail />} />
+            <Route path="/search" element={<SearchResults />} />
             <Route path="/category/:categorySlug" element={<CategoryPage />} />
             <Route path="/category/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
+            <Route path="/wishlist" element={<Wishlist />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
-          </BrowserRouter>
-          </TooltipProvider>
-          </QueryClientProvider>
-        </WishlistProvider>
-      </SimpleCartProvider>
-    </LanguageProvider>
+        </BrowserRouter>
+        </TooltipProvider>
+        </QueryClientProvider>
+      </WishlistProvider>
+    </SimpleCartProvider>
   );
 };
 
