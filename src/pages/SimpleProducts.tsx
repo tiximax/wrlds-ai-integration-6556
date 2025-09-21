@@ -4,12 +4,13 @@ import { useSearchParams } from 'react-router-dom';
 import { SimpleProduct } from '@/types/simple';
 import { simpleProducts } from '@/data/simpleProducts';
 import SimpleProductCard from '@/components/SimpleProductCard';
-import { Button } from '@/components/ui/button';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { Search, Filter, Grid, List } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
+import { ProductCardSkeleton } from '@/components/ui/loading-states';
 
 const SimpleProducts: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,6 +22,7 @@ const SimpleProducts: React.FC = () => {
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'name');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   
   const ITEMS_PER_PAGE = 12;
 
@@ -77,6 +79,12 @@ const SimpleProducts: React.FC = () => {
   React.useEffect(() => {
     updateUrlParams();
   }, [searchTerm, selectedOrigin, selectedStatus, sortBy]);
+
+  // Simulate loading to show skeletons
+  React.useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -170,20 +178,20 @@ const SimpleProducts: React.FC = () => {
 
             {/* View Mode Toggle */}
             <div className="flex gap-2">
-              <Button
-                variant={viewMode === 'grid' ? 'default' : 'outline'}
+              <EnhancedButton
+                variant={viewMode === 'grid' ? 'primary' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('grid')}
               >
                 <Grid className="w-4 h-4" />
-              </Button>
-              <Button
-                variant={viewMode === 'list' ? 'default' : 'outline'}
+              </EnhancedButton>
+              <EnhancedButton
+                variant={viewMode === 'list' ? 'primary' : 'outline'}
                 size="sm"
                 onClick={() => setViewMode('list')}
               >
                 <List className="w-4 h-4" />
-              </Button>
+              </EnhancedButton>
             </div>
           </div>
 
@@ -218,7 +226,13 @@ const SimpleProducts: React.FC = () => {
         </div>
 
         {/* Products Grid */}
-        {paginatedProducts.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : paginatedProducts.length > 0 ? (
           <div className={`mb-8 ${
             viewMode === 'grid' 
               ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'
@@ -243,32 +257,32 @@ const SimpleProducts: React.FC = () => {
         {/* Pagination */}
         {totalPages > 1 && (
           <div className="flex justify-center gap-2">
-            <Button
+            <EnhancedButton
               variant="outline"
               onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
               disabled={currentPage === 1}
             >
               Previous
-            </Button>
+            </EnhancedButton>
             
             {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-              <Button
+              <EnhancedButton
                 key={page}
-                variant={currentPage === page ? 'default' : 'outline'}
+                variant={currentPage === page ? 'primary' : 'outline'}
                 onClick={() => setCurrentPage(page)}
                 className="w-10"
               >
                 {page}
-              </Button>
+              </EnhancedButton>
             ))}
             
-            <Button
+            <EnhancedButton
               variant="outline"
               onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
               disabled={currentPage === totalPages}
             >
               Next
-            </Button>
+            </EnhancedButton>
           </div>
         )}
       </div>

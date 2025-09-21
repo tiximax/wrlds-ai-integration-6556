@@ -5,7 +5,7 @@ import PageLayout from '@/components/PageLayout';
 import SearchFilters from '@/components/SearchFilters';
 import { simpleProducts } from '@/data/simpleProducts';
 import SimpleProductCard from '@/components/SimpleProductCard';
-import { Button } from '@/components/ui/button';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { parseSearchParams, serializeSearchParams, performSearch, SortOption } from '@/utils/searchUtils';
@@ -138,11 +138,11 @@ const SearchResults: React.FC = () => {
             {/* Pagination */}
             {result.pages > 1 && (
               <div className="flex justify-center gap-2">
-                <Button variant="outline" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={result.page === 1}>Previous</Button>
+                <EnhancedButton variant="outline" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={result.page === 1}>Previous</EnhancedButton>
                 {Array.from({ length: result.pages }, (_, i) => i + 1).map(p => (
-                  <Button key={p} variant={result.page === p ? 'default' : 'outline'} onClick={() => setPage(p)} className="w-10">{p}</Button>
+                  <EnhancedButton key={p} variant={result.page === p ? 'primary' : 'outline'} onClick={() => setPage(p)} className="w-10">{p}</EnhancedButton>
                 ))}
-                <Button variant="outline" onClick={() => setPage(p => Math.min(result.pages, p + 1))} disabled={result.page === result.pages}>Next</Button>
+                <EnhancedButton variant="outline" onClick={() => setPage(p => Math.min(result.pages, p + 1))} disabled={result.page === result.pages}>Next</EnhancedButton>
               </div>
             )}
           </div>

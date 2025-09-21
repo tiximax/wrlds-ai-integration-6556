@@ -3,6 +3,7 @@ import { X, Plus, Minus, ShoppingBag, Trash2 } from 'lucide-react';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 
 interface SimpleCartSidebarProps {
   isOpen: boolean;
@@ -58,7 +59,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
             variant="ghost"
             size="sm"
             onClick={onClose}
-            className="p-2 w-10 h-10"
+            className="w-11 h-11 p-0"
             aria-label="Close cart"
           >
             <X className="w-5 h-5" />
@@ -203,16 +204,16 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
 
                 {/* Action Buttons */}
                 <div className="space-y-2">
-                  <Button className="w-full" size="lg">
+                  <EnhancedButton className="w-full" size="lg" variant="gradient">
                     Checkout ({totalItems} items)
-                  </Button>
-                  <Button
+                  </EnhancedButton>
+                  <EnhancedButton
                     variant="outline"
                     className="w-full"
                     onClick={onClose}
                   >
                     Continue Shopping
-                  </Button>
+                  </EnhancedButton>
                 </div>
 
                 {/* Shipping Info */}

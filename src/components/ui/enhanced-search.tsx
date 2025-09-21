@@ -198,7 +198,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     if (onSearch) {
       onSearch(trimmedQuery);
     } else {
-      navigate(`/search?query=${encodeURIComponent(trimmedQuery)}`);
+      navigate(`/products?search=${encodeURIComponent(trimmedQuery)}`);
     }
   }, [onSearch, navigate]);
 

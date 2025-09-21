@@ -32,7 +32,16 @@ test('can add product to wishlist from home and see it on wishlist page, then re
   // Click the first Add to wishlist button
   const addToWishlistBtn = page.locator('button[aria-label="Add to wishlist"]').first();
   await expect(addToWishlistBtn).toBeVisible();
-  await addToWishlistBtn.click();
+  try {
+    await addToWishlistBtn.click({ timeout: 5000 });
+  } catch {
+    await page.evaluate(() => {
+      document.getElementById('silktide-wrapper')?.remove();
+      document.getElementById('silktide-backdrop')?.remove();
+      const btn = document.querySelector('button[aria-label=\"Add to wishlist\"]') as HTMLButtonElement | null;
+      btn?.click();
+    });
+  }
   // Wait for toggle state to reflect
   await expect(page.locator('button[aria-label="Remove from wishlist"]').first()).toBeVisible();
 

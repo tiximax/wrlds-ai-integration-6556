@@ -583,3 +583,42 @@ interface Product {
 **Current Status**: M4 Complete ✅ | Ready to begin M5 Implementation
 **Next Priority**: M5.1 Enhanced Design System & Brand Identity
 **Target**: Professional, conversion-optimized international e-commerce platform
+
+### M5.1 Progress (2025-09-21)
+- Added design tokens: src/styles/design-tokens.css (premium colors, gradients, typography, animations)
+- New UI components:
+  - src/components/ui/enhanced-button.tsx (variants: primary/secondary/outline/ghost/gradient; sizes; loading; icon slots)
+  - src/components/ui/loading-states.tsx (Spinner, ProductCardSkeleton, EmptyState)
+  - src/components/brand/LogoLoader.tsx (branded loader)
+- Integrations:
+  - Imported tokens into src/index.css
+  - Updated CTA in src/components/FeaturedProducts.tsx to use EnhancedButton (gradient variant)
+  - Added ProductCardSkeleton on src/pages/SimpleProducts.tsx (initial 300ms shimmer)
+  - Replaced Checkout/Continue Shopping buttons in src/components/SimpleCartSidebar.tsx with EnhancedButton
+  - Replaced pagination and view-mode toggle buttons with EnhancedButton in:
+    - src/pages/SimpleProducts.tsx (Grid/List toggles, pagination)
+    - src/pages/SearchResults.tsx (pagination)
+- Tests:
+  - Ran Playwright E2E suite; hardened flaky selectors and overlay handling
+  - Updated EnhancedSearch navigation to /products?search= to align with tests
+  - Stabilized user-flow by handling language switch via localStorage toggle and robust cart closing
+  - Current status: 65 passed, 40 skipped, 0 failed (user-flow stabilized)
+
+### M5.2 Progress (2025-09-21)
+- Mobile hook:
+  - src/hooks/use-mobile.ts (useMobile + backward-compat useIsMobile)
+- Navbar mobile UX:
+  - Increased mobile cart hit target to 44px (w-11 h-11) in src/components/Navbar.tsx
+- Cart Sidebar UX:
+  - Enlarged close button to 44px (w-11 h-11)
+- Product Detail (mobile-first):
+  - Replaced Add to Cart with EnhancedButton (desktop)
+  - Added sticky bottom CTA bar (mobile) with total price + EnhancedButton
+  - Increased +/- quantity buttons to 44px
+- Tests:
+  - Full Playwright E2E re-run: 65 passed, 40 skipped, 0 failed
+
+### Next Steps
+- Continue M5.1: gradually replace common buttons with EnhancedButton across key screens
+- Add Skeleton usage on product lists during data loading
+- Plan for M5.2 Mobile-first optimizations (Navbar mobile, ProductDetail touch gestures, SimpleCartSidebar mobile UX)

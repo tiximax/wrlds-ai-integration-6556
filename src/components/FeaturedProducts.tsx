@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { simpleProducts } from '@/data/simpleProducts';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 
 const FeaturedProducts = () => {
   const { addToCart } = useSimpleCart();
@@ -187,11 +188,10 @@ const FeaturedProducts = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          <Link to="/products">
-            <Button size="lg" className="group">
+<Link to="/products">
+            <EnhancedButton variant="gradient" size="lg" rightIcon={<ArrowRight className="w-5 h-5 ml-2 transition-transform" />}>
               View All Products
-              <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
+            </EnhancedButton>
           </Link>
         </motion.div>
       </div>

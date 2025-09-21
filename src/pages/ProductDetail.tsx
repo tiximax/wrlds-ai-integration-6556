@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Share2, Copy } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { simpleProducts as mockProducts } from '@/data/simpleProducts';
 import { SimpleProduct } from '@/types/simple';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
@@ -360,7 +361,7 @@ const ProductDetail: React.FC = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-10 h-10 sm:w-8 sm:h-8 p-0"
+                        className="w-11 h-11 p-0"
                         aria-label="Decrease quantity"
                         disabled={quantity <= 1}
                         onClick={() => handleQuantityChange(quantity - 1)}
@@ -375,7 +376,7 @@ const ProductDetail: React.FC = () => {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-10 h-10 sm:w-8 sm:h-8 p-0"
+                        className="w-11 h-11 p-0"
                         aria-label="Increase quantity"
                         disabled={quantity >= product.stock}
                         onClick={() => handleQuantityChange(quantity + 1)}
@@ -390,24 +391,16 @@ const ProductDetail: React.FC = () => {
                   </div>
 
                   {/* Add to Cart Button */}
-                  <Button
+                  <EnhancedButton
                     size="lg"
-                    className="w-full"
-                    disabled={product.stock <= 0 || isAddingToCart}
+                    className="w-full hidden md:inline-flex"
+                    variant="gradient"
+                    isLoading={isAddingToCart}
                     onClick={handleAddToCart}
+                    disabled={product.stock <= 0}
                   >
-                    {isAddingToCart ? (
-                      <>
-                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                        Adding to Cart...
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-                      </>
-                    )}
-                  </Button>
+                    {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+                  </EnhancedButton>
 
                   {/* Current cart status */}
                   {isInCart(product.id) && (
@@ -439,6 +432,28 @@ const ProductDetail: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
           <RelatedProducts current={product as any} />
           <ProductReviews product={product as any} />
+        </div>
+      </div>
+
+      {/* Sticky Mobile CTA */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur border-t z-40 px-4 py-3" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 0.75rem)' }}>
+        <div className="max-w-7xl mx-auto">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <div className="text-xs text-gray-500">Total</div>
+              <div className="text-lg font-bold text-gsa-primary truncate">{(currentPrice * quantity).toLocaleString('vi-VN')} {product.currency}</div>
+            </div>
+            <EnhancedButton
+              variant="gradient"
+              size="lg"
+              className="flex-1"
+              isLoading={isAddingToCart}
+              onClick={handleAddToCart}
+              disabled={product.stock <= 0}
+            >
+              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+            </EnhancedButton>
+          </div>
         </div>
       </div>
     </>

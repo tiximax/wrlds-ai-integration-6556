@@ -267,7 +267,7 @@ const Navbar = () => {
               data-testid="cart-button"
               onClick={() => setIsCartOpen(true)}
               className={cn(
-                "relative p-2 rounded-md transition-colors",
+                "relative rounded-md transition-colors w-11 h-11 p-0 flex items-center justify-center",
                 isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
               )}
               aria-label="Open cart"
@@ -279,7 +279,9 @@ const Navbar = () => {
                 </span>
               )}
             </button>
-            <button onClick={toggleMenu} className={cn("focus:outline-none", isScrolled ? "text-gray-700" : "text-white")}>
+            <button onClick={toggleMenu} className={cn("focus:outline-none w-11 h-11 p-0 flex items-center justify-center", isScrolled ? "text-gray-700" : "text-white")}
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
