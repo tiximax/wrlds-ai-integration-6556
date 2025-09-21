@@ -1,40 +1,451 @@
-# agent.md — Ghi chú dự án & tiến trình
+# WRLDS International Shopping - Comprehensive UI Enhancement Plan
 
-Ngày: 2025-09-19
-Repo: wrlds-ai-integration-6556
+## 🎯 SPECIFICATIONS: COMPLETE UI MODERNIZATION FOR MARKET DEPLOYMENT
 
-## Mục tiêu tổng quát
-- Website dịch vụ mua hộ quốc tế (React + Vite + TS + Tailwind + shadcn/ui), đa ngôn ngữ, SEO tốt, có giỏ hàng đơn giản, tìm kiếm, blog.
+### Current Architecture Status: M4 COMPLETE ✅
+- Clean architecture implementation ✅
+- Consistent data layer with SimpleProduct types ✅
+- All disabled/legacy components removed ✅
+- Type definitions consolidated ✅
 
-## Lộ trình (plan)
-- M1: Đồng bộ chạy/test, chuẩn hóa branding/SEO, dọn preload/script (ĐÃ XONG)
-- M2: Chuẩn hóa i18n dùng react-i18next & hợp nhất giỏ hàng SimpleCart, ổn định E2E (ĐÃ XONG)
-- M3: Tìm kiếm nâng cao + đồng bộ trang Products (ĐÃ XONG phần EnhancedSearch)
-- **M4: Clean Architecture + Product Catalog (ĐÃ XONG 2025-09-19)**
-- M5: Product Detail Pages + Search Integration (ĐANG CHUẨN BỊ)
-- M6: Bảo mật form (EmailJS qua backend), bổ sung test, siết TS (CHƯA LÀM)
+### PROJECT OVERVIEW
+Website dịch vụ mua hộ quốc tế (React + Vite + TS + Tailwind + shadcn/ui) với mục tiêu trở thành platform e-commerce hoàn chỉnh sẵn sàng cho thị trường quốc tế.
 
-## Tiến trình đã thực hiện
+**Target**: Professional, conversion-optimized e-commerce website ready for international market deployment
 
-### 1) M1 - Infrastructure Setup
-- Playwright baseURL/webServer.url → http://localhost:8080, tắt fullyParallel, workers=1 cho ổn định Vite dev
-- index.html: đổi title/meta/OG/Twitter/canonical sang Global Shopping Assistant; gỡ gptengineer.js
-- performance.ts: prefetch /products; preload /og-image.png
-- Navbar: thêm data-testid="cart-button" & aria-label; SimpleCartSidebar thêm data-testid="cart-sidebar"
-- E2E smoke (working-cart): PASS sau khi sửa test điều kiện (DOM ready, transform class thay vì visible)
+**Core Focus Areas**:
+1. **User Experience Excellence**: Seamless shopping journey from discovery to checkout
+2. **Mobile-First Design**: Responsive, touch-optimized interface 
+3. **Performance Optimization**: Sub-3s loading times, optimized assets
+4. **Conversion Optimization**: Trust signals, social proof, clear CTAs
+5. **International Appeal**: Multi-language, multi-currency, global UX patterns
+6. **Accessibility Standards**: WCAG 2.1 AA compliance
+7. **SEO Excellence**: Rich snippets, optimized metadata, structured data
 
-### 2) M2 - i18n Migration
-- i18n: loại LanguageProvider; chuyển toàn bộ t(...) sang react-i18next (Navbar, Hero, Features, TrustSignals, CategoryMenu, ProductCard, QuickViewModal, ShoppingCartSidebar, LanguageSwitcher)
-- LanguageSwitcher: dùng i18n.changeLanguage
-- Giữ SimpleCartContext làm giỏ hàng chính (Navbar mở SimpleCartSidebar)
-- E2E smoke working-cart.spec.ts: 15 passed
+## LỘ TRÌNH PHÁT TRIỂN (Development Roadmap)
+- M1: Infrastructure Setup (✅ COMPLETED)
+- M2: i18n Migration (✅ COMPLETED)
+- M3: Enhanced Search (✅ COMPLETED)
+- **M4: Clean Architecture + Product Catalog (✅ COMPLETED 2025-09-19)**
+- **M5: COMPREHENSIVE UI ENHANCEMENT (🚀 CURRENT FOCUS)**
+- M6: Security & Backend Integration (PLANNED)
 
-### 3) M3 - Enhanced Search
-- EnhancedSearch: lấy suggestions từ utils/advancedSearch + simpleProducts; lịch sử tìm kiếm từ localStorage; submit tính số kết quả thật và lưu lại
-- Vô hiệu tests nâng cao cho Enhanced Cart (enhanced-cart.spec.ts → describe.skip) để tránh nhiễu, vì UI đang dùng SimpleCart
-- E2E smoke working-cart.spec.ts: 15 passed
+---
 
-### 4) **M4 - Clean Architecture (ĐÃ XONG 2025-09-19)**
+## 📋 IMPLEMENTATION PLAN: MARKET-READY DEPLOYMENT
+
+### Phase 1: FOUNDATION EXCELLENCE (Priority: CRITICAL)
+
+**M5.1: Enhanced Design System & Brand Identity**
+- **Target**: Cohesive, premium brand experience
+- **Effort**: 1.5 days
+- **Files to Create**:
+  - `src/styles/design-tokens.css` - Complete design token system
+  - `src/components/ui/enhanced-button.tsx` - Premium button variants
+  - `src/components/ui/loading-states.tsx` - Skeleton loaders, spinners
+  - `src/components/brand/LogoLoader.tsx` - Branded loading experience
+- **Key Features**:
+  - Premium color palette with gradients
+  - Micro-animations and transitions
+  - Consistent typography scale
+  - Shadow system for depth
+  - Loading states for all interactions
+
+**M5.2: Mobile-First Responsive Optimization**
+- **Target**: Perfect mobile shopping experience
+- **Effort**: 2 days
+- **Files to Update**:
+  - `src/components/Navbar.tsx` - Mobile-optimized navigation
+  - `src/pages/ProductDetail.tsx` - Touch-friendly product pages
+  - `src/components/SimpleCartSidebar.tsx` - Mobile cart experience
+  - `src/hooks/use-mobile.tsx` - Enhanced mobile detection
+- **Key Features**:
+  - Thumb-friendly touch targets (44px minimum)
+  - Swipe gestures for product images
+  - Mobile-optimized search and filters
+  - Sticky cart on mobile
+  - Bottom navigation for mobile
+
+### Phase 2: CONVERSION OPTIMIZATION (Priority: HIGH)
+
+**M5.3: Advanced Product Experience**
+- **Target**: Premium product discovery and details
+- **Effort**: 2.5 days
+- **Files to Create**:
+  - `src/components/products/QuickView.tsx` - Modal product preview
+  - `src/components/products/ProductComparison.tsx` - Side-by-side comparison
+  - `src/components/products/RecentlyViewed.tsx` - User engagement tracking
+  - `src/components/products/ProductRecommendations.tsx` - AI-powered suggestions
+  - `src/components/ui/image-zoom.tsx` - Product image zoom/pan
+- **Key Features**:
+  - 360° product views
+  - Augmented reality preview (for compatible devices)
+  - Size guides and fit predictors
+  - Social proof widgets
+  - Scarcity indicators
+
+**M5.4: Smart Search & Discovery**
+- **Target**: AI-powered product discovery
+- **Effort**: 2 days
+- **Files to Update**:
+  - `src/components/ui/enhanced-search.tsx` - Advanced search with filters
+  - `src/pages/SearchResults.tsx` - Rich search results page
+  - `src/utils/searchUtils.ts` - Fuzzy search, typo tolerance
+- **Files to Create**:
+  - `src/components/search/SearchFilters.tsx` - Advanced filtering UI
+  - `src/components/search/SearchSuggestions.tsx` - Auto-complete with images
+  - `src/components/search/VisualSearch.tsx` - Image-based search
+- **Key Features**:
+  - Voice search integration
+  - Visual search (upload image to find similar)
+  - Smart auto-complete with product images
+  - Search result optimization
+  - Trending searches display
+
+### Phase 3: TRUST & CONVERSION (Priority: HIGH)
+
+**M5.5: Checkout & Payment Excellence**
+- **Target**: Seamless, trustworthy checkout flow
+- **Effort**: 3 days
+- **Files to Create**:
+  - `src/pages/Checkout.tsx` - Multi-step checkout process
+  - `src/components/checkout/PaymentMethods.tsx` - Multiple payment options
+  - `src/components/checkout/AddressForm.tsx` - International address handling
+  - `src/components/checkout/OrderSummary.tsx` - Clear pricing breakdown
+  - `src/components/checkout/SecurityBadges.tsx` - Trust signals
+- **Key Features**:
+  - Guest checkout option
+  - Multiple payment gateways
+  - Express checkout (Google Pay, Apple Pay)
+  - Real-time shipping calculation
+  - Order tracking system
+
+**M5.6: Trust Signals & Social Proof**
+- **Target**: Build customer confidence
+- **Effort**: 1.5 days
+- **Files to Create**:
+  - `src/components/trust/SecurityBadges.tsx` - SSL, payment security
+  - `src/components/trust/CustomerReviews.tsx` - Enhanced review system
+  - `src/components/trust/LiveActivityFeed.tsx` - Recent purchases display
+  - `src/components/trust/GuaranteeBadges.tsx` - Return policy, warranties
+- **Key Features**:
+  - Real customer photos in reviews
+  - Verified purchase badges
+  - Live customer activity feed
+  - Security certifications display
+  - Money-back guarantee prominently displayed
+
+### Phase 4: PERFORMANCE & ANALYTICS (Priority: MEDIUM)
+
+**M5.7: Performance Optimization**
+- **Target**: Sub-3 second page loads
+- **Effort**: 2 days
+- **Files to Update**:
+  - `src/utils/performance.ts` - Enhanced performance utilities
+  - `src/components/LazyImage.tsx` - Advanced image optimization
+- **Files to Create**:
+  - `src/utils/analytics.ts` - Comprehensive event tracking
+  - `src/components/ui/virtual-scroll.tsx` - Large list optimization
+  - `src/workers/image-processor.ts` - Image processing web worker
+- **Key Features**:
+  - Aggressive image optimization
+  - Code splitting by route
+  - Service worker for caching
+  - Critical CSS inlining
+  - Bundle size monitoring
+
+**M5.8: Advanced Analytics & Personalization**
+- **Target**: Data-driven user experience
+- **Effort**: 2 days
+- **Files to Create**:
+  - `src/contexts/AnalyticsContext.tsx` - Event tracking system
+  - `src/hooks/usePersonalization.tsx` - User behavior tracking
+  - `src/components/personalization/RecommendedProducts.tsx` - ML recommendations
+  - `src/utils/userSegmentation.ts` - User behavior analysis
+- **Key Features**:
+  - Conversion funnel tracking
+  - A/B testing framework
+  - Personalized product recommendations
+  - Abandoned cart recovery
+  - User behavior heatmaps
+
+### Phase 5: GLOBAL MARKET READINESS (Priority: MEDIUM)
+
+**M5.9: Internationalization Excellence**
+- **Target**: True global e-commerce platform
+- **Effort**: 2.5 days
+- **Files to Update**:
+  - `src/contexts/LanguageContext.tsx` - Enhanced i18n system
+  - `src/translations/` - Complete translations
+- **Files to Create**:
+  - `src/contexts/CurrencyContext.tsx` - Multi-currency support
+  - `src/components/international/RegionSelector.tsx` - Country/region picker
+  - `src/utils/localization.ts` - Date, number, currency formatting
+  - `src/components/international/ShippingCalculator.tsx` - International shipping
+- **Key Features**:
+  - Real-time currency conversion
+  - Regional payment methods
+  - Local shipping options
+  - Cultural adaptation (colors, layouts)
+  - Local compliance (GDPR, etc.)
+
+**M5.10: Customer Support Integration**
+- **Target**: Excellent customer service experience
+- **Effort**: 1.5 days
+- **Files to Create**:
+  - `src/components/support/LiveChat.tsx` - Real-time support chat
+  - `src/components/support/HelpCenter.tsx` - FAQ and knowledge base
+  - `src/components/support/ContactMethods.tsx` - Multiple contact options
+  - `src/components/support/TicketSystem.tsx` - Support ticket management
+- **Key Features**:
+  - Live chat with file sharing
+  - Video call support
+  - Multilingual support team
+  - Order-specific support context
+  - Self-service options
+
+---
+
+## 🎨 DESIGN SYSTEM ENHANCEMENTS
+
+### Color Palette Upgrade
+```css
+/* Premium Brand Colors */
+--primary-50: hsl(210, 100%, 98%);
+--primary-100: hsl(210, 100%, 95%);
+--primary-500: hsl(210, 100%, 50%);
+--primary-600: hsl(210, 100%, 45%);
+--primary-900: hsl(210, 100%, 20%);
+
+/* Success & Trust Colors */
+--success-50: hsl(142, 76%, 96%);
+--success-500: hsl(142, 76%, 36%);
+--success-600: hsl(142, 76%, 30%);
+
+/* Premium Gradients */
+--gradient-primary: linear-gradient(135deg, hsl(var(--primary-500)), hsl(var(--primary-600)));
+--gradient-success: linear-gradient(135deg, hsl(var(--success-500)), hsl(var(--success-600)));
+--gradient-premium: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+```
+
+### Typography Enhancement
+```css
+/* Premium Font Stack */
+--font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+--font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+/* Type Scale */
+--text-xs: 0.75rem;
+--text-sm: 0.875rem;
+--text-base: 1rem;
+--text-lg: 1.125rem;
+--text-xl: 1.25rem;
+--text-2xl: 1.5rem;
+--text-3xl: 1.875rem;
+--text-4xl: 2.25rem;
+```
+
+### Animation System
+```css
+/* Premium Animations */
+--animation-fast: 150ms ease-out;
+--animation-normal: 250ms ease-out;
+--animation-slow: 350ms ease-out;
+--animation-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+--animation-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+```
+
+---
+
+## 📱 MOBILE-FIRST OPTIMIZATION CHECKLIST
+
+### Touch Interface Standards
+- [ ] Minimum 44px touch targets
+- [ ] Thumb-friendly navigation zones
+- [ ] Swipe gestures for galleries
+- [ ] Pull-to-refresh functionality
+- [ ] Haptic feedback integration
+
+### Mobile Performance
+- [ ] Sub-2s mobile page loads
+- [ ] Optimized images for mobile bandwidth
+- [ ] Progressive image loading
+- [ ] Offline functionality for browsing
+- [ ] Service worker implementation
+
+### Mobile UX Patterns
+- [ ] Bottom navigation for key actions
+- [ ] Sticky cart button
+- [ ] Mobile-optimized search
+- [ ] Touch-friendly filters
+- [ ] Mobile payment integration
+
+---
+
+## 🚀 PERFORMANCE TARGETS
+
+### Core Web Vitals Goals
+- **LCP (Largest Contentful Paint)**: < 2.5s
+- **FID (First Input Delay)**: < 100ms
+- **CLS (Cumulative Layout Shift)**: < 0.1
+- **FCP (First Contentful Paint)**: < 1.8s
+- **Speed Index**: < 3.4s
+
+### Bundle Size Targets
+- **Initial Bundle**: < 250KB gzipped
+- **Route Chunks**: < 100KB each
+- **Image Optimization**: WebP/AVIF with fallbacks
+- **Code Splitting**: Route-based + component-based
+
+---
+
+## 🔍 SEO & CONVERSION OPTIMIZATION
+
+### Technical SEO
+- [ ] Structured data for all products
+- [ ] XML sitemap with product URLs
+- [ ] Robots.txt optimization
+- [ ] Canonical URL management
+- [ ] Open Graph optimization
+
+### Conversion Elements
+- [ ] Urgency indicators (limited stock, time deals)
+- [ ] Social proof (recent purchases, reviews)
+- [ ] Trust badges (security, guarantees)
+- [ ] Clear value propositions
+- [ ] Multiple contact methods
+
+### A/B Testing Framework
+- [ ] Hero section variations
+- [ ] CTA button testing
+- [ ] Product page layouts
+- [ ] Checkout flow optimization
+- [ ] Pricing display tests
+
+---
+
+## 📊 ANALYTICS & TRACKING
+
+### E-commerce Events
+- [ ] Product view tracking
+- [ ] Add to cart events
+- [ ] Checkout progression
+- [ ] Purchase completion
+- [ ] Search behavior
+
+### User Journey Mapping
+- [ ] Entry point analysis
+- [ ] Navigation path tracking
+- [ ] Drop-off point identification
+- [ ] Conversion funnel analysis
+- [ ] User segment behavior
+
+---
+
+## 🔧 TECHNICAL IMPLEMENTATION TASKS
+
+### Immediate Next Actions (Start with M5.1):
+
+1. **Enhanced Design System Setup**
+   ```bash
+   # Create design token files
+   touch src/styles/design-tokens.css
+   touch src/components/ui/enhanced-button.tsx
+   touch src/components/ui/loading-states.tsx
+   ```
+
+2. **Mobile Optimization Foundation**
+   ```bash
+   # Update mobile detection and responsive components
+   # Focus on touch-friendly interfaces
+   ```
+
+3. **Performance Baseline**
+   ```bash
+   # Implement performance monitoring
+   # Set up bundle analysis
+   ```
+
+### Development Workflow
+1. **Design System First**: Establish consistent UI foundation
+2. **Mobile-First**: All components designed for mobile first
+3. **Performance Budget**: Monitor bundle size and Core Web Vitals
+4. **Accessibility**: Ensure WCAG 2.1 AA compliance
+5. **Testing**: Unit tests + E2E tests for critical flows
+
+---
+
+## 🎯 SUCCESS METRICS
+
+### Business Goals
+- **Conversion Rate**: Target 3.5%+ (industry average 2.9%)
+- **Average Order Value**: Increase by 25%
+- **Mobile Conversion**: Match or exceed desktop rates
+- **Page Load Speed**: Sub-3s on all devices
+- **User Engagement**: 40%+ reduction in bounce rate
+
+### Technical Goals
+- **Lighthouse Score**: 90+ on all pages
+- **Core Web Vitals**: Green across all metrics
+- **Accessibility**: WCAG 2.1 AA compliance
+- **SEO Score**: 95+ technical SEO score
+- **Bundle Size**: < 250KB initial load
+
+---
+
+## 📅 ESTIMATED TIMELINE
+
+### Week 1-2: Foundation (M5.1-M5.2)
+- Enhanced Design System
+- Mobile-First Optimization
+- Performance Foundation
+
+### Week 3-4: Conversion Focus (M5.3-M5.6)
+- Advanced Product Experience
+- Smart Search & Discovery
+- Checkout Excellence
+- Trust Signals Implementation
+
+### Week 5-6: Global Readiness (M5.7-M5.10)
+- Performance Optimization
+- Analytics Implementation
+- Internationalization
+- Customer Support Integration
+
+**Total Estimated Effort**: 18-20 development days
+**Target Launch**: Production-ready in 4-6 weeks
+
+---
+
+## 🏁 DEPLOYMENT READINESS CHECKLIST
+
+### Pre-Launch Validation
+- [ ] Cross-browser testing (Chrome, Safari, Firefox, Edge)
+- [ ] Mobile device testing (iOS/Android)
+- [ ] Performance testing under load
+- [ ] Security audit completion
+- [ ] Accessibility testing
+- [ ] SEO validation
+- [ ] Analytics tracking verification
+- [ ] Payment gateway testing
+- [ ] International shipping testing
+- [ ] Customer support system testing
+
+### Go-Live Requirements
+- [ ] SSL certificate configured
+- [ ] CDN optimization active
+- [ ] Monitoring and alerting setup
+- [ ] Backup and recovery procedures
+- [ ] Customer support team trained
+- [ ] Marketing materials prepared
+- [ ] Legal compliance verified
+- [ ] Data privacy compliance (GDPR, CCPA)
+
+---
+
+## ARCHITECTURE STATUS & PROGRESS
+
+### **M4 - Clean Architecture (COMPLETED 2025-09-19)**
 **Status**: ✅ COMPLETED
 **Files Updated**:
 - ❌ Deleted: All `.disabled` components and legacy files
@@ -60,109 +471,9 @@ Repo: wrlds-ai-integration-6556
 - Multi-origin product support (Japan 🇯🇵, Korea 🇰🇷, USA 🇺🇸, Europe 🇪🇺)
 - Different product statuses (available, preorder, out_of_stock)
 
-## M5 - Next Priority Tasks (CHUẨN BỊ THỰC HIỆN)
+### Technical Specifications
 
-### Task 5.1: Product Detail Page Enhancement
-**Priority**: ⭐⭐⭐ HIGH
-**Estimated**: 2-3 hours
-**Description**: Tạo trang chi tiết sản phẩm hoàn chỉnh
-
-**Specifications**:
-- ✅ Product image gallery with zoom
-- ✅ Detailed specifications display  
-- ✅ Variant selection (size, color, style)
-- ✅ Stock status and quantity selector
-- ✅ Related products section
-- ✅ Reviews and ratings display
-- ✅ Add to cart with variant selection
-- ✅ Breadcrumb navigation
-- ✅ Social sharing buttons
-- ✅ Product comparison feature
-
-**Files to Create**:
-- `src/pages/ProductDetail.tsx` - Main product detail page
-- `src/components/ProductImageGallery.tsx` - Image gallery with zoom
-- `src/components/ProductVariantSelector.tsx` - Variant selection UI
-- `src/components/RelatedProducts.tsx` - Related products section
-- `src/components/ProductReviews.tsx` - Reviews and ratings
-- `src/components/ProductSpecifications.tsx` - Specs display
-- `src/components/ProductBreadcrumbs.tsx` - Navigation breadcrumbs
-
-### Task 5.2: Search Integration
-**Priority**: ⭐⭐⭐ HIGH  
-**Estimated**: 2 hours
-**Description**: Kết nối search bar với dữ liệu thực
-
-**Specifications**:
-- ✅ Connect existing EnhancedSearch to product catalog
-- ✅ Real-time search suggestions
-- ✅ Search results page with pagination
-- ✅ Filter by category, origin, price range
-- ✅ Sort by price, rating, popularity
-- ✅ Highlight search terms in results
-
-**Files to Create/Update**:
-- `src/pages/SearchResults.tsx` - Search results page
-- `src/components/SearchFilters.tsx` - Filter sidebar
-- `src/utils/searchUtils.ts` - Enhanced search logic
-- Update `src/components/ui/enhanced-search.tsx` - Connect to routing
-
-### Task 5.3: Category Navigation
-**Priority**: ⭐⭐ MEDIUM
-**Estimated**: 1-2 hours
-**Description**: Hệ thống danh mục sản phẩm
-
-**Specifications**:
-- ✅ Category landing pages
-- ✅ Hierarchical category structure  
-- ✅ Category-based product filtering
-- ✅ Category navigation menu
-- ✅ Breadcrumb integration
-
-**Files to Create**:
-- `src/pages/CategoryPage.tsx` - Category landing page
-- `src/components/CategoryNavigation.tsx` - Category menu
-- `src/data/categoryData.ts` - Category hierarchy
-- Update `src/components/Navbar.tsx` - Category integration
-
-### Task 5.4: Mobile Optimization
-**Priority**: ⭐⭐ MEDIUM
-**Estimated**: 1-2 hours
-**Description**: Tối ưu trải nghiệm mobile
-
-**Specifications**:
-- ✅ Mobile-first responsive design
-- ✅ Touch-friendly interactions
-- ✅ Mobile cart drawer optimization
-- ✅ Mobile product card layout
-- ✅ Mobile navigation menu
-- ✅ Swipe gestures for galleries
-
-**Files to Update**:
-- All component Tailwind classes for mobile
-- `src/components/MobileNavigation.tsx`
-- `src/components/SimpleCartSidebar.tsx` - Mobile optimizations
-
-### Task 5.5: Wishlist System
-**Priority**: ⭐ LOW
-**Estimated**: 1-2 hours
-**Description**: Chức năng danh sách yêu thích
-
-**Specifications**:
-- ✅ Wishlist context and persistence
-- ✅ Add/remove from wishlist
-- ✅ Wishlist page
-- ✅ Wishlist icon in navigation
-- ✅ Move from wishlist to cart
-
-**Files to Create**:
-- `src/contexts/WishlistContext.tsx`
-- `src/pages/Wishlist.tsx`
-- `src/components/WishlistButton.tsx`
-
-## Technical Specifications
-
-### Current Architecture Status: ✅ CLEAN & STABLE
+**Current Architecture Status**: ✅ CLEAN & STABLE
 
 **Tech Stack**:
 - Frontend: React 18 + TypeScript + Vite
@@ -246,257 +557,29 @@ interface Product {
 - Toast notifications
 - Type-safe với CartItem interface
 
-## Các thay đổi chính (liệt kê nhanh)
+### Test Results & CI
 
-### Historical Changes:
-- playwright.config.ts: fullyParallel=false, workers=1, baseURL/webServer.url=8080
-- index.html: chỉnh meta/OG/canonical; gỡ script thừa
-- src/utils/performance.ts: đổi prefetch & preload
-- src/components/Navbar.tsx & SimpleCartSidebar.tsx: thêm testid/aria cho test
-- src/components/ui/enhanced-search.tsx: gỡ mock, kết nối simpleProducts + advancedSearch utils
-- src/App.tsx: gỡ LanguageProvider
-- Các component dùng useLanguage → useTranslation
-- tests/enhanced-cart.spec.ts: skip
-- tests/working-cart.spec.ts: tối ưu selector & assert theo transform class
-
-### **Recent Changes (2025-09-19)**:
-- **DELETED**: All `.disabled` files và legacy components
-- **UPDATED**: `src/types/simple.ts` - Clean type re-exports
-- **EXTENDED**: `src/data/simpleProducts.ts` - 8 products với đa dạng origin/status
-- **CREATED**: `src/components/FeaturedProducts.tsx` - Featured section với animations
-- **INTEGRATED**: Homepage với featured products section
-- **FIXED**: All TypeScript build errors
-- **CONSOLIDATED**: Type system sử dụng unified Product interface
-
-## Kết quả kiểm thử
-
-### Latest Test Results (2025-09-19):
+**Latest Test Results (2025-09-19)**:
 - ✅ Build: SUCCESS (no TypeScript errors)
 - ✅ Architecture: CLEAN (no disabled/legacy files)
 - ✅ Types: UNIFIED (consistent Product interface)
 - ✅ Cart: FUNCTIONAL (SimpleCartContext working)
 - ✅ UI: RESPONSIVE (FeaturedProducts integrated)
 
-### Historical Test Results:
+**Historical Test Results**:
 - Smoke: npm run test:e2e -- tests/working-cart.spec.ts --reporter=line → 15 passed (chromium, firefox, webkit, mobile Chrome/Safari)
 - Unit: 69/69 PASS (Vitest)
 - E2E (dev): 15/15 PASS (Playwright)  
 - E2E (preview): 15/15 PASS (Playwright)
 
-Các thay đổi chính (liệt kê nhanh)
-- playwright.config.ts: fullyParallel=false, workers=1, baseURL/webServer.url=8080
-- index.html: chỉnh meta/OG/canonical; gỡ script thừa
-- src/utils/performance.ts: đổi prefetch & preload
-- src/components/Navbar.tsx & SimpleCartSidebar.tsx: thêm testid/aria cho test
-- src/components/ui/enhanced-search.tsx: gỡ mock, kết nối simpleProducts + advancedSearch utils
-- src/App.tsx: gỡ LanguageProvider
-- Các component dùng useLanguage → useTranslation
-- tests/enhanced-cart.spec.ts: skip
-- tests/working-cart.spec.ts: tối ưu selector & assert theo transform class
-
-Kết quả kiểm thử
-- Smoke: npm run test:e2e -- tests/working-cart.spec.ts --reporter=line → 15 passed (chromium, firefox, webkit, mobile Chrome/Safari)
-
-Hạng mục còn lại/đề xuất
-- M2 (dọn Advanced Cart UI): hiện các file nâng cao (EnhancedShoppingCartSidebar, ShoppingCartSidebar advanced, CartContext, EnhancedCartManagement, EnhancedCartItem) không còn được import trong UI. Có thể tiếp tục đổi tên *.disabled hoặc giữ nguyên để dùng sau; không ảnh hưởng chạy hiện tại.
-- M3 (phần 2):
-  - Đồng bộ /products hiển thị số kết quả theo query (đã có), có thể thêm highlight từ advancedSearch (tùy chọn)
-  - Unit test nhỏ cho enhanced-search (gợi ý theo query)
-- M4: Di chuyển EmailJS sang backend endpoint; thêm test cho cart & search; siết TypeScript (strict)
-
-Cấu hình Subscribe Endpoint (serverless)
-- Vercel: endpoint /api/subscribe (đã thêm api/subscribe.ts). Khi deploy Vercel, không cần cấu hình thêm. FE sẽ POST tới /api/subscribe nếu không có VITE_SUBSCRIBE_ENDPOINT.
-- Netlify: đã thêm netlify/functions/subscribe.ts và netlify.toml (redirect /api/subscribe → function). Deploy Netlify là dùng được ngay.
-- Tuỳ chọn: đặt VITE_SUBSCRIBE_ENDPOINT trỏ tới endpoint tuỳ chỉnh nếu sử dụng backend khác.
-
-Lệnh tham khảo
-- Dev: npm run dev (Vite 8080)
-- Smoke E2E: npm run test:e2e -- tests/working-cart.spec.ts --reporter=line
-- Build: npm run build; Preview: npm run preview
-
-Ghi chú
-- Một số cảnh báo Radix (validateDOMNesting <a> trong navigation menu) không chặn chạy; sẽ xử lý sau khi ổn định tính năng.
-- preload og-image.png đôi lúc cảnh báo "not used immediately" (vô hại). Có thể bỏ preload nếu muốn.
-
-Cập nhật 2025-09-18 09:35 UTC
-- Đã chạy: npm run test:e2e -- tests/working-cart.spec.ts
-- Kết quả: 15 passed (chromium, firefox, webkit, Mobile Chrome, Mobile Safari) ~1.6m
-- Artifact: test-results/enhanced-cart-opened.png, test-results/enhanced-cart-elements.png
-- Nhận xét: i18n migration không gây hồi quy với SimpleCart.
-
-Cập nhật 2025-09-18 09:42 UTC
-- Thêm unit test cho generateSearchSuggestions (case-insensitive, min length, sort & limit)
-- Sửa subscribeEmail để tránh gọi endpoint mặc định trong môi trường test; fallback pass
-- Kết quả unit: 69 passed (Vitest)
-- Kết quả E2E smoke: 15 passed (Playwright)
-
-Cập nhật 2025-09-18 09:51 UTC
-- Thêm playwright.preview.config.ts và script npm test:e2e:preview để chạy E2E trên bản build/preview
-- Refactor nhỏ: thay useLanguage -> useTranslation ở MobileCategoryMenu và EnhancedShoppingCartSidebar
-- Unit tests: 69/69 PASS sau refactor
-- E2E (dev) và E2E (preview): 15/15 PASS
-
-Cập nhật 2025-09-18 11:21 UTC
-- Di chuyển các file LEGACY của giỏ hàng nâng cao vào src/components/legacy/ (và legacy/cart)
-  + legacy/EnhancedShoppingCartSidebar.tsx
-  + legacy/EnhancedCartManagement.tsx
-  + legacy/ShoppingCartSidebar.tsx
-  + legacy/cart/EnhancedCartItem.tsx
-- Không có import còn lại tới các file này trong UI hiện tại.
-- Kiểm thử sau di chuyển:
-  + Unit: 69/69 PASS
-  + E2E dev: 15/15 PASS
-  + E2E preview: 15/15 PASS
-
-Đề xuất bước tiếp theo (chờ xác nhận trước khi thực hiện thay đổi lớn):
-- Dọn legacy enhanced cart (đã gắn nhãn LEGACY trong đầu file, không đổi tên/di chuyển để tránh rủi ro). Nếu muốn, bước sau có thể gom vào /legacy/.
-- Chuẩn bị deploy và chạy E2E trên Preview (Vercel/Netlify).
-- Nếu cần: triển khai thật Subscribe backend (DB + email provider) — thay đổi này tương đối lớn, cần bạn duyệt.
-
-Checklist CI/Deploy
-- Thêm workflow deploy-vercel.yml: deploy prebuilt -> chạy E2E remote tự động (tùy chọn) với BASE_URL từ URL deploy.
-- Secrets cần thiết trên GitHub: VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID.
-- README cập nhật hướng dẫn sử dụng workflow này.
-- Đã cập nhật badge CI (README) theo repo: tiximax/wrlds-ai-integration-6556; đã thêm badge cho E2E Preview.
-- Thêm playwright.remote.config.ts và script npm test:e2e:remote để chạy E2E trên môi trường đã deploy (BASE_URL).
-- Thêm docs/DEPLOY.md và liên kết trong README.
-- Netlify: thêm SPA fallback /* -> /index.html trong netlify.toml.
-- Tạo scripts tiện dụng: scripts/e2e-remote.ps1 và scripts/e2e-remote.sh.
-- Thêm workflow e2e-remote.yml (workflow_dispatch: nhập BASE_URL) để chạy E2E trên môi trường deploy.
-- CI (GitHub Actions):
-  - .github/workflows/ci.yml: chạy Vitest + Playwright (dev) trên push/PR
-  - .github/workflows/e2e-preview.yml: chạy Playwright trên bản build/preview (kích hoạt bằng label run-e2e-preview hoặc workflow_dispatch)
-- Deploy:
-  - Vercel: dùng api/subscribe.ts, cấu hình env nếu cần
-  - Netlify: netlify/functions/subscribe.ts + netlify.toml redirect /api/subscribe -> function
-- Trước/sau deploy: chạy smoke
-  - Dev: npm run test:e2e -- tests/working-cart.spec.ts --reporter=line
-  - Preview: npm run test:e2e:preview -- tests/working-cart.spec.ts --reporter=line
-
-## 🎯 Immediate Next Actions (READY TO START)
-
-### Recommended Starting Point: Task 5.1 - Product Detail Page Enhancement
-**Why this task first?**
-- Completes core shopping experience (browse → detail → cart → checkout)
-- High user impact and business value
-- Uses existing product data structure
-- No complex integrations needed
-
-**Implementation Order**:
-1. **Product Detail Page** (`/products/:slug`) - 2-3h
-2. **Search Results Page** - 2h  
-3. **Category Pages** - 1-2h
-4. **Mobile Optimizations** - 1-2h
-5. **Wishlist Feature** - 1-2h
-
-**Files Ready to Create**:
-- `src/pages/ProductDetail.tsx` - Main detail page
-- `src/components/ProductImageGallery.tsx` - Image zoom gallery
-- `src/components/ProductVariantSelector.tsx` - Size/color selection
-- `src/components/RelatedProducts.tsx` - Recommendation engine
-- `src/components/ProductReviews.tsx` - Reviews display
-
-**Development Notes for Next Session**:
-1. Start with basic ProductDetail page layout
-2. Use existing product data from simpleProducts[0] for testing
-3. Implement image gallery with primary/secondary images
-4. Add variant selection (when variants exist)
-5. Connect to SimpleCartContext for add-to-cart
-6. Test with different product types (available, preorder, out_of_stock)
-
-**Testing Checklist Before Starting Next Task**:
-- [ ] All products load correctly in FeaturedProducts
-- [ ] Cart functionality works (add/remove/quantity)
-- [ ] No TypeScript errors in build
-- [ ] Homepage loads and displays properly
-- [ ] Navigation between pages works
+**CI/Deploy Configuration**:
+- Vercel: endpoint /api/subscribe (api/subscribe.ts)
+- Netlify: netlify/functions/subscribe.ts + netlify.toml redirect
+- GitHub Actions: CI (Vitest + Playwright), E2E preview, Deploy workflows
+- Scripts: e2e-remote (ps1/sh), docs/DEPLOY.md
 
 ---
-**Last Updated**: 2025-09-19
-**Current Status**: M4 Complete ✅ - Architecture Clean, Ready for M5
-**Next Priority**: Product Detail Page Enhancement
 
-Cập nhật 2025-09-19 08:10 UTC
-- Đã triển khai Task 5.2 (Search Integration) mức cơ bản hoạt động thực tế:
-  - Tạo mới:
-    + src/pages/SearchResults.tsx — Trang kết quả tìm kiếm với phân trang, sort (relevance/price asc/desc/rating/popularity/newest), highlight query, hiển thị badge filter.
-    + src/components/SearchFilters.tsx — Wrapper dùng lại FilterBar hiện có để tránh trùng lặp logic.
-    + src/utils/searchUtils.ts — parse/serialize URL params; sortProducts; paginate; performSearch.
-  - Cập nhật:
-    + src/App.tsx — thêm route /search (lazy load).
-    + src/components/ui/enhanced-search.tsx — điều hướng về /search?query=... thay vì /products?search=...
-- Build: PASS (vite build)
-- E2E smoke (working-cart.spec.ts): PASS 15/15 — không hồi quy giỏ hàng.
-
-Ghi chú:
-- Trang /products vẫn hoạt động bình thường; trang /search phục vụ kết quả tìm kiếm chuyên dụng với filter nâng cao (tận dụng sẵn FilterBar + productFilters + categoryUtils).
-- Highlight từ khóa vẫn được hỗ trợ qua SimpleProductCard.
-- Có thể mở rộng SearchFilters (filter theo category nhiều cấp, brand) nếu cần.
-
-Cập nhật 2025-09-19 08:16 UTC
-- Task 5.3 (Category Navigation) — cập nhật trang danh mục:
-  - Tạo src/components/CategoryBreadcrumbs.tsx dùng shadcn/ui breadcrumb.
-  - Nâng cấp src/pages/CategoryPage.tsx:
-    + Hỗ trợ route /category/:categorySlug và /category/:categorySlug/:subcategorySlug.
-    + Tích hợp breadcrumbs (dùng buildBreadcrumbs từ categoryUtils khi có taxonomy match; fallback đơn giản khi không khớp).
-    + Lọc sản phẩm theo slug danh mục/subdanh mục hiện tại (đảm bảo tương thích với simpleProducts hiện tại).
-- Build: PASS (vite build)
-- E2E smoke: PASS 15/15 (working-cart.spec.ts) — không hồi quy.
-
-Cập nhật 2025-09-19 08:20 UTC
-- Task 5.4 (Mobile Optimization) — bước 1: tối ưu gallery mobile
-  - Cập nhật src/components/ProductImageGallery.tsx:
-    + Ẩn nút điều hướng (arrows) trên màn hình nhỏ (sm:hidden) để tối ưu không gian.
-    + Thumbnails dạng hàng ngang cuộn được trên mobile (overflow-x-auto), grid 6 cột trên desktop.
-    + Đồng bộ thumbnail click với carousel (scrollTo) thông qua CarouselApi (setApi + api.scrollTo(idx)).
-  - Kết quả: UX tốt hơn trên mobile; swipe của Embla vẫn hoạt động.
-- Build: PASS (vite build)
-- E2E smoke: PASS 15/15 (working-cart.spec.ts)
-
-Cập nhật 2025-09-19 08:44 UTC
-- Task 5.5 (Wishlist System):
-  - Tạo mới:
-    + src/components/WishlistButton.tsx — nút toggle yêu thích (Heart), đồng bộ với WishlistContext.
-    + src/pages/Wishlist.tsx — trang danh sách yêu thích (remove item, thêm vào giỏ, link tới chi tiết sản phẩm).
-  - Cập nhật:
-    + src/components/SimpleProductCard.tsx — thay nút Heart cũ bằng WishlistButton (overlay trên ảnh).
-    + src/components/Navbar.tsx — thêm nút Wishlist với badge tổng số; điều hướng /wishlist.
-    + src/App.tsx — thêm route /wishlist (lazy load).
-- Build: PASS (vite build)
-- E2E smoke (working-cart.spec.ts): PASS 15/15 — xác nhận không hồi quy giỏ hàng.
-
-### Cập nhật phiên: Chạy server dev (2025-09-19)
-- Khởi chạy: npm run dev (Vite)
-- Cổng: 8080
-- PID: 8124
-- Log (stdout): C:\Users\pc\Documents\GitHub\wrlds-ai-integration-6556\server-dev-8080.out.log
-- Log (stderr): C:\Users\pc\Documents\GitHub\wrlds-ai-integration-6556\server-dev-8080.err.log
-- Kiểm tra: http://localhost:8080 trả về mã 200
-
-Cách dừng:
-- PowerShell: Stop-Process -Id 8124
-- Hoặc: taskkill /PID 8124 /F
-
-
-Cập nhật 2025-09-19 08:00 UTC
-- Đã triển khai một phần Task 5.1 (Product Detail Page Enhancement):
-  - Tạo mới các component:
-    + src/components/ProductImageGallery.tsx (gallery + zoom bằng Dialog + Carousel)
-    + src/components/ProductSpecifications.tsx (specs tách riêng)
-    + src/components/ProductBreadcrumbs.tsx (breadcrumbs dùng shadcn/ui)
-    + src/components/RelatedProducts.tsx (gợi ý cùng danh mục, dùng SimpleProductCard)
-    + src/components/ProductReviews.tsx (tóm tắt rating, placeholder review)
-  - Cập nhật src/pages/ProductDetail.tsx:
-    + Tích hợp ProductImageGallery, ProductSpecifications, ProductBreadcrumbs, RelatedProducts, ProductReviews
-    + Bật lại phần chọn biến thể qua ProductVariants (giá cập nhật theo onPriceChange; hiện dữ liệu simple chưa có variants nên hoạt động như base price)
-    + Thêm nút Compare (lưu localStorage 'compare-list')
-  - Sửa trùng định nghĩa trong src/components/ui/dialog.tsx (loại bỏ block duplicate) để build pass.
-- Build: PASS (vite build)
-- E2E smoke: PASS 15/15 (tests/working-cart.spec.ts) sau thay đổi, xác nhận không hồi quy giỏ hàng.
-
-Việc cần làm tiếp (M5 - còn lại):
-- Bổ sung ProductVariantSelector nâng cao nếu cần UI riêng (hiện đang dùng ProductVariants sẵn có)
-- Bổ sung social sharing nâng cao (hiện đã có share/copy link cơ bản)
-- Implement RelatedProducts logic đa tiêu chí (origin, tags) + slider mobile
-- Reviews: thêm form submit giả/lưu localStorage nếu muốn demo
-- Chuẩn bị Task 5.2 (Search Integration): tạo SearchResults.tsx, SearchFilters.tsx, utils/searchUtils.ts và gắn routing từ enhanced-search
+**Current Status**: M4 Complete ✅ | Ready to begin M5 Implementation
+**Next Priority**: M5.1 Enhanced Design System & Brand Identity
+**Target**: Professional, conversion-optimized international e-commerce platform
