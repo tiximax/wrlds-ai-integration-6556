@@ -1,7 +1,7 @@
 import { ArrowRight, ShoppingCart, Globe, CreditCard, MessageSquare } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
+import { EnhancedButton } from "@/components/ui/enhanced-button";
 import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
@@ -67,8 +67,10 @@ const Hero = () => {
               </motion.p>
               <motion.div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6 sm:mt-8 justify-center items-center" variants={itemVariants}>
                 {/* Styled as a button but using an anchor tag for project navigation */}
-                <button 
-                  className="w-full sm:w-auto min-h-[44px] px-6 sm:px-8 py-3 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 transition-all shadow-lg hover:shadow-xl hover:shadow-gray-300/20 flex items-center justify-center group text-sm sm:text-base font-medium"
+                <EnhancedButton 
+                  variant="secondary"
+                  size="lg"
+                  className="w-full sm:w-auto min-h-[44px] shadow-lg hover:shadow-xl hover:shadow-gray-300/20 group"
                   onClick={e => {
                     e.preventDefault();
                     const projectsSection = document.getElementById('projects');
@@ -78,19 +80,21 @@ const Hero = () => {
                       });
                     }
                   }}
+                  rightIcon={<ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />}
                 >
                   {t('hero.viewServices')}
-                  <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </EnhancedButton>
                 
                 {/* Using the Button component from shadcn but with custom styling to match the explore button */}
-                <button 
-                  className="w-full sm:w-auto min-h-[44px] px-6 sm:px-8 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl hover:shadow-blue-300/20 flex items-center justify-center group text-sm sm:text-base font-medium"
+                <EnhancedButton 
+                  variant="primary"
+                  size="lg"
+                  className="w-full sm:w-auto min-h-[44px] shadow-lg hover:shadow-xl hover:shadow-blue-300/20 group"
                   onClick={scrollToContact}
+                  rightIcon={<MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />}
                 >
                   {t('hero.contactNow')}
-                  <MessageSquare className="ml-2 w-4 h-4 sm:w-5 sm:h-5 group-hover:scale-110 transition-transform" />
-                </button>
+                </EnhancedButton>
               </motion.div>
             </motion.div>
           </div>

@@ -9,6 +9,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import emailjs from 'emailjs-com';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 
 // Updated schema with honeypot field validation
 const formSchema = z.object({
@@ -208,12 +209,17 @@ const ContactForm = () => {
                       </FormControl>
                     </FormItem>} />
                 
-                <button type="submit" disabled={isSubmitting} className="w-full bg-black hover:bg-gray-800 text-white py-3 px-6 rounded-md transition-colors flex items-center justify-center disabled:opacity-70">
-                  {isSubmitting ? "Sending..." : <>
-                      Send Message
-                      <Send className="ml-2 h-4 w-4" />
-                    </>}
-                </button>
+                <EnhancedButton 
+                  type="submit" 
+                  disabled={isSubmitting} 
+                  variant="primary"
+                  size="lg"
+                  className="w-full bg-black hover:bg-gray-800"
+                  isLoading={isSubmitting}
+                  rightIcon={!isSubmitting ? <Send className="h-4 w-4" /> : undefined}
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </EnhancedButton>
               </form>
             </Form>
           </div>

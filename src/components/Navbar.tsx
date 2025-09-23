@@ -16,6 +16,7 @@ import CategoryMenu from './CategoryMenu';
 import MobileCategoryMenu from './MobileCategoryMenu';
 import { MegaMenu } from '@/components/ui/mega-menu';
 import { servicesSections, featuredService } from '@/data/mega-menu-data';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,7 +35,15 @@ const Navbar = () => {
       }
     };
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    // Listen to custom event from BottomNav to open cart
+    const openCartListener = () => setIsCartOpen(true);
+    window.addEventListener('wrlds:open-cart' as unknown as string, openCartListener as EventListener);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('wrlds:open-cart' as unknown as string, openCartListener as EventListener);
+    };
   }, []);
 
   const toggleMenu = () => {
@@ -122,6 +131,20 @@ const Navbar = () => {
                     </Link>
                   </NavigationMenuLink>
                 </NavigationMenuItem>
+
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to="/search"
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        isScrolled ? "text-gray-700 hover:text-gray-900" : "text-gray-100 hover:text-white bg-transparent hover:bg-gray-800"
+                      )}
+                    >
+                      Search
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
                 
                 <CategoryMenu isScrolled={isScrolled} />
                 
@@ -203,9 +226,14 @@ const Navbar = () => {
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                  <button onClick={() => scrollToSection('contact')} className={cn("px-4 py-2 rounded-md transition-colors", isScrolled ? "bg-gray-200 text-gray-700 hover:bg-gray-300" : "bg-gray-700 text-white hover:bg-gray-600")}>
+                  <EnhancedButton 
+                    onClick={() => scrollToSection('contact')} 
+                    variant={isScrolled ? "secondary" : "ghost"}
+                    size="sm"
+                    className={isScrolled ? "" : "text-white hover:bg-gray-700"}
+                  >
                     {t('navigation.contact')}
-                  </button>
+                  </EnhancedButton>
                 </NavigationMenuItem>
               </NavigationMenuList>
             </NavigationMenu>
@@ -241,33 +269,37 @@ const Navbar = () => {
                   </span>
                 )}
               </Link>
-              <button
+              <EnhancedButton
                 data-testid="cart-button"
                 onClick={() => setIsCartOpen(true)}
+                variant="ghost"
+                size="sm"
                 className={cn(
-                  "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
+                  "relative",
                   isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
                 )}
                 aria-label="Open cart"
+                leftIcon={<ShoppingCart className="w-5 h-5" />}
               >
-                <ShoppingCart className="w-5 h-5" />
                 <span className="hidden sm:inline">Cart</span>
                 {totalItems > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                     {totalItems}
                   </span>
                 )}
-              </button>
+              </EnhancedButton>
             </div>
           </div>
           
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center gap-2">
-            <button
+            <EnhancedButton
               data-testid="cart-button"
               onClick={() => setIsCartOpen(true)}
+              variant="ghost"
+              size="icon"
               className={cn(
-                "relative rounded-md transition-colors w-11 h-11 p-0 flex items-center justify-center",
+                "relative w-11 h-11",
                 isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
               )}
               aria-label="Open cart"
@@ -278,12 +310,16 @@ const Navbar = () => {
                   {totalItems}
                 </span>
               )}
-            </button>
-            <button onClick={toggleMenu} className={cn("focus:outline-none w-11 h-11 p-0 flex items-center justify-center", isScrolled ? "text-gray-700" : "text-white")}
+            </EnhancedButton>
+            <EnhancedButton 
+              onClick={toggleMenu} 
+              variant="ghost" 
+              size="icon"
+              className={cn("w-11 h-11", isScrolled ? "text-gray-700" : "text-white")}
               aria-label={isMenuOpen ? "Close menu" : "Open menu"}
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+            </EnhancedButton>
           </div>
         </div>
       </div>
@@ -419,17 +455,14 @@ const Navbar = () => {
                 transition={{ delay: 0.5 }}
                 className="pt-4"
               >
-                <button 
+                <EnhancedButton 
                   onClick={() => scrollToSection('contact')} 
-                  className={cn(
-                    "w-full px-4 py-3 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105",
-                    isScrolled 
-                      ? "bg-blue-600 text-white hover:bg-blue-700 shadow-lg" 
-                      : "bg-white text-gray-900 hover:bg-gray-100 shadow-lg"
-                  )}
+                  variant={isScrolled ? "primary" : "secondary"}
+                  size="lg"
+                  className="w-full transition-all duration-200 hover:scale-105 shadow-lg"
                 >
                   {t('navigation.contact')}
-                </button>
+                </EnhancedButton>
               </motion.div>
               
               {/* Language Switcher */}

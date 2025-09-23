@@ -5,7 +5,7 @@ import { Product } from '@/types/product';
 import { FilterState, defaultFilters } from '@/utils/productFilters';
 import { getRootCategories, getCategoryById, getChildren } from '@/utils/categoryUtils';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Slider } from '@/components/ui/slider';
@@ -17,13 +17,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+  DrawerFooter,
+  DrawerClose,
+} from '@/components/ui/drawer';
 import {
   Collapsible,
   CollapsibleContent,
@@ -322,15 +324,15 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {/* Clear Filters */}
       {activeFiltersCount > 0 && (
         <div className="pt-4 border-t">
-          <Button
+          <EnhancedButton
             variant="outline"
-            size="sm"
+            size="md"
             onClick={clearFilters}
-            className="w-full"
+            className="w-full min-h-[44px]"
           >
             <X className="w-4 h-4 mr-2" />
             Xóa bộ lọc ({activeFiltersCount})
-          </Button>
+          </EnhancedButton>
         </div>
       )}
     </div>
@@ -349,11 +351,16 @@ const FilterBar: React.FC<FilterBarProps> = ({
         <FilterContent />
       </div>
 
-      {/* Mobile Filter Sheet */}
+      {/* Mobile Filter Bottom Sheet */}
       <div className="lg:hidden">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="sm" className="relative">
+        <Drawer>
+          <DrawerTrigger asChild>
+            <EnhancedButton 
+              variant="outline" 
+              size="md" 
+              className="relative min-h-[44px]"
+              data-testid="mobile-filters-button"
+            >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
               Bộ lọc
               {activeFiltersCount > 0 && (
@@ -361,20 +368,30 @@ const FilterBar: React.FC<FilterBarProps> = ({
                   {activeFiltersCount}
                 </Badge>
               )}
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left" className="w-80 overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Bộ lọc sản phẩm</SheetTitle>
-              <SheetDescription>
-                Tùy chỉnh bộ lọc để tìm sản phẩm phù hợp
-              </SheetDescription>
-            </SheetHeader>
-            <div className="mt-6">
+            </EnhancedButton>
+          </DrawerTrigger>
+          <DrawerContent className="max-h-[80vh] overflow-y-auto" data-testid="mobile-filters-drawer">
+            <DrawerHeader>
+              <DrawerTitle>Bộ lọc sản phẩm</DrawerTitle>
+              <DrawerDescription>Tùy chỉnh bộ lọc để tìm sản phẩm phù hợp</DrawerDescription>
+            </DrawerHeader>
+            <div className="px-4 pb-2">
               <FilterContent />
             </div>
-          </SheetContent>
-        </Sheet>
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <EnhancedButton variant="primary" size="lg" className="min-h-[44px]" data-testid="apply-filters-button">
+                  Áp dụng
+                </EnhancedButton>
+              </DrawerClose>
+              {activeFiltersCount > 0 && (
+                <EnhancedButton variant="ghost" size="lg" className="min-h-[44px]" onClick={clearFilters} data-testid="reset-filters-button">
+                  Xóa bộ lọc ({activeFiltersCount})
+                </EnhancedButton>
+              )}
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </div>
     </div>
   );

@@ -66,7 +66,7 @@ const SearchResults: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900">Search Results</h1>
+          <h1 className="text-3xl font-bold text-gray-900" data-testid="search-results-heading">Search Results</h1>
           <p className="text-gray-600 mt-2">Tìm thấy {result.total} sản phẩm</p>
         </div>
 
@@ -86,16 +86,133 @@ const SearchResults: React.FC = () => {
           <div className="lg:col-span-9">
             {/* Controls */}
             <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 {query && (
-                  <Badge variant="secondary">Query: {query}</Badge>
+                  <Badge variant="secondary" className="gap-1" data-testid="chip-query">
+                    Query: {query}
+                    <button
+                      aria-label="Remove query"
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => { setQuery(''); setPage(1); }}
+                      data-testid="chip-remove-query"
+                    >
+                      ×
+                    </button>
+                  </Badge>
                 )}
+
+                {filters.categories.map((c) => (
+                  <Badge key={`cat-${c}`} variant="outline" className="gap-1" data-testid={`chip-category-${c}`}>
+                    Category: {c}
+                    <button
+                      aria-label={`Remove category ${c}`}
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => {
+                        setFilters(prev => ({ ...prev, categories: prev.categories.filter(x => x !== c) }));
+                        setPage(1);
+                      }}
+                      data-testid={`chip-remove-category-${c}`}
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                ))}
+
                 {filters.origins.map((o) => (
-                  <Badge key={o} variant="outline">Origin: {o}</Badge>
+                  <Badge key={`origin-${o}`} variant="outline" className="gap-1" data-testid={`chip-origin-${o}`}>
+                    Origin: {o}
+                    <button
+                      aria-label={`Remove origin ${o}`}
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => {
+                        setFilters(prev => ({ ...prev, origins: prev.origins.filter(x => x !== o) }));
+                        setPage(1);
+                      }}
+                      data-testid={`chip-remove-origin-${o}`}
+                    >
+                      ×
+                    </button>
+                  </Badge>
                 ))}
+
                 {filters.status.map((s) => (
-                  <Badge key={s} variant="outline">Status: {s}</Badge>
+                  <Badge key={`status-${s}`} variant="outline" className="gap-1" data-testid={`chip-status-${s}`}>
+                    Status: {s}
+                    <button
+                      aria-label={`Remove status ${s}`}
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => {
+                        setFilters(prev => ({ ...prev, status: prev.status.filter(x => x !== s) }));
+                        setPage(1);
+                      }}
+                      data-testid={`chip-remove-status-${s}`}
+                    >
+                      ×
+                    </button>
+                  </Badge>
                 ))}
+
+                {filters.types.map((t) => (
+                  <Badge key={`type-${t}`} variant="outline" className="gap-1" data-testid={`chip-type-${t}`}>
+                    Type: {t}
+                    <button
+                      aria-label={`Remove type ${t}`}
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => {
+                        setFilters(prev => ({ ...prev, types: prev.types.filter(x => x !== t) }));
+                        setPage(1);
+                      }}
+                      data-testid={`chip-remove-type-${t}`}
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                ))}
+
+                {filters.brands.map((b) => (
+                  <Badge key={`brand-${b}`} variant="outline" className="gap-1" data-testid={`chip-brand-${b}`}>
+                    Brand: {b}
+                    <button
+                      aria-label={`Remove brand ${b}`}
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => {
+                        setFilters(prev => ({ ...prev, brands: prev.brands.filter(x => x !== b) }));
+                        setPage(1);
+                      }}
+                      data-testid={`chip-remove-brand-${b}`}
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                ))}
+
+                {(filters.priceRange[0] !== defaultFilters.priceRange[0] || filters.priceRange[1] !== defaultFilters.priceRange[1]) && (
+                  <Badge variant="outline" className="gap-1" data-testid="chip-price">
+                    Price: {filters.priceRange[0]} - {filters.priceRange[1]}
+                    <button
+                      aria-label="Reset price range"
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => { setFilters(prev => ({ ...prev, priceRange: defaultFilters.priceRange })); setPage(1); }}
+                      data-testid="chip-remove-price"
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                )}
+
+                {filters.quickFilter && (
+                  <Badge variant="outline" className="gap-1" data-testid={`chip-quick-${filters.quickFilter}`}>
+                    Quick: {filters.quickFilter}
+                    <button
+                      aria-label="Remove quick filter"
+                      className="ml-1 hover:text-red-500"
+                      onClick={() => { setFilters(prev => ({ ...prev, quickFilter: '' })); setPage(1); }}
+                      data-testid="chip-remove-quick"
+                    >
+                      ×
+                    </button>
+                  </Badge>
+                )}
               </div>
 
               <div className="flex items-center gap-2">
@@ -122,8 +239,8 @@ const SearchResults: React.FC = () => {
             </div>
 
             {/* Grid */}
-            {result.items.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-8">
+              {result.items.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-8" data-testid="search-results-grid">
                 {result.items.map((product) => (
                   <SimpleProductCard key={product.id} product={product as any} highlightQuery={query} />
                 ))}

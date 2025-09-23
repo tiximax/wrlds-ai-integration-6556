@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
+import { EnhancedButton } from "@/components/ui/enhanced-button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
 import { Grid3X3, List, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -137,22 +137,22 @@ const ProductGrid: React.FC<ProductGridProps> = ({
         <div className="flex items-center gap-3">
           {/* Layout Toggle */}
           <div className="flex items-center gap-1 bg-gray-100 rounded-md p-1">
-            <Button
-              variant={layout === 'grid' ? 'default' : 'ghost'}
-              size="sm"
+            <EnhancedButton
+              variant={layout === 'grid' ? 'primary' : 'ghost'}
+              size="icon"
               onClick={() => setLayout('grid')}
-              className="w-8 h-8 p-1"
+              className="w-8 h-8"
             >
               <Grid3X3 className="w-4 h-4" />
-            </Button>
-            <Button
-              variant={layout === 'list' ? 'default' : 'ghost'}
-              size="sm"
+            </EnhancedButton>
+            <EnhancedButton
+              variant={layout === 'list' ? 'primary' : 'ghost'}
+              size="icon"
               onClick={() => setLayout('list')}
-              className="w-8 h-8 p-1"
+              className="w-8 h-8"
             >
               <List className="w-4 h-4" />
-            </Button>
+            </EnhancedButton>
           </div>
           
           {/* Sort Dropdown */}
@@ -190,16 +190,15 @@ const ProductGrid: React.FC<ProductGridProps> = ({
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 bg-white p-4 rounded-lg shadow-sm border">
-          <Button
+          <EnhancedButton
             variant="outline"
             size="sm"
             disabled={currentPage === 1}
             onClick={() => goToPage(currentPage - 1)}
-            className="flex items-center gap-1"
+            leftIcon={<ChevronLeft className="w-4 h-4" />}
           >
-            <ChevronLeft className="w-4 h-4" />
             Trước
-          </Button>
+          </EnhancedButton>
           
           <div className="flex items-center gap-1">
             {getPaginationRange().map((page, index) => (
@@ -208,29 +207,28 @@ const ProductGrid: React.FC<ProductGridProps> = ({
                   ...
                 </span>
               ) : (
-                <Button
+                <EnhancedButton
                   key={index}
-                  variant={currentPage === page ? 'default' : 'outline'}
+                  variant={currentPage === page ? 'primary' : 'outline'}
                   size="sm"
                   onClick={() => goToPage(page as number)}
                   className="w-10 h-10"
                 >
                   {page}
-                </Button>
+                </EnhancedButton>
               )
             ))}
           </div>
           
-          <Button
+          <EnhancedButton
             variant="outline"
             size="sm"
             disabled={currentPage === totalPages}
             onClick={() => goToPage(currentPage + 1)}
-            className="flex items-center gap-1"
+            rightIcon={<ChevronRight className="w-4 h-4" />}
           >
             Sau
-            <ChevronRight className="w-4 h-4" />
-          </Button>
+          </EnhancedButton>
         </div>
       )}
     </div>

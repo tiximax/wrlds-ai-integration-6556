@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
 import WishlistButton from '@/components/WishlistButton';
 import { SimpleProduct } from '@/types/simple';
-import { Button } from '@/components/ui/button';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
+import QuickViewModal from '@/components/ui/quick-view-modal';
 
 interface SimpleProductCardProps {
   product: SimpleProduct;
@@ -21,6 +22,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
   showWishlist = true,
   highlightQuery,
 }) => {
+  const [isQuickOpen, setIsQuickOpen] = React.useState(false);
   const { addToCart, isInCart, getItemQuantity } = useSimpleCart();
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
   const inCart = isInCart(product.id);
@@ -58,6 +60,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
   };
 
   return (
+    <>
     <Card className={`group h-full hover:shadow-lg transition-shadow duration-200 ${className}`}>
       <Link to={`/products/${product.slug}`}>
         <CardContent className="p-0">
@@ -89,6 +92,41 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
               )}
             </div>
 
+            {/* Quick View Button */}
+            <div className="absolute inset-x-0 bottom-2 flex justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
+              <EnhancedButton
+                variant="secondary"
+                size="sm"
+                className="min-h-[32px] px-3 py-1"
+                onClick={(e) => { e.preventDefault(); setIsQuickOpen(true); }}
+                data-testid="quick-view-button"
+              >
+                Quick View
+              </EnhancedButton>
+            </div>
+
+            {/* Compare Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                try {
+                  const { useCompare } = require('@/contexts/CompareContext');
+                  const cmp = useCompare();
+                  cmp.add(product.id);
+                } catch {
+                  const current = JSON.parse(localStorage.getItem('compare-list') || '[]');
+                  if (!current.includes(product.id)) {
+                    localStorage.setItem('compare-list', JSON.stringify([...current, product.id]));
+                  }
+                }
+              }}
+              className="absolute bottom-2 left-2 p-1.5 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
+              aria-label="Add to compare"
+              data-testid="add-to-compare"
+            >
+              <span className="text-[10px] font-medium text-gray-700">Compare</span>
+            </button>
+
             {/* Wishlist Button */}
             {showWishlist && (
               <WishlistButton product={product as any} className="absolute top-2 right-2" />
@@ -98,7 +136,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
           {/* Content */}
           <div className="p-4">
             {/* Category */}
-            <p className="text-sm text-gray-500 mb-1">{product.category.name}</p>
+            <p className="text-sm text-gray-500 mb-1">{renderHighlighted(product.category.name)}</p>
             
             {/* Product Name */}
             <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2 group-hover:text-primary transition-colors">
@@ -154,24 +192,36 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
             </div>
 
             {/* Add to Cart Button */}
-            <Button
+            <EnhancedButton
               onClick={handleAddToCart}
               disabled={product.status === 'out_of_stock'}
               className="w-full"
               size="sm"
+              variant={product.status === 'out_of_stock' ? 'ghost' : (inCart ? 'secondary' : 'primary')}
+              leftIcon={<ShoppingCart className="w-4 h-4" />}
             >
-              <ShoppingCart className="w-4 h-4 mr-2" />
               {product.status === 'out_of_stock' 
                 ? 'Out of Stock'
                 : inCart 
                   ? `In Cart (${cartQuantity})`
                   : 'Add to Cart'
               }
-            </Button>
+            </EnhancedButton>
           </div>
         </CardContent>
       </Link>
     </Card>
+
+      {/* Quick View Modal */}
+      <QuickViewModal
+        isOpen={isQuickOpen}
+        onClose={() => setIsQuickOpen(false)}
+        product={product as any}
+        onAddToCart={async (_id, qty) => {
+          addToCart(product as any, qty);
+        }}
+      />
+    </>
   );
 };
 

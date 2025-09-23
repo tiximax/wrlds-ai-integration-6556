@@ -15,6 +15,9 @@ import ProductBreadcrumbs from '@/components/ProductBreadcrumbs';
 import RelatedProducts from '@/components/RelatedProducts';
 import ProductReviews from '@/components/ProductReviews';
 import ProductVariants from '@/components/ProductVariants';
+import RecentlyViewed from '@/components/products/RecentlyViewed';
+import ProductRecommendations from '@/components/products/ProductRecommendations';
+import { recordRecentlyViewed } from '@/utils/recentlyViewed';
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -77,6 +80,13 @@ const ProductDetail: React.FC = () => {
     }
     return foundProduct;
   }, [slug, currentPrice]);
+
+  // Record recently viewed when product changes
+  React.useEffect(() => {
+    if (product?.id) {
+      recordRecentlyViewed(product.id);
+    }
+  }, [product?.id]);
 
   // Simplified breadcrumbs moved to component
 
@@ -428,6 +438,20 @@ const ProductDetail: React.FC = () => {
             </div>
           </div>
         </div>
+        {/* Recently Viewed */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <RecentlyViewed excludeId={product.id} />
+        </div>
+
+        {/* Product Recommendations */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-lg shadow-sm overflow-hidden p-6 mt-6">
+            <div className="pt-2">
+              <ProductRecommendations current={product as any} />
+            </div>
+          </div>
+        </div>
+
         {/* Related Products and Reviews */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
           <RelatedProducts current={product as any} />

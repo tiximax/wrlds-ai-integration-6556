@@ -604,21 +604,125 @@ interface Product {
   - Stabilized user-flow by handling language switch via localStorage toggle and robust cart closing
   - Current status: 65 passed, 40 skipped, 0 failed (user-flow stabilized)
 
+- Enhancements (2025-09-21 - continued):
+  - Replaced buttons with EnhancedButton in key components:
+    - src/components/Navbar.tsx: desktop contact, desktop cart, mobile cart, mobile menu toggle, mobile contact (menu)
+    - src/components/Hero.tsx: primary and secondary CTA buttons
+    - src/components/SimpleProductCard.tsx: Add to Cart button with icon + variant logic
+    - src/components/ProductGrid.tsx: layout toggles (grid/list) and pagination controls
+    - src/components/ContactForm.tsx: submit button with loading state
+  - Rationale: unify design system usage and ensure consistent loading/hover/size/rounded variants
+
+- Targeted Tests (per request: only test tính năng mới thay đổi):
+  - npm run test:e2e -- tests/working-cart.spec.ts --project=chromium --reporter=line → 3 passed
+  - npm run test:e2e -- tests/user-flow.spec.ts --project=chromium --reporter=line → 1 passed
+  - Note: Chỉ chạy Chromium để rút gọn phạm vi; tránh flakiness trên Mobile Safari khi không cần thiết
+
 ### M5.2 Progress (2025-09-21)
 - Mobile hook:
   - src/hooks/use-mobile.ts (useMobile + backward-compat useIsMobile)
-- Navbar mobile UX:
+- Navbar & Mobile Navigation UX:
   - Increased mobile cart hit target to 44px (w-11 h-11) in src/components/Navbar.tsx
+  - Added mobile Bottom Navigation: src/components/BottomNav.tsx (Home, Search, Wishlist, Cart)
+  - Integrated BottomNav into PageLayout.tsx (global across pages)
+  - BottomNav Cart triggers custom event 'wrlds:open-cart'; Navbar listens and opens SimpleCartSidebar
 - Cart Sidebar UX:
   - Enlarged close button to 44px (w-11 h-11)
 - Product Detail (mobile-first):
   - Replaced Add to Cart with EnhancedButton (desktop)
   - Added sticky bottom CTA bar (mobile) with total price + EnhancedButton
   - Increased +/- quantity buttons to 44px
-- Tests:
-  - Full Playwright E2E re-run: 65 passed, 40 skipped, 0 failed
+  - Zoom dialog: added PinchZoom (pan, pinch, double-tap) in src/components/ui/pinch-zoom.tsx and integrated into ProductImageGallery.tsx
+- Mobile Filters & Search UX:
+  - Converted mobile filters from Sheet (side) to Drawer bottom sheet in src/components/products/FilterBar.tsx
+  - Touch-friendly controls (min-height 44px), EnhancedButton for triggers and actions
+  - Added Apply/Reset actions in DrawerFooter; added testids for automation
+- Targeted Tests (Chromium only):
+  - npm run test:e2e -- tests/bottomnav-cart.spec.ts --project=chromium --reporter=line → 1 passed
+  - npm run test:e2e -- tests/pinch-zoom.spec.ts --project=chromium --reporter=line → 1 passed
+  - npm run test:e2e -- tests/mobile-filters.spec.ts --project=chromium --reporter=line → 1 passed
+  - npm run test:e2e -- tests/quick-view.spec.ts --project=chromium --reporter=line → 1 passed
+  - npm run test:e2e -- tests/recently-viewed.spec.ts --project=chromium --reporter=line → 1 passed
+  - npm run test:e2e -- tests/recommendations.spec.ts --project=chromium --reporter=line → 1 passed
+
+### M5.3 Progress (2025-09-21)
+- Quick View: integrated overlay button on product cards; connected quick-view-modal; test passed
+- Recently Viewed: util (src/utils/recentlyViewed.ts), component (src/components/products/RecentlyViewed.tsx), integrated into ProductDetail via useEffect; test passed
 
 ### Next Steps
-- Continue M5.1: gradually replace common buttons with EnhancedButton across key screens
-- Add Skeleton usage on product lists during data loading
-- Plan for M5.2 Mobile-first optimizations (Navbar mobile, ProductDetail touch gestures, SimpleCartSidebar mobile UX)
+- M5.3 tiếp tục: ProductRecommendations, ProductComparison, Image zoom nâng cao (desktop lens)
+- Củng cố test E2E cho Quick View (mobile) nếu cần
+
+## M5.5 Checkout Flow - Triển khai (2025-09-23)
+
+## M5.4 Enhanced Search - Gợi ý thông minh (2025-09-23)
+
+### Specify
+- Mục tiêu: Cải thiện gợi ý tìm kiếm (suggestions) chịu lỗi chính tả (fuzzy) + giữ luồng điều hướng ổn định về /products?search= để tránh phá test hiện có.
+- Đầu vào: chuỗi tìm kiếm người dùng; dữ liệu từ simpleProducts
+- Đầu ra: dropdown gợi ý (product/brand/category/tag) hiển thị chính xác và có thể click để điều hướng.
+- Ổn định: Không đổi route; chỉ nâng cấp thuật toán; test E2E chỉ cho phần mới.
+
+### Plan
+- So sánh cách tiếp cận:
+  1) Dùng Jaccard + tokenization (đã có) → ổn định nhưng kém khi sai chính tả.
+  2) Thêm Levenshtein (fuzzy) ở mức câu đầy đủ → chưa tối ưu cho từ dài.
+  3) Kết hợp: fuzzy cho từng token + ngưỡng tối thiểu → CHỌN 🏔️
+- Lý do: cân bằng độ chính xác và hiệu năng cho dataset nhỏ; tránh over-match bằng ngưỡng 0.5 và yêu cầu query ≥ 3 ký tự.
+
+### Tasks
+1) Thêm hàm Levenshtein + normalizedFuzzyScore vào utils/advancedSearch.ts (điểm 0..1)
+2) Áp dụng vào generateSearchSuggestions: match khi name/brand/category chứa query hoặc fuzzy(token, query) ≥ 0.5 (query ≥ 3)
+3) Điều chỉnh calculateRelevanceScore: cộng điểm theo fuzzy nếu similarity thấp nhưng fuzzy cao
+4) Viết E2E: tests/enhanced-search-suggestions.spec.ts – gõ 'japn' → thấy 'Premium Japanese Sneakers' → click → tới /products?search=... → thấy sản phẩm
+
+### Tiêu chí pass
+- Dropdown hiển thị gợi ý đúng với typo thông dụng (vd: 'japn' ≈ 'Japanese')
+- Click gợi ý → điều hướng đúng và có sản phẩm trong kết quả
+- Bài test Playwright mới PASS trên Chromium
+
+### Tiến trình (2025-09-23)
+- Đã triển khai fuzzy (Levenshtein + token-level)
+- Đã thêm E2E: enhanced-search-suggestions.spec.ts → 1 passed
+- Không thay đổi route điều hướng; giữ /products?search= để tránh ảnh hưởng test cũ
+- Tiến độ: 100%
+
+### Specify
+- Ngôn ngữ: TypeScript (React + Vite)
+- Mục tiêu: Tạo luồng Checkout tối thiểu 3 bước (Địa chỉ → Thanh toán → Xem lại → Hoàn tất) hoạt động thực tế, có route /checkout, liên kết từ giỏ hàng.
+- Input: Giỏ hàng từ SimpleCartContext; người dùng nhập thông tin biểu mẫu tối thiểu; chọn phương thức thanh toán mock
+- Output: Màn hình hoàn tất đơn hàng (mock) và nút quay về trang chủ / tiếp tục mua sắm
+- Ổn định: Ưu tiên đơn giản, không phụ thuộc backend; data-testid cho automation.
+
+### Plan
+- So sánh tiếp cận:
+  1) Dùng AdvancedCheckoutProcess (CartContext)
+     - Ưu: Đầy đủ bước, UI phong phú
+     - Nhược: App đang dùng SimpleCartContext → cần bọc thêm CartProvider, tăng rủi ro side-effect
+  2) Tự viết Checkout.tsx tối thiểu, dùng SimpleCartContext
+     - Ưu: Khớp kiến trúc hiện tại, ít phụ thuộc, dễ test → CHỌN 🏔️
+  3) Trích tách AddressForm/PaymentMethods… thành component riêng
+     - Ưu: Modular; Nhược: Thêm file, tăng độ phức tạp ban đầu
+- Cập nhật: Chọn (2) thay vì (1) để đảm bảo ổn định và phù hợp context hiện có.
+
+### Tasks
+1) Thêm route /checkout và trang Checkout.tsx (3 bước, testid đầy đủ)
+2) Cập nhật SimpleCartSidebar: nút "Checkout" dẫn tới /checkout (data-testid="go-checkout")
+3) Viết E2E smoke test: tests/checkout.smoke.spec.ts (Chromium)
+4) Xử lý overlay cookie trong test để không chặn click
+5) Chạy test và sửa cho đến khi PASS
+
+### Tiêu chí pass
+- Điều hướng được từ giỏ hàng → /checkout
+- Đi qua 3 bước và tới màn hình hoàn tất
+- Bài test Playwright pass trong môi trường thực tế (dev server)
+
+### Tiến trình (2025-09-23)
+- Đã xong: Route /checkout + Checkout.tsx (3 bước), liên kết từ giỏ hàng, test E2E (Chromium)
+- Test: 1 passed (checkout.smoke.spec.ts); khắc phục overlay Silktide trong test bằng addStyleTag
+- Tiến độ: 100%
+
+### Ghi chú kỹ thuật
+- Tôn trọng SimpleCartContext, không can thiệp CartContext để tránh lệch kiến trúc
+- Dùng seed localStorage trong test để đảm bảo có item → mở cart hiển thị nút checkout ổn định
+- Không thay đổi logic giỏ hàng; chỉ thêm điều hướng và skeleton checkout

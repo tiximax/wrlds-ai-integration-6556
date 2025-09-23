@@ -5,6 +5,8 @@ import Navbar from '@/components/Navbar';
 import EnhancedFooter from '@/components/EnhancedFooter';
 import ContactInfo from '@/components/ContactInfo';
 import FloatingContactButton from '@/components/FloatingContactButton';
+import BottomNav from '@/components/BottomNav';
+import CompareBar from '@/components/products/CompareBar';
 
 type PageLayoutProps = {
   children: React.ReactNode;
@@ -26,6 +28,8 @@ const PageLayout = ({ children, showContact = true }: PageLayoutProps) => {
       {showContact && <ContactInfo />}
       <EnhancedFooter />
       {showContact && <FloatingContactButton />}
+      <BottomNav />
+      <CompareBar />
     </div>
   );
 };

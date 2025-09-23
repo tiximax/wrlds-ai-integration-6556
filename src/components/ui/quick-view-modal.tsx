@@ -226,11 +226,25 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   }}
                   className="absolute inset-0"
                 >
-                  <LazyImage
-                    src={currentImage?.url || ''}
-                    alt={currentImage?.alt || product.name}
-                    className="w-full h-full object-cover"
-                  />
+                  {/* Desktop lens zoom for QuickView */}
+                  <div className="hidden lg:block w-full h-full">
+                    {currentImage?.url && (
+                      React.createElement(require('@/components/ui/lens-zoom').default, {
+                        src: currentImage.url,
+                        alt: currentImage?.alt || product.name,
+                        zoom: 2,
+                        className: 'w-full h-full'
+                      })
+                    )}
+                  </div>
+                  {/* Mobile/Tablet image */}
+                  <div className="block lg:hidden w-full h-full">
+                    <LazyImage
+                      src={currentImage?.url || ''}
+                      alt={currentImage?.alt || product.name}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 </motion.div>
               </AnimatePresence>
 

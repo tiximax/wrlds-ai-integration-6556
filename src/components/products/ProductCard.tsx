@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { Star, ShoppingCart, Clock, Users, Zap, Package, Heart } from 'lucide-react';
 import { Product } from '@/types/simple';
 import { Button } from '@/components/ui/button';
+import { EnhancedButton } from '@/components/ui/enhanced-button';
+import QuickViewModal from '@/components/ui/quick-view-modal';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +28,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
   onAddToCart,
   onAddToWishlist
 }) => {
+  const [isQuickOpen, setIsQuickOpen] = React.useState(false);
   const { t } = useTranslation();
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
 
@@ -181,7 +184,42 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 {getOriginFlag(product.origin)}
               </span>
             </div>
+
+            {/* Quick View Button */}
+            <div className="absolute inset-x-0 bottom-3 flex justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
+              <EnhancedButton
+                variant="secondary"
+                size="sm"
+                className="min-h-[36px] px-3 py-2"
+                onClick={(e) => { e.preventDefault(); setIsQuickOpen(true); }}
+                data-testid="quick-view-button"
+              >
+                Quick View
+              </EnhancedButton>
+            </div>
             
+            {/* Compare Button */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                try {
+                  const { useCompare } = require('@/contexts/CompareContext');
+                  const cmp = useCompare();
+                  cmp.add(product.id);
+                } catch {
+                  const current = JSON.parse(localStorage.getItem('compare-list') || '[]');
+                  if (!current.includes(product.id)) {
+                    localStorage.setItem('compare-list', JSON.stringify([...current, product.id]));
+                  }
+                }
+              }}
+              className="absolute bottom-3 left-3 p-2 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
+              aria-label="Add to compare"
+              data-testid="add-to-compare"
+            >
+              <span className="text-xs font-medium text-gray-700">Compare</span>
+            </button>
+
             {/* Wishlist Button */}
             {showWishlist && (
               <button
@@ -189,7 +227,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                   e.preventDefault();
                   onAddToWishlist?.(product.id);
                 }}
-                className="absolute bottom-3 right-3 p-2 bg-white rounded-full shadow-sm opacity-0 group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
+                className="absolute bottom-3 right-3 p-2 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
               >
                 <Heart className="w-4 h-4 text-gray-600" />
               </button>
@@ -310,6 +348,15 @@ const ProductCard: React.FC<ProductCardProps> = ({
           </div>
         </CardContent>
       </Card>
+      {/* Quick View Modal */}
+      <QuickViewModal
+        isOpen={isQuickOpen}
+        onClose={() => setIsQuickOpen(false)}
+        product={product as any}
+        onAddToCart={async (_id, qty) => {
+          onAddToCart?.(product.id);
+        }}
+      />
     </motion.div>
   );
 };

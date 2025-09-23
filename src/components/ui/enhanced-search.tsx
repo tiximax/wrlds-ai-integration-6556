@@ -259,6 +259,36 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     }
   };
 
+  // Simple analytics stub
+  const logSearchEvent = (event: string, payload: Record<string, any>) => {
+    try {
+      // eslint-disable-next-line no-console
+      console.debug('[analytics]', event, payload);
+    } catch {}
+  };
+
+  // Highlight matched query parts in suggestion text
+  const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const renderHighlightedText = (text: string, q: string) => {
+    const raw = q.trim();
+    if (!raw) return text;
+    const tokens = raw
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(t => t.length >= 2)
+      .map(t => escapeRegExp(t));
+    if (tokens.length === 0) return text;
+    const regex = new RegExp(`(${tokens.join('|')})`, 'ig');
+    const parts = text.split(regex);
+    return (
+      <>
+        {parts.map((part, idx) =>
+          regex.test(part) ? <mark key={idx}>{part}</mark> : <span key={idx}>{part}</span>
+        )}
+      </>
+    );
+  };
+
   const variantStyles = {
     default: "bg-white border-gray-200",
     navbar: "bg-white/90 backdrop-blur-sm border-gray-200/50",
@@ -366,12 +396,15 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                       "w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors group",
                       selectedIndex === index && "bg-blue-50"
                     )}
-                    onClick={() => handleSearch(suggestion.text)}
+                    onClick={() => {
+                      logSearchEvent('suggestion_click', { text: suggestion.text, type: suggestion.type, query });
+                      handleSearch(suggestion.text);
+                    }}
                   >
                     {getSuggestionIcon(suggestion.type)}
                     <div className="flex-1">
                       <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600">
-                        {suggestion.text}
+                        {renderHighlightedText(suggestion.text, query)}
                       </div>
                       {suggestion.description && (
                         <div className="text-xs text-gray-500">{suggestion.description}</div>

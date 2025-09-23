@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { SimpleCartProvider } from "@/contexts/SimpleCartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
+import { CompareProvider } from "@/contexts/CompareContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
@@ -30,6 +31,7 @@ const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const SearchResults = lazy(() => import("./pages/SearchResults"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
+const Checkout = lazy(() => import("./pages/Checkout"));
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -44,6 +46,7 @@ const App = () => {
     <LanguageProvider>
       <SimpleCartProvider>
         <WishlistProvider>
+          <CompareProvider>
           <QueryClientProvider client={queryClient}>
           <TooltipProvider>
           <Toaster />
@@ -77,12 +80,14 @@ const App = () => {
             <Route path="/category/:categorySlug" element={<CategoryPage />} />
             <Route path="/category/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
             <Route path="/wishlist" element={<Wishlist />} />
+            <Route path="/checkout" element={<Checkout />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
         </BrowserRouter>
           </TooltipProvider>
           </QueryClientProvider>
+          </CompareProvider>
         </WishlistProvider>
       </SimpleCartProvider>
     </LanguageProvider>

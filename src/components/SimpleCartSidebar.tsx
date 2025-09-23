@@ -204,9 +204,11 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
 
                 {/* Action Buttons */}
                 <div className="space-y-2">
-                  <EnhancedButton className="w-full" size="lg" variant="gradient">
-                    Checkout ({totalItems} items)
-                  </EnhancedButton>
+                  <Link to="/checkout" data-testid="go-checkout" onClick={onClose}>
+                    <EnhancedButton className="w-full" size="lg" variant="gradient">
+                      Checkout ({totalItems} items)
+                    </EnhancedButton>
+                  </Link>
                   <EnhancedButton
                     variant="outline"
                     className="w-full"

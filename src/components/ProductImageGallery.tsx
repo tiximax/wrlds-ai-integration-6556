@@ -3,6 +3,7 @@ import { ProductImage } from '@/types/simple';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
+import { PinchZoom } from '@/components/ui/pinch-zoom';
 
 interface ProductImageGalleryProps {
   images: ProductImage[];
@@ -34,12 +35,26 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
                   }}
                   className="aspect-square bg-gray-100 rounded-lg overflow-hidden cursor-zoom-in"
                 >
-                  <img
-                    src={img.url}
-                    alt={img.alt || productName}
-                    className="w-full h-full object-cover"
-                    loading="lazy"
-                  />
+                  {/* Desktop lens zoom */}
+                  <div className="hidden lg:block w-full h-full">
+                    {img?.url && (
+                      React.createElement(require('@/components/ui/lens-zoom').default, {
+                        src: img.url,
+                        alt: img?.alt || productName,
+                        zoom: 2,
+                        className: 'w-full h-full'
+                      })
+                    )}
+                  </div>
+                  {/* Mobile/Tablet image */}
+                  <div className="block lg:hidden w-full h-full">
+                    <img
+                      src={img.url}
+                      alt={img.alt || productName}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
               </CarouselItem>
             ))}
@@ -100,11 +115,14 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
       <Dialog open={zoomOpen} onOpenChange={setZoomOpen}>
         <DialogContent className="max-w-5xl p-0">
           <div className="bg-black">
-            <img
-              src={ordered[activeIndex]?.url}
-              alt={ordered[activeIndex]?.alt || productName}
-              className="max-h-[80vh] w-auto mx-auto object-contain"
-            />
+            <PinchZoom className="w-full h-full">
+              <img
+                src={ordered[activeIndex]?.url}
+                alt={ordered[activeIndex]?.alt || productName}
+                className="max-h-[80vh] w-auto mx-auto object-contain select-none pointer-events-none"
+                draggable={false}
+              />
+            </PinchZoom>
           </div>
         </DialogContent>
       </Dialog>

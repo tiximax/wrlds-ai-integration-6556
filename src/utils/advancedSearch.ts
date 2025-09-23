@@ -92,6 +92,36 @@ export const calculateSimilarity = (text1: string, text2: string): number => {
   return union.size > 0 ? intersection.size / union.size : 0;
 };
 
+// Lightweight Levenshtein distance (for fuzzy matching)
+export const levenshteinDistance = (a: string, b: string): number => {
+  const s = normalizeText(a);
+  const t = normalizeText(b);
+  const m = s.length;
+  const n = t.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  const dp = Array.from({ length: m + 1 }, () => new Array<number>(n + 1));
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = s[i - 1] === t[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      );
+    }
+  }
+  return dp[m][n];
+};
+
+export const normalizedFuzzyScore = (a: string, b: string): number => {
+  const maxLen = Math.max(normalizeText(a).length, normalizeText(b).length) || 1;
+  const dist = levenshteinDistance(a, b);
+  return 1 - dist / maxLen; // 1.0 = identical, 0.0 = very different
+};
+
 // Calculate relevance score for a product against search query
 export const calculateRelevanceScore = (product: Product, query: string): { score: number; matchedFields: string[] } => {
   if (!query.trim()) return { score: 0, matchedFields: [] };
@@ -111,8 +141,9 @@ export const calculateRelevanceScore = (product: Product, query: string): { scor
     matchedFields.push('name');
   } else {
     const nameSimilarity = calculateSimilarity(product.name, query);
-    if (nameSimilarity > 0.1) {
-      totalScore += SEARCH_CONFIG.WEIGHTS.name * nameSimilarity;
+    const nameFuzzy = normalizedFuzzyScore(product.name, query);
+    if (nameSimilarity > 0.1 || nameFuzzy > 0.6) {
+      totalScore += SEARCH_CONFIG.WEIGHTS.name * Math.max(nameSimilarity, nameFuzzy * 0.9);
       matchedFields.push('name');
     }
   }
@@ -125,8 +156,9 @@ export const calculateRelevanceScore = (product: Product, query: string): { scor
       matchedFields.push('brand');
     } else {
       const brandSimilarity = calculateSimilarity(product.brand.name, query);
-      if (brandSimilarity > 0.1) {
-        totalScore += SEARCH_CONFIG.WEIGHTS.brand * brandSimilarity;
+      const brandFuzzy = normalizedFuzzyScore(product.brand.name, query);
+      if (brandSimilarity > 0.1 || brandFuzzy > 0.6) {
+        totalScore += SEARCH_CONFIG.WEIGHTS.brand * Math.max(brandSimilarity, brandFuzzy * 0.9);
         matchedFields.push('brand');
       }
     }
@@ -321,8 +353,12 @@ export const generateSearchSuggestions = (products: Product[], query: string): S
   const suggestions: Map<string, SearchSuggestion> = new Map();
 
   products.forEach(product => {
-    // Product name suggestions
-    if (normalizeText(product.name).includes(normalizedQuery)) {
+    // Product name suggestions (exact or fuzzy)
+    const nameNorm = normalizeText(product.name);
+    const fuzzyNameScore = normalizedFuzzyScore(product.name, query);
+    const nameTokens = nameNorm.split(' ').filter(Boolean);
+const tokenFuzzyHit = normalizedQuery.length >= 3 && nameTokens.some(tok => normalizedFuzzyScore(tok, normalizedQuery) >= 0.5);
+    if (nameNorm.includes(normalizedQuery) || fuzzyNameScore > 0.6 || tokenFuzzyHit) {
       const key = `product:${product.name}`;
       if (!suggestions.has(key)) {
         suggestions.set(key, {
@@ -337,34 +373,46 @@ export const generateSearchSuggestions = (products: Product[], query: string): S
     }
 
     // Brand suggestions
-    if (product.brand?.name && normalizeText(product.brand.name).includes(normalizedQuery)) {
-      const key = `brand:${product.brand.name}`;
-      if (!suggestions.has(key)) {
-        suggestions.set(key, {
-          type: 'brand',
-          text: product.brand.name,
-          count: 1,
-          icon: '🏷️'
-        });
-      } else {
-        const existing = suggestions.get(key)!;
-        existing.count++;
+    if (product.brand?.name) {
+      const brandNorm = normalizeText(product.brand.name);
+      const fuzzyBrandScore = normalizedFuzzyScore(product.brand.name, query);
+      const brandTokens = brandNorm.split(' ').filter(Boolean);
+const brandTokenHit = normalizedQuery.length >= 3 && brandTokens.some(tok => normalizedFuzzyScore(tok, normalizedQuery) >= 0.5);
+      if (brandNorm.includes(normalizedQuery) || fuzzyBrandScore > 0.6 || brandTokenHit) {
+        const key = `brand:${product.brand.name}`;
+        if (!suggestions.has(key)) {
+          suggestions.set(key, {
+            type: 'brand',
+            text: product.brand.name,
+            count: 1,
+            icon: '🏷️'
+          });
+        } else {
+          const existing = suggestions.get(key)!;
+          existing.count++;
+        }
       }
     }
 
     // Category suggestions
-    if (product.category?.name && normalizeText(product.category.name).includes(normalizedQuery)) {
-      const key = `category:${product.category.name}`;
-      if (!suggestions.has(key)) {
-        suggestions.set(key, {
-          type: 'category',
-          text: product.category.name,
-          count: 1,
-          icon: '📂'
-        });
-      } else {
-        const existing = suggestions.get(key)!;
-        existing.count++;
+    if (product.category?.name) {
+      const categoryNorm = normalizeText(product.category.name);
+      const fuzzyCategoryScore = normalizedFuzzyScore(product.category.name, query);
+      const categoryTokens = categoryNorm.split(' ').filter(Boolean);
+const categoryTokenHit = normalizedQuery.length >= 3 && categoryTokens.some(tok => normalizedFuzzyScore(tok, normalizedQuery) >= 0.5);
+      if (categoryNorm.includes(normalizedQuery) || fuzzyCategoryScore > 0.6 || categoryTokenHit) {
+        const key = `category:${product.category.name}`;
+        if (!suggestions.has(key)) {
+          suggestions.set(key, {
+            type: 'category',
+            text: product.category.name,
+            count: 1,
+            icon: '📂'
+          });
+        } else {
+          const existing = suggestions.get(key)!;
+          existing.count++;
+        }
       }
     }
 
