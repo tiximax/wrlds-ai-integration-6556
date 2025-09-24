@@ -25,5 +25,6 @@ export default defineConfig({
   // Only run a fast, stable subset
   testMatch: [
     'tests/working-cart.spec.ts',
+    'tests/checkout.smoke.spec.ts',
   ],
 });
