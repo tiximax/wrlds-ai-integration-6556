@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Playwright / E2E artifacts
+playwright-report/
+test-results/
+.tmp-gh-artifacts/
+traces/
+.cache/
