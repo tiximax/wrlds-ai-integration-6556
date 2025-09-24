@@ -31,6 +31,7 @@ jobs:
       - name: Run Playwright tests
         env:
           CI: true
+          UNSKIP_RECENTLY_VIEWED: "1"
         run: npx playwright test --project=${{ matrix.browser }} --reporter=line
 
       - name: Upload Playwright report
