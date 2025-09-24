@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
-import { CheckCircle, ArrowRight, ArrowLeft, ShoppingBag } from 'lucide-react';
+import { CheckCircle, ArrowRight, ArrowLeft, ShoppingBag, ShieldCheck, Lock } from 'lucide-react';
+import SecurityBadges from '@/components/trust/SecurityBadges';
 
 const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
@@ -23,6 +24,11 @@ const Checkout: React.FC = () => {
           <h1 className="text-2xl font-bold">Checkout</h1>
         </div>
         <Link to="/products" className="text-blue-600 hover:underline">Tiếp tục mua sắm</Link>
+      </div>
+
+      {/* Trust badges */}
+      <div className="mb-4" data-testid="security-badges-checkout">
+        <SecurityBadges compact />
       </div>
 
       {/* Stepper */}

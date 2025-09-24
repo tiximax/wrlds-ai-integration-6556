@@ -4,6 +4,7 @@ import { MapPin, Phone, Mail, Clock, Star, TrendingUp } from 'lucide-react';
 import { NewsletterSignup } from './footer/NewsletterSignup';
 import { SocialLinks } from './footer/SocialLinks';
 import { QuickLinks } from './footer/QuickLinks';
+import SecurityBadges from '@/components/trust/SecurityBadges';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -211,6 +212,11 @@ const EnhancedFooter: React.FC = () => {
             <NewsletterSignup />
             <SocialLinks />
           </motion.div>
+        </div>
+
+        {/* Security Badges */}
+        <div className="mb-10" data-testid="security-badges-footer">
+          <SecurityBadges />
         </div>
 
         {/* Bottom Section */}
