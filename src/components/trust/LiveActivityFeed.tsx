@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, ShoppingBag, Clock } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { simpleProducts } from '@/data/simpleProducts';
 
 interface ActivityItem {
@@ -57,6 +58,7 @@ const LiveActivityFeed: React.FC<{
   intervalMs?: number;
   className?: string;
 }> = ({ maxItems = 8, intervalMs = 12000, className = '' }) => {
+  const { t } = useTranslation();
   const [items, setItems] = React.useState<ActivityItem[]>(() => seedActivities(Math.min(6, maxItems)));
   const pool = React.useRef(simpleProducts.slice(0, 6));
   const namePool = React.useRef(names);
@@ -69,7 +71,9 @@ const LiveActivityFeed: React.FC<{
         const icon: ActivityItem['icon'] = Math.random() < 0.5 ? 'purchase' : 'view';
         const next: ActivityItem = {
           id: `${Date.now()}`,
-          text: icon === 'purchase' ? `${who} purchased ${p.name}` : `${who} viewed ${p.name}`,
+          text: icon === 'purchase'
+            ? t('trust.liveActivity.purchased', { who, product: p.name })
+            : t('trust.liveActivity.viewed', { who, product: p.name }),
           timestamp: Date.now(),
           icon
         };
@@ -87,11 +91,11 @@ const LiveActivityFeed: React.FC<{
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <Users className="w-5 h-5 text-gsa-primary" />
-          <h3 className="text-lg font-semibold text-gray-900">Live Activity</h3>
+          <h3 className="text-lg font-semibold text-gray-900">{t('trust.liveActivity.title')}</h3>
         </div>
         <div className="flex items-center text-xs text-gray-500 gap-1">
           <Clock className="w-4 h-4" />
-          <span>Updates every ~{Math.round(intervalMs / 1000)}s</span>
+          <span>{t('trust.liveActivity.updatesEvery', { seconds: Math.round(intervalMs / 1000) })}</span>
         </div>
       </div>
       <div className="divide-y divide-gray-200 rounded-lg border bg-white" role="list">

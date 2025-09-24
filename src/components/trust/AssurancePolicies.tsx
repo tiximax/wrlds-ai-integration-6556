@@ -1,25 +1,27 @@
 import React from 'react';
 import { RefreshCw, ShieldCheck, Headphones } from 'lucide-react';
-
-const items = [
-  {
-    icon: RefreshCw,
-    title: '30-day Returns',
-    desc: 'Đổi trả dễ dàng trong 30 ngày nếu không hài lòng.',
-  },
-  {
-    icon: ShieldCheck,
-    title: 'Secure Checkout',
-    desc: 'Thanh toán an toàn, mã hóa SSL, bảo vệ dữ liệu.',
-  },
-  {
-    icon: Headphones,
-    title: '24/7 Support',
-    desc: 'Hỗ trợ khách hàng 24/7, phản hồi nhanh chóng.',
-  },
-];
+import { useTranslation } from 'react-i18next';
 
 const AssurancePolicies: React.FC<{ compact?: boolean; className?: string }>= ({ compact = false, className = '' }) => {
+  const { t } = useTranslation();
+  const items = [
+    {
+      icon: RefreshCw,
+      title: t('trust.assurance.returns.title'),
+      desc: t('trust.assurance.returns.desc'),
+    },
+    {
+      icon: ShieldCheck,
+      title: t('trust.assurance.secure.title'),
+      desc: t('trust.assurance.secure.desc'),
+    },
+    {
+      icon: Headphones,
+      title: t('trust.assurance.support.title'),
+      desc: t('trust.assurance.support.desc'),
+    },
+  ];
+
   return (
     <section className={`w-full ${className}`} data-testid="assurance-policies">
       <div className={`grid ${compact ? 'grid-cols-1 sm:grid-cols-3' : 'grid-cols-1 md:grid-cols-3'} gap-3`}>

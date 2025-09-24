@@ -193,5 +193,27 @@
     "contact": "Contact",
     "yourEmail": "Your email",
     "subscribeNewsletter": "Subscribe to newsletter"
+  },
+  "trust": {
+    "liveActivity": {
+      "title": "Live Activity",
+      "updatesEvery": "Updates every ~{{seconds}}s",
+      "purchased": "{{who}} purchased {{product}}",
+      "viewed": "{{who}} viewed {{product}}"
+    },
+    "assurance": {
+      "returns": {
+        "title": "30-day Returns",
+        "desc": "Easy returns within 30 days if not satisfied."
+      },
+      "secure": {
+        "title": "Secure Checkout",
+        "desc": "Encrypted SSL payments, data protection."
+      },
+      "support": {
+        "title": "24/7 Support",
+        "desc": "Customer support 24/7 with quick response."
+      }
+    }
   }
 }
