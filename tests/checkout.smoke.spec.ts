@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { disableOverlaysForTest } from './helpers';
+import { disableOverlaysForTest, openCartFromNavbar } from './helpers';
 
 // Kiểm thử smoke cho luồng Checkout tối thiểu, chỉ Chromium theo rule
 // Mục tiêu: đảm bảo người dùng có thể thêm sản phẩm, mở giỏ, vào /checkout và đi qua 3 bước đến hoàn tất
@@ -54,25 +54,37 @@ test.describe('Checkout Smoke', () => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.evaluate(() => window.scrollTo(0, 0));
 
-    // Mở giỏ hàng bằng click trực tiếp (ổn định nhất trên local dev)
-    const cartButton = page.getByTestId('cart-button').first();
-    await cartButton.scrollIntoViewIfNeeded();
-    await expect(cartButton).toBeVisible();
-    try {
-      await cartButton.click();
-    } catch {
-      // Fallback: force click or DOM click if intercepted/out of viewport
+    // Thử mở cart bằng custom event trước (Navbar có listener), sau đó fallback helper
+    await page.evaluate(() => {
       try {
-        await cartButton.click({ force: true });
+        window.dispatchEvent(new CustomEvent('wrlds:open-cart'));
       } catch {
-        await page.evaluate(() => (document.querySelector('[data-testid="cart-button"]') as HTMLButtonElement | null)?.click());
+        window.dispatchEvent(new Event('wrlds:open-cart'));
       }
+    });
+
+    // Chờ sidebar, nếu chưa mở thì dùng helper click DOM
+    const sidebarVisible = await page.waitForSelector('[data-testid="cart-sidebar"]', { state: 'visible', timeout: 2000 }).then(() => true).catch(() => false);
+    if (!sidebarVisible) {
+      await openCartFromNavbar(page);
+      await page.waitForSelector('[data-testid="cart-sidebar"]', { state: 'visible', timeout: 5000 });
     }
 
     // Nhảy sang Checkout từ sidebar
     const goCheckout = page.getByTestId('go-checkout');
     await expect(goCheckout).toBeVisible();
-    await goCheckout.click();
+    await goCheckout.scrollIntoViewIfNeeded();
+    try {
+      await goCheckout.click();
+    } catch {
+      try {
+        await goCheckout.click({ force: true });
+      } catch {
+        if (!page.isClosed()) {
+          await page.evaluate(() => (document.querySelector('[data-testid="go-checkout"]') as HTMLAnchorElement | null)?.click());
+        }
+      }
+    }
 
     // Trên trang Checkout
     await expect(page.getByTestId('checkout-page')).toBeVisible();

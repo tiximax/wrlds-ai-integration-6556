@@ -57,9 +57,20 @@ export async function clearStorage(page: Page) {
 
 export async function openCartFromNavbar(page: Page) {
   const cartButton = page.locator('[data-testid="cart-button"]').first();
-  await cartButton.scrollIntoViewIfNeeded();
   await page.evaluate(() => window.scrollTo(0, 0));
   await disableOverlaysForTest(page);
-  // Use DOM click to avoid overlay/pointer issues
-  await page.evaluate(() => (document.querySelector('[data-testid="cart-button"]') as HTMLButtonElement)?.click());
+  await cartButton.scrollIntoViewIfNeeded();
+  // Try progressively stronger strategies to click the cart button
+  try {
+    await cartButton.click();
+  } catch {
+    try {
+      await cartButton.click({ force: true });
+    } catch {
+      // Final fallback: DOM click, but only if the page is still open
+      if (!page.isClosed()) {
+        await page.evaluate(() => (document.querySelector('[data-testid="cart-button"]') as HTMLButtonElement | null)?.click());
+      }
+    }
+  }
 }
