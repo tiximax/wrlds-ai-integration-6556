@@ -181,6 +181,48 @@
     "quantity": "Quantity",
     "remove": "Remove"
   },
+  "checkout": {
+    "title": "Checkout",
+    "continueShopping": "Continue shopping",
+    "labels": {
+      "fullName": "Full name",
+      "phone": "Phone number",
+      "address": "Address",
+      "paymentMethod": "Payment method",
+      "cardNumber": "Card number",
+      "cardName": "Name on card",
+      "cardExpiry": "Expiry (MM/YY)",
+      "cardCvv": "CVV"
+    },
+    "methods": {
+      "cod": "Cash on Delivery (COD)",
+      "card": "Credit/Debit Card",
+      "paypal": "PayPal",
+      "paypalNote": "You will be redirected to PayPal to complete your purchase (mock)."
+    },
+    "actions": {
+      "continue": "Continue",
+      "back": "Back",
+      "edit": "Edit",
+      "placeOrder": "Place order"
+    },
+    "errors": {
+      "fullName": "Please enter your full name",
+      "phone": "Invalid phone number",
+      "address": "Address is too short (>= 10 characters)",
+      "method": "Please select a payment method",
+      "cardNumber": "Card number must be 16 digits",
+      "cardName": "Please enter the name on card",
+      "cardExpiry": "Invalid expiry format (MM/YY)",
+      "cardCvv": "CVV must be 3 digits"
+    },
+    "summary": {
+      "address": "Shipping address",
+      "payment": "Payment",
+      "items": "Items ({{count}})",
+      "cardEnding": "Card ending • {{last4}}"
+    }
+  },
   "footer": {
     "companyName": "Global Shopping Assistant",
     "tagline": "Trusted International Shopping Service #1",

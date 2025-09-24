@@ -181,6 +181,48 @@
     "quantity": "Số lượng",
     "remove": "Xóa"
   },
+  "checkout": {
+    "title": "Thanh toán",
+    "continueShopping": "Tiếp tục mua sắm",
+    "labels": {
+      "fullName": "Họ và tên",
+      "phone": "Số điện thoại",
+      "address": "Địa chỉ",
+      "paymentMethod": "Phương thức thanh toán",
+      "cardNumber": "Số thẻ",
+      "cardName": "Tên in trên thẻ",
+      "cardExpiry": "Hết hạn (MM/YY)",
+      "cardCvv": "CVV"
+    },
+    "methods": {
+      "cod": "Thanh toán khi nhận hàng (COD)",
+      "card": "Thẻ tín dụng/ghi nợ",
+      "paypal": "PayPal",
+      "paypalNote": "Bạn sẽ được chuyển đến PayPal để hoàn tất (mô phỏng)"
+    },
+    "actions": {
+      "continue": "Tiếp tục",
+      "back": "Quay lại",
+      "edit": "Chỉnh sửa",
+      "placeOrder": "Đặt hàng"
+    },
+    "errors": {
+      "fullName": "Vui lòng nhập họ tên",
+      "phone": "Số điện thoại không hợp lệ",
+      "address": "Địa chỉ quá ngắn (>= 10 ký tự)",
+      "method": "Vui lòng chọn phương thức thanh toán",
+      "cardNumber": "Số thẻ phải gồm 16 chữ số",
+      "cardName": "Vui lòng nhập tên in trên thẻ",
+      "cardExpiry": "Định dạng hết hạn không hợp lệ (MM/YY)",
+      "cardCvv": "CVV phải gồm 3 chữ số"
+    },
+    "summary": {
+      "address": "Địa chỉ giao hàng",
+      "payment": "Thanh toán",
+      "items": "Sản phẩm ({{count}})",
+      "cardEnding": "Thẻ kết thúc bằng • {{last4}}"
+    }
+  },
   "footer": {
     "companyName": "Global Shopping Assistant",
     "tagline": "Dịch vụ Mua hộ Quốc tế Uy tín #1",
