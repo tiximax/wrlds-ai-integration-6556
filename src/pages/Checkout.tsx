@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { CheckCircle, ArrowRight, ArrowLeft, ShoppingBag, ShieldCheck, Lock } from 'lucide-react';
 import SecurityBadges from '@/components/trust/SecurityBadges';
+import AssurancePolicies from '@/components/trust/AssurancePolicies';
 
 const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
@@ -29,6 +30,11 @@ const Checkout: React.FC = () => {
       {/* Trust badges */}
       <div className="mb-4" data-testid="security-badges-checkout">
         <SecurityBadges compact />
+      </div>
+
+      {/* Assurance policies */}
+      <div className="mb-4" data-testid="assurance-policies-checkout">
+        <AssurancePolicies compact />
       </div>
 
       {/* Stepper */}
