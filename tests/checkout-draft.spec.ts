@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { removeSilktide, clearStorage } from './helpers';
+import { disableOverlaysForTest, clearStorage } from './helpers';
 
 // E2E: Checkout draft persistence (localStorage)
 
@@ -12,7 +12,7 @@ test.describe('Checkout Draft Persistence', () => {
   test('restores address and payment after reload', async ({ page }) => {
     await page.goto('/checkout');
     await page.waitForLoadState('domcontentloaded');
-    await removeSilktide(page);
+    await disableOverlaysForTest(page);
 
     // Fill address and go to payment
     await page.getByTestId('fullName').fill('Tester Persist');
@@ -26,7 +26,7 @@ test.describe('Checkout Draft Persistence', () => {
 
     // Reload page and verify restored values
     await page.reload();
-    await removeSilktide(page);
+    await disableOverlaysForTest(page);
 
     // Step 1 should have restored address values
     await expect(page.getByTestId('fullName')).toHaveValue('Tester Persist');

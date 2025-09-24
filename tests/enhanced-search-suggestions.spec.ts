@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { disableOverlaysForTest } from './helpers';
 
 // E2E: Enhanced Search suggestions should handle typos via fuzzy match
 // Flow: Home -> type 'japn' -> see suggestion 'Premium Japanese Sneakers' -> click -> land on /products?search=... -> product appears
@@ -7,7 +8,7 @@ test.describe('Enhanced Search Suggestions (Fuzzy)', () => {
   test('should suggest product on typo and navigate to results', async ({ page }) => {
     // Open home and hide Silktide overlay to avoid click interception
     await page.goto('/');
-    await page.addStyleTag({ content: '#silktide-backdrop, #silktide-wrapper { display: none !important; }' });
+    await disableOverlaysForTest(page);
 
     // Focus search input
     const searchInput = page.getByPlaceholder(/Search products/i);

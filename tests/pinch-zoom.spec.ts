@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { clearStorage, removeSilktide } from './helpers';
+import { clearStorage, disableOverlaysForTest } from './helpers';
 
 // Verify double-click zoom toggles scale on ProductImageGallery dialog
 
@@ -9,7 +9,7 @@ test.describe('ProductImageGallery - Pinch/Zoom (double-click)', () => {
     await page.goto('/products/premium-japanese-sneakers');
     await page.waitForLoadState('domcontentloaded');
     await clearStorage(page);
-    await removeSilktide(page);
+    await disableOverlaysForTest(page);
   });
 
   test('double-click to zoom in and out', async ({ page }) => {

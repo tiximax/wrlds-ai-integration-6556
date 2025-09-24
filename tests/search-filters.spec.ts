@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { disableOverlaysForTest } from './helpers';
 
 // Verify filter chips removal updates URL and UI
 
@@ -7,7 +8,7 @@ test.describe('Search Filters Chips', () => {
     // Navigate to /search via navbar link for SPA routing
     await page.goto('/');
     await page.waitForLoadState('networkidle');
-    await page.addStyleTag({ content: '#silktide-backdrop, #silktide-wrapper { display: none !important; }' });
+    await disableOverlaysForTest(page);
     await page.getByRole('link', { name: 'Search' }).click();
     await expect(page).toHaveURL(/\/search$/, { timeout: 10000 });
 

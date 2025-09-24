@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { removeSilktide, clearStorage } from './helpers';
+import { disableOverlaysForTest, clearStorage } from './helpers';
 
 // Compare: add items then open drawer
 
@@ -9,7 +9,7 @@ test.describe('Compare - Product Grid', () => {
     await clearStorage(page);
     await page.goto('/products');
     await page.waitForLoadState('domcontentloaded');
-    await removeSilktide(page);
+    await disableOverlaysForTest(page);
   });
 
   test('add two items and open compare drawer', async ({ page }) => {

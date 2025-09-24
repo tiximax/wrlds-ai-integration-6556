@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { disableOverlaysForTest } from './helpers';
 
 // Kiểm thử smoke cho luồng Checkout tối thiểu, chỉ Chromium theo rule
 // Mục tiêu: đảm bảo người dùng có thể thêm sản phẩm, mở giỏ, vào /checkout và đi qua 3 bước đến hoàn tất
@@ -47,7 +48,7 @@ test.describe('Checkout Smoke', () => {
     // Mở trang chủ để app mount với localStorage đã seed
     await page.goto('/');
     // Ẩn overlay cookie (Silktide) nếu xuất hiện để tránh chặn click
-    await page.addStyleTag({ content: '#silktide-backdrop, #silktide-wrapper { display: none !important; }' });
+    await disableOverlaysForTest(page);
 
     // Mở giỏ hàng bằng custom event (ổn định, tránh thay đổi giao diện)
     await page.evaluate(() => {

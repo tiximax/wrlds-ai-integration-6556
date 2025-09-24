@@ -1,11 +1,12 @@
 import { test, expect } from '@playwright/test';
+import { disableOverlaysForTest } from './helpers';
 
 // UI checks for Enhanced Search dropdown: highlight (<mark>) exists for matched part
 
 test.describe('Enhanced Search UI', () => {
   test('should render highlight mark in suggestions', async ({ page }) => {
     await page.goto('/');
-    await page.addStyleTag({ content: '#silktide-backdrop, #silktide-wrapper { display: none !important; }' });
+    await disableOverlaysForTest(page);
 
     const searchInput = page.getByPlaceholder(/Search products/i);
     await expect(searchInput).toBeVisible();
