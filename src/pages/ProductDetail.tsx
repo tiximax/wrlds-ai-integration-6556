@@ -20,6 +20,7 @@ import ProductRecommendations from '@/components/products/ProductRecommendations
 import { recordRecentlyViewed } from '@/utils/recentlyViewed';
 import CustomerReviews from '@/components/trust/CustomerReviews';
 import AssurancePolicies from '@/components/trust/AssurancePolicies';
+import RatingDistribution from '@/components/trust/RatingDistribution';
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -326,6 +327,9 @@ const ProductDetail: React.FC = () => {
                     {product.rating.average}/5 ({product.rating.count} reviews)
                   </span>
                 </div>
+
+                {/* Rating distribution */}
+                <RatingDistribution average={product.rating.average} count={product.rating.count} />
 
                 {/* Assurance Policies */}
                 <AssurancePolicies />

@@ -62,7 +62,10 @@ const CustomerReviews: React.FC = () => {
         {sampleReviews.map((r) => (
           <div key={r.id} className="p-3 border border-gray-200 rounded-md bg-white">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-sm font-medium text-gray-900">{r.author}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-medium text-gray-900">{r.author}</span>
+                <span className="inline-flex items-center px-1.5 py-0.5 rounded bg-green-50 text-green-700 border border-green-200 text-[10px]" data-testid="verified-badge">Verified</span>
+              </div>
               <span className="text-xs text-gray-500">{new Date(r.date).toLocaleDateString('vi-VN')}</span>
             </div>
             <div className="flex items-center gap-1 mb-1">
