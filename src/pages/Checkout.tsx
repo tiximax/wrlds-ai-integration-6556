@@ -2,11 +2,28 @@ import React, { useState } from 'react';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { Link, useNavigate } from 'react-router-dom';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
-import { CheckCircle, ArrowRight, ArrowLeft, ShoppingBag, ShieldCheck, Lock } from 'lucide-react';
+import { CheckCircle, ArrowRight, ArrowLeft, ShoppingBag } from 'lucide-react';
 import SecurityBadges from '@/components/trust/SecurityBadges';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
 import AssurancePolicies from '@/components/trust/AssurancePolicies';
 
 const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
+
+const addressSchema = z.object({
+  fullName: z.string().min(2, 'Vui lòng nhập họ tên'),
+  phone: z.string().regex(/^(0\d{9}|\+84\d{9})$/, 'Số điện thoại không hợp lệ'),
+  address: z.string().min(10, 'Địa chỉ quá ngắn (>= 10 ký tự)')
+});
+
+type AddressForm = z.infer<typeof addressSchema>;
+
+const paymentSchema = z.object({
+  method: z.enum(['cod'], { errorMap: () => ({ message: 'Vui lòng chọn phương thức thanh toán' }) })
+});
+
+type PaymentForm = z.infer<typeof paymentSchema>;
 
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
@@ -15,6 +32,17 @@ const Checkout: React.FC = () => {
 
   const goNext = () => setStep((s) => (s < 4 ? ((s + 1) as any) : s));
   const goBack = () => setStep((s) => (s > 1 ? ((s - 1) as any) : s));
+
+  // Forms
+  const addressForm = useForm<AddressForm>({
+    resolver: zodResolver(addressSchema),
+    defaultValues: { fullName: '', phone: '', address: '' }
+  });
+
+  const paymentForm = useForm<PaymentForm>({
+    resolver: zodResolver(paymentSchema),
+    defaultValues: { method: undefined as unknown as any }
+  });
 
   return (
     <div data-testid="checkout-page" className="max-w-4xl mx-auto px-4 py-6">
@@ -56,45 +84,57 @@ const Checkout: React.FC = () => {
       {/* Content */}
       <div className="bg-white border rounded-lg p-4">
         {step === 1 && (
-          <div data-testid="step-address" className="space-y-4">
+          <form data-testid="step-address" className="space-y-4" onSubmit={addressForm.handleSubmit(() => goNext())}>
             <div>
-              <label className="block text-sm font-medium mb-1">Họ và tên</label>
-              <input className="w-full border rounded px-3 py-2" placeholder="Nguyễn Văn A" />
+              <label className="block text-sm font-medium mb-1" htmlFor="fullName">Họ và tên</label>
+              <input id="fullName" data-testid="fullName" className="w-full border rounded px-3 py-2" placeholder="Nguyễn Văn A" {...addressForm.register('fullName')} />
+              {addressForm.formState.errors.fullName && (
+                <p className="text-red-600 text-xs mt-1" data-testid="error-fullName">{addressForm.formState.errors.fullName.message}</p>
+              )}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Số điện thoại</label>
-              <input className="w-full border rounded px-3 py-2" placeholder="0901234567" />
+              <label className="block text-sm font-medium mb-1" htmlFor="phone">Số điện thoại</label>
+              <input id="phone" data-testid="phone" className="w-full border rounded px-3 py-2" placeholder="0901234567" {...addressForm.register('phone')} />
+              {addressForm.formState.errors.phone && (
+                <p className="text-red-600 text-xs mt-1" data-testid="error-phone">{addressForm.formState.errors.phone.message}</p>
+              )}
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Địa chỉ</label>
-              <input className="w-full border rounded px-3 py-2" placeholder="123 Đường ABC, Quận XYZ" />
+              <label className="block text-sm font-medium mb-1" htmlFor="address">Địa chỉ</label>
+              <input id="address" data-testid="address" className="w-full border rounded px-3 py-2" placeholder="123 Đường ABC, Quận XYZ" {...addressForm.register('address')} />
+              {addressForm.formState.errors.address && (
+                <p className="text-red-600 text-xs mt-1" data-testid="error-address">{addressForm.formState.errors.address.message}</p>
+              )}
             </div>
             <div className="flex justify-end">
-              <EnhancedButton data-testid="address-continue" rightIcon={<ArrowRight className="w-4 h-4" />} onClick={goNext}>
+              <EnhancedButton type="submit" data-testid="address-continue" rightIcon={<ArrowRight className="w-4 h-4" />}>
                 Tiếp tục
               </EnhancedButton>
             </div>
-          </div>
+          </form>
         )}
 
         {step === 2 && (
-          <div data-testid="step-payment" className="space-y-4">
+          <form data-testid="step-payment" className="space-y-4" onSubmit={paymentForm.handleSubmit(() => goNext())}>
             <div className="space-y-2">
               <label className="block text-sm font-medium">Phương thức thanh toán</label>
               <div className="flex items-center gap-3">
-                <input id="payment-mock" type="radio" name="payment" defaultChecked className="accent-blue-600" />
-                <label htmlFor="payment-mock">Thanh toán khi nhận hàng (Mock)</label>
+                <input id="payment-cod" data-testid="payment-cod" type="radio" value="cod" className="accent-blue-600" {...paymentForm.register('method')} />
+                <label htmlFor="payment-cod">Thanh toán khi nhận hàng (COD)</label>
               </div>
+              {paymentForm.formState.errors.method && (
+                <p className="text-red-600 text-xs mt-1" data-testid="error-method">{paymentForm.formState.errors.method.message}</p>
+              )}
             </div>
             <div className="flex justify-between">
-              <EnhancedButton variant="secondary" leftIcon={<ArrowLeft className="w-4 h-4" />} onClick={goBack}>
+              <EnhancedButton type="button" variant="secondary" leftIcon={<ArrowLeft className="w-4 h-4" />} onClick={goBack}>
                 Quay lại
               </EnhancedButton>
-              <EnhancedButton data-testid="payment-continue" rightIcon={<ArrowRight className="w-4 h-4" />} onClick={goNext}>
+              <EnhancedButton type="submit" data-testid="payment-continue" rightIcon={<ArrowRight className="w-4 h-4" />}>
                 Tiếp tục
               </EnhancedButton>
             </div>
-          </div>
+          </form>
         )}
 
         {step === 3 && (

@@ -62,12 +62,16 @@ test.describe('Checkout Smoke', () => {
     // Trên trang Checkout
     await expect(page.getByTestId('checkout-page')).toBeVisible();
 
-    // B1: Địa chỉ -> tiếp tục
+    // B1: Địa chỉ -> điền thông tin hợp lệ rồi tiếp tục
     await expect(page.getByTestId('step-address')).toBeVisible();
+    await page.getByTestId('fullName').fill('Nguyen Van A');
+    await page.getByTestId('phone').fill('0901234567');
+    await page.getByTestId('address').fill('123 Duong ABC, Quan XYZ, Ha Noi');
     await page.getByTestId('address-continue').click();
 
-    // B2: Thanh toán -> tiếp tục
+    // B2: Thanh toán -> chọn phương thức và tiếp tục
     await expect(page.getByTestId('step-payment')).toBeVisible();
+    await page.getByTestId('payment-cod').check();
     await page.getByTestId('payment-continue').click();
 
     // B3: Xem lại -> Đặt hàng
