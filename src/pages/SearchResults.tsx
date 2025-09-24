@@ -45,6 +45,30 @@ const SearchResults: React.FC = () => {
     setSearchParams(sp);
   }, [query, filters, sort, page, perPage, setSearchParams]);
 
+  // respond to external URL changes (e.g., back/forward, manual history.replaceState)
+  useEffect(() => {
+    const current = serializeSearchParams({ query, filters, sort, page, perPage });
+    const incoming = parseSearchParams('?' + searchParams.toString());
+
+    // Compare and update only when different to avoid loops
+    const differs = (
+      (incoming.query || '') !== query ||
+      JSON.stringify(incoming.filters || defaultFilters) !== JSON.stringify(filters) ||
+      (incoming.sort || 'relevance') !== sort ||
+      (incoming.page || 1) !== page ||
+      (incoming.perPage || 12) !== perPage
+    );
+
+    if (differs) {
+      setQuery(incoming.query || '');
+      setFilters({ ...defaultFilters, ...(incoming.filters || {}) });
+      setSort((incoming.sort as SortOption) || 'relevance');
+      setPage(incoming.page || 1);
+      setPerPage(incoming.perPage || 12);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
+
   const handleSortChange = (value: string) => {
     setSort(value as SortOption);
     setPage(1);
