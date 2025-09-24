@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   average: number; // 0..5
@@ -46,6 +47,7 @@ function computeDistribution(average: number, count: number) {
 }
 
 const RatingDistribution: React.FC<Props> = ({ average, count, className = '' }) => {
+  const { t } = useTranslation();
   const counts = React.useMemo(() => computeDistribution(average, count), [average, count]);
   const maxCount = Math.max(1, ...counts);
   const stars = [5, 4, 3, 2, 1];
@@ -54,9 +56,9 @@ const RatingDistribution: React.FC<Props> = ({ average, count, className = '' })
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           <Star className="w-4 h-4 text-yellow-500" />
-          <span className="text-sm font-semibold text-gray-900">Ratings breakdown</span>
+          <span className="text-sm font-semibold text-gray-900">{t('trust.rating.title')}</span>
         </div>
-        <div className="text-xs text-gray-600">Avg {average.toFixed(1)} • {count} reviews</div>
+        <div className="text-xs text-gray-600">{t('trust.rating.avgFormat', { avg: average.toFixed(1), count })}</div>
       </div>
       <div className="space-y-1.5">
         {stars.map((s, idx) => {

@@ -215,5 +215,31 @@
         "desc": "Hỗ trợ khách hàng 24/7, phản hồi nhanh chóng."
       }
     }
+  },
+  "trust": {
+    "liveActivity": {
+      "title": "Hoạt động trực tiếp",
+      "updatesEvery": "Cập nhật mỗi ~{{seconds}}s",
+      "purchased": "{{who}} đã mua {{product}}",
+      "viewed": "{{who}} đã xem {{product}}"
+    },
+    "assurance": {
+      "returns": {
+        "title": "Đổi trả 30 ngày",
+        "desc": "Đổi trả dễ dàng trong 30 ngày nếu không hài lòng."
+      },
+      "secure": {
+        "title": "Thanh toán an toàn",
+        "desc": "Thanh toán mã hóa SSL, bảo vệ dữ liệu."
+      },
+      "support": {
+        "title": "Hỗ trợ 24/7",
+        "desc": "Hỗ trợ khách hàng 24/7, phản hồi nhanh chóng."
+      }
+    },
+    "rating": {
+      "title": "Phân bố đánh giá",
+      "avgFormat": "TB {{avg}} • {{count}} đánh giá"
+    }
   }
 }
