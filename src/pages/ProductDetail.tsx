@@ -18,6 +18,7 @@ import ProductVariants from '@/components/ProductVariants';
 import RecentlyViewed from '@/components/products/RecentlyViewed';
 import ProductRecommendations from '@/components/products/ProductRecommendations';
 import { recordRecentlyViewed } from '@/utils/recentlyViewed';
+import CustomerReviews from '@/components/trust/CustomerReviews';
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -456,6 +457,7 @@ const ProductDetail: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
           <RelatedProducts current={product as any} />
           <ProductReviews product={product as any} />
+          <CustomerReviews />
         </div>
       </div>
 

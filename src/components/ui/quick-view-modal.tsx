@@ -29,6 +29,7 @@ import { Product } from '@/types/product';
 import { useTranslation } from 'react-i18next';
 import LazyImage from '@/components/LazyImage';
 import { cn } from '@/lib/utils';
+import LensZoom from '@/components/ui/lens-zoom';
 
 interface QuickViewModalProps {
   isOpen: boolean;
@@ -229,12 +230,12 @@ const QuickViewModal: React.FC<QuickViewModalProps> = ({
                   {/* Desktop lens zoom for QuickView */}
                   <div className="hidden lg:block w-full h-full">
                     {currentImage?.url && (
-                      React.createElement(require('@/components/ui/lens-zoom').default, {
-                        src: currentImage.url,
-                        alt: currentImage?.alt || product.name,
-                        zoom: 2,
-                        className: 'w-full h-full'
-                      })
+                      <LensZoom
+                        src={currentImage.url}
+                        alt={currentImage?.alt || product.name}
+                        zoom={2}
+                        className="w-full h-full"
+                      />
                     )}
                   </div>
                   {/* Mobile/Tablet image */}

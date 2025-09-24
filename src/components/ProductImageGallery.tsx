@@ -4,6 +4,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
 import { PinchZoom } from '@/components/ui/pinch-zoom';
+import LensZoom from '@/components/ui/lens-zoom';
 
 interface ProductImageGalleryProps {
   images: ProductImage[];
@@ -38,12 +39,12 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
                   {/* Desktop lens zoom */}
                   <div className="hidden lg:block w-full h-full">
                     {img?.url && (
-                      React.createElement(require('@/components/ui/lens-zoom').default, {
-                        src: img.url,
-                        alt: img?.alt || productName,
-                        zoom: 2,
-                        className: 'w-full h-full'
-                      })
+                      <LensZoom
+                        src={img.url}
+                        alt={img?.alt || productName}
+                        zoom={2}
+                        className="w-full h-full"
+                      />
                     )}
                   </div>
                   {/* Mobile/Tablet image */}
