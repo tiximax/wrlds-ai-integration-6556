@@ -1,5 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
+// Mark environment so tests can differentiate dev vs preview
+process.env.PLAYWRIGHT_ENV = 'preview';
+
 export default defineConfig({
   testDir: './tests',
   fullyParallel: false,
