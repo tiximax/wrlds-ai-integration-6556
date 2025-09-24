@@ -9,6 +9,7 @@ import TrustSignals from '@/components/TrustSignals';
 import FeaturedProducts from '@/components/FeaturedProducts';
 import SEO from '@/components/SEO';
 import { useEffect } from 'react';
+import LiveActivityFeed from '@/components/trust/LiveActivityFeed';
 
 const Index = () => {
   // Fix any ID conflicts when the page loads
@@ -32,6 +33,7 @@ const Index = () => {
       <Features />
       <FeaturedProducts />
       <TrustSignals />
+      <LiveActivityFeed />
       <WhyWrlds />
       <Projects />
       <BlogPreview />
