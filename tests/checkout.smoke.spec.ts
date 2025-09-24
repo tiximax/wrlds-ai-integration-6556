@@ -50,10 +50,24 @@ test.describe('Checkout Smoke', () => {
     // Ẩn overlay cookie (Silktide) nếu xuất hiện để tránh chặn click
     await disableOverlaysForTest(page);
 
-    // Mở giỏ hàng bằng custom event (ổn định, tránh thay đổi giao diện)
-    await page.evaluate(() => {
-      window.dispatchEvent(new Event('wrlds:open-cart'));
-    });
+    // Chuẩn bị viewport và vị trí
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+
+    // Mở giỏ hàng bằng click trực tiếp (ổn định nhất trên local dev)
+    const cartButton = page.getByTestId('cart-button').first();
+    await cartButton.scrollIntoViewIfNeeded();
+    await expect(cartButton).toBeVisible();
+    try {
+      await cartButton.click();
+    } catch {
+      // Fallback: force click or DOM click if intercepted/out of viewport
+      try {
+        await cartButton.click({ force: true });
+      } catch {
+        await page.evaluate(() => (document.querySelector('[data-testid="cart-button"]') as HTMLButtonElement | null)?.click());
+      }
+    }
 
     // Nhảy sang Checkout từ sidebar
     const goCheckout = page.getByTestId('go-checkout');

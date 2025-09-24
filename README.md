@@ -92,8 +92,16 @@ You can deploy to Vercel or Netlify. This project includes serverless endpoints 
     3. Optional: set environment variables in Netlify site settings
 
 Local E2E (smoke) before/after deploy
-- Dev: `npm run test:e2e -- tests/working-cart.spec.ts --reporter=line`
+- Dev (fast smoke): `npm run test:e2e:smoke` (Chromium, subset stable: working-cart + checkout smoke)
+- Dev (custom subset): `npm run test:e2e -- tests/working-cart.spec.ts`
 - Preview (build + preview): `npm run test:e2e:preview -- tests/working-cart.spec.ts --reporter=line`
+
+Testing notes
+- PLAYWRIGHT_ENV:
+  - Dev configs set PLAYWRIGHT_ENV=dev; Preview config sets PLAYWRIGHT_ENV=preview. Một số test có thể nhánh hành vi theo biến này để ổn định dev.
+- Overlay/Cookie banner:
+  - Đã có helper tests/helpers.ts: `disableOverlaysForTest(page)` để ẩn các overlay như Silktide trong test, tránh chặn click.
+  - Các spec quan trọng đã dùng helper này.
 
 ### CI usage
 - CI auto-runs on push/PR: unit tests (Vitest) + E2E dev (Playwright) via `.github/workflows/ci.yml`.
