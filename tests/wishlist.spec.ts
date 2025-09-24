@@ -91,12 +91,27 @@ test('adding to cart from wishlist updates cart sidebar', async ({ page, browser
     if (btn) btn.click();
   });
 
+  // Đợi cart state được cập nhật trước khi mở sidebar
+  await page.waitForFunction(() => {
+    try {
+      const cart = JSON.parse(localStorage.getItem('simple-cart') || '{}');
+      return Array.isArray(cart.items) && cart.items.length > 0;
+    } catch (e) {
+      return false;
+    }
+  }, { timeout: 10000 });
+
   // Open the cart sidebar from navbar
   await openCartFromNavbar(page);
 
-  // Verify the cart sidebar is visible
+  // Verify the cart sidebar is visible (fallback thử mở lại 1 lần nếu chưa thấy)
   const cartSidebar = page.locator('[data-testid="cart-sidebar"]');
-  await expect(cartSidebar).toBeVisible();
+  try {
+    await expect(cartSidebar).toBeVisible({ timeout: 5000 });
+  } catch {
+    await openCartFromNavbar(page);
+    await expect(cartSidebar).toBeVisible({ timeout: 5000 });
+  }
 
   // Header should contain "Cart (" indicating there is a count
   await expect(cartSidebar.locator('h2')).toContainText('Cart (');

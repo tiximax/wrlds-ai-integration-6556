@@ -88,6 +88,16 @@ test.describe('Checkout Smoke', () => {
       }
     }
 
+    // Chờ điều hướng sang /checkout và trạng thái network ổn định trước khi assert
+    if (!page.isClosed()) {
+      try {
+        await expect(page).toHaveURL(/\/checkout/, { timeout: 10000 });
+      } catch {}
+      try {
+        await page.waitForLoadState('networkidle', { timeout: 5000 });
+      } catch {}
+    }
+
     // Trên trang Checkout
     await expect(page.getByTestId('checkout-page')).toBeVisible();
 

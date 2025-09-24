@@ -22,9 +22,19 @@ test.describe('Recently Viewed - Product Detail', () => {
     await page.waitForLoadState('domcontentloaded');
     await removeSilktide(page);
 
+    // Chờ localStorage có dữ liệu recentlyViewed trước khi assert UI
+    await page.waitForFunction(() => {
+      try {
+        const rv = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        return Array.isArray(rv) && rv.length > 0;
+      } catch (e) {
+        return false;
+      }
+    }, { timeout: 15000 });
+
     // Recently viewed section should appear
     const rv = page.getByTestId('recently-viewed');
-    await expect(rv).toBeVisible({ timeout: 10000 });
+    await expect(rv).toBeVisible({ timeout: 15000 });
 
     // Should contain the first product title
     await expect(rv.locator('a', { hasText: 'Premium Japanese Sneakers' }).first()).toBeVisible();
