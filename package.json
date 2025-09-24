@@ -13,6 +13,7 @@
     "test": "vitest --run",
     "test:watch": "vitest",
     "test:e2e": "playwright test",
+    "test:e2e:smoke": "playwright test -c playwright.smoke.config.ts",
     "test:e2e:preview": "playwright test -c playwright.preview.config.ts",
     "test:e2e:remote": "playwright test -c playwright.remote.config.ts",
     "test:e2e:ui": "playwright test --ui",
