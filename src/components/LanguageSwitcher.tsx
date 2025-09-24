@@ -37,6 +37,7 @@ const LanguageSwitcher = () => {
             key={lang.code}
             onClick={() => setLanguage(lang.code as 'en' | 'vi')}
             className={`cursor-pointer ${language === lang.code ? 'bg-gray-100' : ''}`}
+            data-testid={`lang-${lang.code}`}
           >
             <span className="mr-2">{lang.flag}</span>
             {lang.name}
