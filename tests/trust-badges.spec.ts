@@ -8,6 +8,14 @@ test.describe('Trust: Security Badges', () => {
     await page.goto('/');
     await page.addStyleTag({ content: '#silktide-backdrop, #silktide-wrapper { display: none !important; }' });
     await expect(page.getByTestId('security-badges-footer')).toBeVisible();
+    // Logos visible in footer
+    const footer = page.getByTestId('security-badges-footer');
+    await expect(footer.getByTestId('payment-logos')).toBeVisible();
+    await expect(footer.getByAltText('Visa')).toHaveAttribute('src', /\/payment\/visa\.svg$/);
+    await expect(footer.getByAltText('Mastercard')).toHaveAttribute('src', /\/payment\/mastercard\.svg$/);
+    await expect(footer.getByAltText('PayPal')).toHaveAttribute('src', /\/payment\/paypal\.svg$/);
+    await expect(footer.getByAltText('MoMo')).toHaveAttribute('src', /\/payment\/momo\.svg$/);
+    await expect(footer.getByAltText('SSL Secured')).toHaveAttribute('src', /\/payment\/ssl-secured\.svg$/);
 
     // Seed cart and go to checkout to see badges there
     const seededCart = {
@@ -57,6 +65,13 @@ test.describe('Trust: Security Badges', () => {
     await page.addStyleTag({ content: '#silktide-backdrop, #silktide-wrapper { display: none !important; }' });
 
     // Check badges on checkout page
-    await expect(page.getByTestId('security-badges-checkout')).toBeVisible({ timeout: 10000 });
+    const checkoutBadges = page.getByTestId('security-badges-checkout');
+    await expect(checkoutBadges).toBeVisible({ timeout: 10000 });
+    await expect(checkoutBadges.getByTestId('payment-logos')).toBeVisible();
+    await expect(checkoutBadges.getByAltText('Visa')).toHaveAttribute('src', /\/payment\/visa\.svg$/);
+    await expect(checkoutBadges.getByAltText('Mastercard')).toHaveAttribute('src', /\/payment\/mastercard\.svg$/);
+    await expect(checkoutBadges.getByAltText('PayPal')).toHaveAttribute('src', /\/payment\/paypal\.svg$/);
+    await expect(checkoutBadges.getByAltText('MoMo')).toHaveAttribute('src', /\/payment\/momo\.svg$/);
+    await expect(checkoutBadges.getByAltText('SSL Secured')).toHaveAttribute('src', /\/payment\/ssl-secured\.svg$/);
   });
 });
