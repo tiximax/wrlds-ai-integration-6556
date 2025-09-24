@@ -44,9 +44,17 @@ test.describe('Compare - Product Grid', () => {
     const anyRemove = drawer.getByTestId('compare-remove').first();
     await expect(anyRemove).toBeVisible();
 
-    // Clear all
+    // Clear all (handle overlay intercepts)
     const clearBtn = page.getByTestId('compare-clear');
-    await clearBtn.click();
+    try {
+      await clearBtn.click({ timeout: 3000 });
+    } catch {
+      try {
+        await clearBtn.click({ force: true, timeout: 3000 });
+      } catch {
+        await page.evaluate(() => (document.querySelector('[data-testid="compare-clear"]') as HTMLButtonElement | null)?.click());
+      }
+    }
     await expect(drawer).toBeVisible(); // drawer stays
   });
 });

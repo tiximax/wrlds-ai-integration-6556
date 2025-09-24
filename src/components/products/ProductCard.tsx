@@ -6,6 +6,7 @@ import { Product } from '@/types/simple';
 import { Button } from '@/components/ui/button';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
 import QuickViewModal from '@/components/ui/quick-view-modal';
+import { useCompare } from '@/contexts/CompareContext';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
@@ -30,6 +31,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   const [isQuickOpen, setIsQuickOpen] = React.useState(false);
   const { t } = useTranslation();
+  const compare = useCompare();
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
 
   // Format price to VND
@@ -202,16 +204,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             <button
               onClick={(e) => {
                 e.preventDefault();
-                try {
-                  const { useCompare } = require('@/contexts/CompareContext');
-                  const cmp = useCompare();
-                  cmp.add(product.id);
-                } catch {
-                  const current = JSON.parse(localStorage.getItem('compare-list') || '[]');
-                  if (!current.includes(product.id)) {
-                    localStorage.setItem('compare-list', JSON.stringify([...current, product.id]));
-                  }
-                }
+                compare.add(product.id);
               }}
               className="absolute bottom-3 left-3 p-2 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
               aria-label="Add to compare"
