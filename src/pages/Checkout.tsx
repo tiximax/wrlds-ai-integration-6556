@@ -7,6 +7,7 @@ import SecurityBadges from '@/components/trust/SecurityBadges';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect, useMemo } from 'react';
 import AssurancePolicies from '@/components/trust/AssurancePolicies';
 
 const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
@@ -25,6 +26,9 @@ const paymentSchema = z.object({
 
 type PaymentForm = z.infer<typeof paymentSchema>;
 
+const LS_ADDR_KEY = 'checkout-address-v1';
+const LS_PAY_KEY = 'checkout-payment-v1';
+
 const Checkout: React.FC = () => {
   const navigate = useNavigate();
   const { items, totalItems, totalPrice, clearCart } = useSimpleCart();
@@ -33,16 +37,60 @@ const Checkout: React.FC = () => {
   const goNext = () => setStep((s) => (s < 4 ? ((s + 1) as any) : s));
   const goBack = () => setStep((s) => (s > 1 ? ((s - 1) as any) : s));
 
+  // Load saved drafts
+  const savedAddress = useMemo(() => {
+    try {
+      const raw = localStorage.getItem(LS_ADDR_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      const result = addressSchema.safeParse(parsed);
+      return result.success ? result.data : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
+  const savedPayment = useMemo(() => {
+    try {
+      const raw = localStorage.getItem(LS_PAY_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      const result = paymentSchema.safeParse(parsed);
+      return result.success ? result.data : null;
+    } catch {
+      return null;
+    }
+  }, []);
+
   // Forms
   const addressForm = useForm<AddressForm>({
     resolver: zodResolver(addressSchema),
-    defaultValues: { fullName: '', phone: '', address: '' }
+    defaultValues: savedAddress ?? { fullName: '', phone: '', address: '' }
   });
 
   const paymentForm = useForm<PaymentForm>({
     resolver: zodResolver(paymentSchema),
-    defaultValues: { method: undefined as unknown as any }
+    defaultValues: savedPayment ?? { method: undefined as unknown as any }
   });
+
+  // Persist drafts on change
+  useEffect(() => {
+    const subscription = addressForm.watch((value) => {
+      try {
+        localStorage.setItem(LS_ADDR_KEY, JSON.stringify(value));
+      } catch {}
+    });
+    return () => subscription?.unsubscribe?.();
+  }, [addressForm]);
+
+  useEffect(() => {
+    const subscription = paymentForm.watch((value) => {
+      try {
+        localStorage.setItem(LS_PAY_KEY, JSON.stringify(value));
+      } catch {}
+    });
+    return () => subscription?.unsubscribe?.();
+  }, [paymentForm]);
 
   return (
     <div data-testid="checkout-page" className="max-w-4xl mx-auto px-4 py-6">
@@ -58,6 +106,27 @@ const Checkout: React.FC = () => {
       {/* Trust badges */}
       <div className="mb-4" data-testid="security-badges-checkout">
         <SecurityBadges compact />
+      </div>
+
+      {/* Draft controls */}
+      <div className="mb-4 flex items-center justify-between text-sm text-gray-600">
+        <span>Thông tin của bạn sẽ được lưu tạm thời trên thiết bị này.</span>
+        <button
+          type="button"
+          className="text-blue-600 hover:underline"
+          data-testid="clear-saved"
+          onClick={() => {
+            try {
+              localStorage.removeItem(LS_ADDR_KEY);
+              localStorage.removeItem(LS_PAY_KEY);
+            } catch {}
+            addressForm.reset({ fullName: '', phone: '', address: '' });
+            paymentForm.reset({ method: undefined as unknown as any });
+            setStep(1);
+          }}
+        >
+          Xóa dữ liệu đã lưu
+        </button>
       </div>
 
       {/* Assurance policies */}
