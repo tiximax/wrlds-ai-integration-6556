@@ -1,13 +1,15 @@
 import { test, expect } from '@playwright/test';
 import { disableOverlaysForTest, openCartFromNavbar } from './helpers';
+import { configureRetriesForCI, skipFlakyInCI } from './ci-flaky-control';
 
 // Kiểm thử smoke cho luồng Checkout tối thiểu, chỉ Chromium theo rule
 // Mục tiêu: đảm bảo người dùng có thể thêm sản phẩm, mở giỏ, vào /checkout và đi qua 3 bước đến hoàn tất
 
 test.describe('Checkout Smoke', () => {
   test('should navigate from cart to checkout and complete minimal steps', async ({ page, browserName }) => {
-    // Skip in CI across all browsers to stabilize E2E (intermittent page/context closure on CI runners)
-    test.skip(!!process.env.CI, 'Skip in CI: flaky page/context closure during checkout smoke.');
+    // Phase 2: allow unskip via env flag; keep one retry in CI
+    configureRetriesForCI(test, 1);
+    skipFlakyInCI(test, 'UNSKIP_CHECKOUT_SMOKE', 'Checkout smoke still under hardening');
     // Seed localStorage để có sẵn 1 item trong giỏ (ổn định cho smoke)
     const seededCart = {
       items: [

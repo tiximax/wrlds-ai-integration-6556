@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { removeSilktide, clearStorage, openCartFromNavbar } from './helpers';
+import { configureRetriesForCI, skipFlakyInCI } from './ci-flaky-control';
 
 // E2E for Wishlist basic flows
 // Notes:
@@ -70,8 +71,9 @@ test('can add product to wishlist from home and see it on wishlist page, then re
 });
 
 test('adding to cart from wishlist updates cart sidebar', async ({ page, browserName }) => {
-  // Skip in CI across all browsers to stabilize E2E (intermittent page/context closure around visibility checks)
-  test.skip(!!process.env.CI, 'Skip in CI: wishlist add-to-cart cart sidebar visibility flaky.');
+  // Phase 2: allow unskip via env flag; keep one retry in CI
+  configureRetriesForCI(test, 1);
+  skipFlakyInCI(test, 'UNSKIP_WISHLIST_ATC', 'Wishlist add-to-cart still under hardening');
   // Prepare: add an item to wishlist
   await page.goto('/products');
   await page.waitForLoadState('domcontentloaded');

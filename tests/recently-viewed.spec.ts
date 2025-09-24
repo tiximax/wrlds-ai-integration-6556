@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { removeSilktide, clearStorage } from './helpers';
+import { configureRetriesForCI, skipFlakyInCI } from './ci-flaky-control';
 
 // Recently Viewed: visiting two product pages should show the first in the second page's recently viewed list
 
@@ -10,8 +11,9 @@ test.describe('Recently Viewed - Product Detail', () => {
   });
 
   test('shows previously viewed product', async ({ page, browserName }) => {
-    // Skip in CI across all browsers to stabilize E2E (occasionally not detected within timeout)
-    test.skip(!!process.env.CI, 'Skip in CI: recently viewed section visibility flaky.');
+    // Phase 2: allow unskip via env flag; keep one retry in CI
+    configureRetriesForCI(test, 1);
+    skipFlakyInCI(test, 'UNSKIP_RECENTLY_VIEWED', 'Recently viewed still under hardening');
     // Visit first product
     await page.goto('/products/premium-japanese-sneakers');
     await page.waitForLoadState('domcontentloaded');
