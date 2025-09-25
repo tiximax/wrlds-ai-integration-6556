@@ -23,6 +23,10 @@ test.describe('Search Filters Chips', () => {
     const filterHeading = page.getByRole('heading', { name: 'Bộ lọc' }).first();
     await expect(filterHeading).toBeVisible({ timeout: 10000 });
 
+    // Wait chips to render
+    await page.waitForSelector('[data-testid="chip-origin-japan"]', { timeout: 10000 });
+    await page.waitForSelector('[data-testid="chip-status-available"]', { timeout: 10000 });
+
     // Chips visible
     await expect(page.getByTestId('chip-origin-japan')).toBeVisible();
     await expect(page.getByTestId('chip-status-available')).toBeVisible();

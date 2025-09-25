@@ -40,8 +40,9 @@ test.describe('Recently Viewed - Product Detail', () => {
       }
     }, { timeout: 20000 });
 
-    // Recently viewed section should appear (scroll into view for lazy sections)
+    // Recently viewed section should appear (ensure it exists, then scroll into view for lazy sections)
     const rv = page.getByTestId('recently-viewed');
+    await expect(rv).toHaveCount(1, { timeout: 20000 });
     await rv.scrollIntoViewIfNeeded();
     await expect(rv).toBeVisible({ timeout: 20000 });
 
