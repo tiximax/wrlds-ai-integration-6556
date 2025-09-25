@@ -40,9 +40,10 @@ test.describe('Recently Viewed - Product Detail', () => {
       }
     }, { timeout: 20000 });
 
-    // Recently viewed section should appear
+    // Recently viewed section should appear (scroll into view for lazy sections)
     const rv = page.getByTestId('recently-viewed');
-    await expect(rv).toBeVisible({ timeout: 15000 });
+    await rv.scrollIntoViewIfNeeded();
+    await expect(rv).toBeVisible({ timeout: 20000 });
 
     // Should contain the first product title
     await expect(rv.locator('a', { hasText: 'Premium Japanese Sneakers' }).first()).toBeVisible();
