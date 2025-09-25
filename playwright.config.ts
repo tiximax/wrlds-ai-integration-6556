@@ -18,13 +18,18 @@ export default defineConfig({
   workers: 1,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
+  /* Global setup: prepare CI storageState to disable Silktide overlay */
+  globalSetup: './tests/global-setup.ts',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL: 'http://localhost:8080',
 
+    /* Use prebuilt storage state on CI to neutralize overlays */
+    storageState: process.env.CI ? './tests/storageState.ci.json' : undefined,
+
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: process.env.CI ? 'retain-on-failure' : 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
