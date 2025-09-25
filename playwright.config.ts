@@ -62,7 +62,8 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   webServer: {
-    command: 'npm run dev',
+    // Use preview build on CI for stability; dev server locally for fast feedback
+    command: process.env.CI ? 'npm run preview:build' : 'npm run dev',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
   },
