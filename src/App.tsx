@@ -32,6 +32,7 @@ const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 const SearchResults = lazy(() => import("./pages/SearchResults"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 const Checkout = lazy(() => import("./pages/Checkout"));
+const VectorDB = lazy(() => import("./pages/VectorDB"));
 
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
@@ -81,6 +82,7 @@ const App = () => {
             <Route path="/category/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/vector-db" element={<VectorDB />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
