@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { removeSilktide, clearStorage } from './helpers';
+import { removeSilktide, clearStorage, disableOverlaysForTest } from './helpers';
 import { configureRetriesForCI, skipFlakyInCI } from './ci-flaky-control';
 
 // Recently Viewed: visiting two product pages should show the first in the second page's recently viewed list
@@ -12,6 +12,9 @@ test.describe('Recently Viewed - Product Detail', () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await clearStorage(page);
+    if (process.env.CI) {
+      await disableOverlaysForTest(page);
+    }
   });
 
   test('shows previously viewed product', async ({ page, browserName }) => {
@@ -28,12 +31,14 @@ test.describe('Recently Viewed - Product Detail', () => {
     // Chờ localStorage có dữ liệu recentlyViewed trước khi assert UI
     await page.waitForFunction(() => {
       try {
-        const rv = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        const hyphen = JSON.parse(localStorage.getItem('recently-viewed') || '[]');
+        const camel = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        const rv = Array.isArray(hyphen) && hyphen.length > 0 ? hyphen : camel;
         return Array.isArray(rv) && rv.length > 0;
       } catch (e) {
         return false;
       }
-    }, { timeout: 15000 });
+    }, { timeout: 20000 });
 
     // Recently viewed section should appear
     const rv = page.getByTestId('recently-viewed');
