@@ -5,7 +5,31 @@ import type { Page } from '@playwright/test';
  * Only used in tests. It adds a strong CSS override and also removes any existing nodes if present.
  */
 export async function disableOverlaysForTest(page: Page) {
-  // Strong CSS override to keep overlays hidden even if injected later
+  // Inject CSS at document start for all subsequent navigations (more reliable across SPA routes)
+  await page.addInitScript(() => {
+    try {
+      const style = document.createElement('style');
+      style.setAttribute('data-e2e', 'overlay-blocker');
+      style.innerHTML = `
+        #silktide-backdrop, #silktide-wrapper, #silktide-banner,
+        .silktide-consent, .silktide, [data-silktide] {
+          display: none !important;
+          visibility: hidden !important;
+          pointer-events: none !important;
+          opacity: 0 !important;
+        }
+      `;
+      document.head.appendChild(style);
+      // Seed consent flags ASAP on page start
+      try {
+        localStorage.setItem('silktideCookieChoice_necessary', 'true');
+        localStorage.setItem('silktideCookieChoice_analytics', 'true');
+        localStorage.setItem('silktideCookieChoice_marketing', 'true');
+      } catch {}
+    } catch {}
+  });
+
+  // Strong CSS override immediately for current page if already loaded
   await page.addStyleTag({
     content: `
       #silktide-backdrop, #silktide-wrapper, #silktide-banner,

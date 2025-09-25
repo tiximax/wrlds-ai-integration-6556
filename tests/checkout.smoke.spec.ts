@@ -6,10 +6,11 @@ import { configureRetriesForCI, skipFlakyInCI } from './ci-flaky-control';
 // Mục tiêu: đảm bảo người dùng có thể thêm sản phẩm, mở giỏ, vào /checkout và đi qua 3 bước đến hoàn tất
 
 test.describe('Checkout Smoke', () => {
+  // Phase 2: allow unskip via env flag; keep one retry in CI
+  configureRetriesForCI(test, 1);
+  skipFlakyInCI(test, 'UNSKIP_CHECKOUT_SMOKE', 'Checkout smoke still under hardening');
+
   test('should navigate from cart to checkout and complete minimal steps', async ({ page, browserName }) => {
-    // Phase 2: allow unskip via env flag; keep one retry in CI
-    configureRetriesForCI(test, 1);
-    skipFlakyInCI(test, 'UNSKIP_CHECKOUT_SMOKE', 'Checkout smoke still under hardening');
     // Seed localStorage để có sẵn 1 item trong giỏ (ổn định cho smoke)
     const seededCart = {
       items: [

@@ -5,15 +5,16 @@ import { configureRetriesForCI, skipFlakyInCI } from './ci-flaky-control';
 // Recently Viewed: visiting two product pages should show the first in the second page's recently viewed list
 
 test.describe('Recently Viewed - Product Detail', () => {
+  // Phase 2: allow unskip via env flag; keep one retry in CI
+  configureRetriesForCI(test, 1);
+  skipFlakyInCI(test, 'UNSKIP_RECENTLY_VIEWED', 'Recently viewed still under hardening');
+
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await clearStorage(page);
   });
 
   test('shows previously viewed product', async ({ page, browserName }) => {
-    // Phase 2: allow unskip via env flag; keep one retry in CI
-    configureRetriesForCI(test, 1);
-    skipFlakyInCI(test, 'UNSKIP_RECENTLY_VIEWED', 'Recently viewed still under hardening');
     // Visit first product
     await page.goto('/products/premium-japanese-sneakers');
     await page.waitForLoadState('domcontentloaded');
