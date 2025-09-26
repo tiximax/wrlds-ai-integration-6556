@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, ShoppingCart } from 'lucide-react';
@@ -11,6 +12,7 @@ import { EnhancedButton } from '@/components/ui/enhanced-button';
 
 const FeaturedProducts = () => {
   const { addToCart } = useSimpleCart();
+  const { t } = useTranslation();
   
   // Get featured products (first 4)
   const featuredProducts = simpleProducts.slice(0, 4);
@@ -61,10 +63,10 @@ const FeaturedProducts = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Featured Products
+            {t('productCard.featuredProducts.title')}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our handpicked selection of premium products from around the world
+            {t('productCard.featuredProducts.subtitle')}
           </p>
         </motion.div>
 
@@ -101,12 +103,12 @@ const FeaturedProducts = () => {
                         <div className="absolute top-3 left-3">
                           {product.status === 'preorder' && (
                             <Badge className="bg-orange-500 text-white">
-                              Pre-order
+                              {t('productCard.badges.preorder')}
                             </Badge>
                           )}
                           {product.featured && (
                             <Badge className="bg-blue-500 text-white">
-                              Featured
+                              {t('productCard.badges.featured')}
                             </Badge>
                           )}
                         </div>
@@ -190,7 +192,7 @@ const FeaturedProducts = () => {
         >
 <Link to="/products">
             <EnhancedButton variant="gradient" size="lg" rightIcon={<ArrowRight className="w-5 h-5 ml-2 transition-transform" />}>
-              View All Products
+              {t('productCard.featuredProducts.viewAll')}
             </EnhancedButton>
           </Link>
         </motion.div>

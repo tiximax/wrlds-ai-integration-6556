@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { Star, ShoppingCart, Heart } from 'lucide-react';
 import WishlistButton from '@/components/WishlistButton';
@@ -24,6 +25,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
   highlightQuery,
 }) => {
   const [isQuickOpen, setIsQuickOpen] = React.useState(false);
+  const { t } = useTranslation();
   const { addToCart, isInCart, getItemQuantity } = useSimpleCart();
   const compare = useCompare();
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
@@ -79,17 +81,17 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
             <div className="absolute top-2 left-2 space-y-1">
               {product.status === 'preorder' && (
                 <Badge variant="secondary" className="bg-orange-500 text-white">
-                  Pre-order
+                  {t('productCard.badges.preorder')}
                 </Badge>
               )}
               {product.featured && (
                 <Badge variant="secondary" className="bg-yellow-500 text-white">
-                  Featured
+                  {t('productCard.badges.featured')}
                 </Badge>
               )}
               {product.trending && (
                 <Badge variant="secondary" className="bg-red-500 text-white">
-                  Trending
+                  {t('productCard.badges.trending')}
                 </Badge>
               )}
             </div>
@@ -103,7 +105,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
                 onClick={(e) => { e.preventDefault(); setIsQuickOpen(true); }}
                 data-testid="quick-view-button"
               >
-                Quick View
+                {t('productCard.quickView')}
               </EnhancedButton>
             </div>
 
@@ -114,10 +116,10 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
                 compare.add(product.id);
               }}
               className="absolute bottom-2 left-2 p-1.5 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
-              aria-label="Add to compare"
+              aria-label={t('productCard.compare')}
               data-testid="add-to-compare"
             >
-              <span className="text-[10px] font-medium text-gray-700">Compare</span>
+              <span className="text-[10px] font-medium text-gray-700">{t('productCard.compare')}</span>
             </button>
 
             {/* Wishlist Button */}
@@ -179,7 +181,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
               </Badge>
               {product.stock < 10 && product.stock > 0 && (
                 <Badge variant="outline" className="text-[10px] sm:text-xs text-orange-600">
-                  Only {product.stock} left
+                  {t('productCard.onlyLeft', { count: product.stock })}
                 </Badge>
               )}
             </div>
@@ -194,10 +196,10 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
               leftIcon={<ShoppingCart className="w-4 h-4" />}
             >
               {product.status === 'out_of_stock' 
-                ? 'Out of Stock'
+                ? t('productCard.outOfStock')
                 : inCart 
-                  ? `In Cart (${cartQuantity})`
-                  : 'Add to Cart'
+                  ? t('productCard.inCart', { count: cartQuantity })
+                  : t('productCard.addToCart')
               }
             </EnhancedButton>
           </div>
