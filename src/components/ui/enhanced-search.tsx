@@ -16,6 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 import { simpleProducts } from '@/data/simpleProducts';
 import { generateSearchSuggestions as genSuggestions, getSearchHistory, addToSearchHistory, performAdvancedSearch, defaultSearchFilters } from '@/utils/advancedSearch';
 
@@ -127,18 +128,27 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
     if (query.length >= 2 && showSuggestions) {
       setIsLoading(true);
+      // Clear previous suggestions immediately to avoid showing stale results during errors
+      setSuggestions([]);
       timeoutRef.current = setTimeout(() => {
-        const generated = genSuggestions(simpleProducts as any, query);
-        const mapped: SearchSuggestion[] = generated.map((s, idx) => ({
-          id: `${s.type}-${idx}-${s.text}`,
-          text: s.text,
-          type: s.type as any,
-          url: `/products?search=${encodeURIComponent(s.text)}`,
-          description: s.count ? `${s.count} results` : undefined,
-          count: s.count,
-        }));
-        setSuggestions(mapped);
-        setIsLoading(false);
+        try {
+          const generated = genSuggestions(simpleProducts as any, query);
+          const mapped: SearchSuggestion[] = generated.map((s, idx) => ({
+            id: `${s.type}-${idx}-${s.text}`,
+            text: s.text,
+            type: s.type as any,
+            url: `/products?search=${encodeURIComponent(s.text)}`,
+            description: s.count ? `${s.count} results` : undefined,
+            count: s.count,
+          }));
+          setSuggestions(mapped);
+        } catch (err) {
+          // Hide old suggestions and inform user gracefully
+          setSuggestions([]);
+          toast.error('Có lỗi xảy ra', { description: 'Vui lòng thử lại sau ít phút.' });
+        } finally {
+          setIsLoading(false);
+        }
       }, 200);
     } else {
       setSuggestions([]);

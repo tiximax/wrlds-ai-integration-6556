@@ -52,7 +52,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
           <div className="flex items-center gap-2">
             <ShoppingBag className="w-6 h-6" />
             <h2 className="text-lg font-semibold">
-              Cart ({totalItems} items)
+              Giỏ hàng ({totalItems} sản phẩm)
             </h2>
           </div>
           <Button
@@ -73,13 +73,13 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
             <div className="flex-1 flex flex-col items-center justify-center p-8 text-center">
               <ShoppingBag className="w-16 h-16 text-gray-300 mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">
-                Your cart is empty
+                Giỏ hàng trống
               </h3>
               <p className="text-gray-500 mb-6">
-                Start shopping to add items to your cart
+                Thêm sản phẩm để bắt đầu mua sắm
               </p>
               <Button onClick={onClose} className="w-full max-w-xs">
-                Continue Shopping
+                Tiếp tục mua sắm
               </Button>
             </div>
           ) : (
@@ -186,7 +186,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                       className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
-                      Clear Cart
+                      Xóa giỏ hàng
                     </Button>
                   </div>
                 )}
@@ -196,7 +196,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
               <div className="border-t p-4 bg-white" style={{ paddingBottom: 'calc(env(safe-area-inset-bottom) + 1rem)' }}>
                 {/* Total */}
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-lg font-semibold">Total:</span>
+                  <span className="text-lg font-semibold">Tổng cộng:</span>
                   <span className="text-xl font-bold text-primary">
                     {formatPrice(totalPrice)}
                   </span>
@@ -206,7 +206,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                 <div className="space-y-2">
                   <Link to="/checkout" data-testid="go-checkout" onClick={onClose}>
                     <EnhancedButton className="w-full" size="lg" variant="gradient">
-                      Checkout ({totalItems} items)
+                      Thanh toán ({totalItems} sản phẩm)
                     </EnhancedButton>
                   </Link>
                   <EnhancedButton
@@ -214,13 +214,13 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                     className="w-full"
                     onClick={onClose}
                   >
-                    Continue Shopping
+                    Tiếp tục mua sắm
                   </EnhancedButton>
                 </div>
 
                 {/* Shipping Info */}
                 <p className="text-xs text-gray-500 text-center mt-3">
-                  Free shipping on orders over {formatPrice(500000)}
+                  Miễn phí vận chuyển cho đơn hàng trên {formatPrice(500000)}
                 </p>
               </div>
             </>

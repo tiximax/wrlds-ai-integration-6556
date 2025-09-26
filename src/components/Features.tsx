@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ShoppingCart, Plane, CreditCard, Package, ArrowRight, Box, Truck, Code, CheckCircle, Rocket, Factory, Microchip, Handshake, RefreshCcw, MessageSquare } from "lucide-react";
 import { cn } from '@/lib/utils';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
@@ -19,6 +19,7 @@ const Features = () => {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
   const [progressValue, setProgressValue] = useState(0);
   const [currentSprint, setCurrentSprint] = useState(1);
+  const [catCarouselApi, setCatCarouselApi] = useState<CarouselApi | null>(null);
   const totalSprints = 3;
   const isMobile = useIsMobile();
   const { t } = useTranslation();
@@ -289,18 +290,25 @@ const Features = () => {
               <p className="text-gray-600 mt-3 max-w-2xl mx-auto">
                 Khám phá các danh mục sản phẩm được yêu thích nhất từ Nhật Bản, Hàn Quốc và Mỹ, 
                 từ thời trang, công nghệ đến sức khỏe và làm đẹp.
-                <span className="block text-sm mt-1 text-blue-500">Trượt ngang để xem thêm →</span>
+                <button
+                  type="button"
+                  onClick={() => catCarouselApi?.scrollNext()}
+                  className="block text-sm mt-1 text-blue-600 hover:text-blue-700 underline underline-offset-4 cursor-pointer"
+                  aria-label="Trượt để xem thêm"
+                >
+                  Trượt ngang để xem thêm →
+                </button>
               </p>
             </div>
             
             <div className="rounded-xl overflow-hidden bg-white p-4 feature-item">
-              <Carousel className="w-full max-w-7xl mx-auto">
+              <Carousel className="w-full max-w-7xl mx-auto" setApi={setCatCarouselApi}>
                 <CarouselContent className="flex">
-                  {sensorCaseStudies.map((study, index) => <CarouselItem key={index} className="md:basis-1/3 flex-shrink-0">
+                  {sensorCaseStudies.map((study, index) => <CarouselItem key={index} className="sm:basis-1/2 md:basis-1/3 flex-shrink-0">
                       <Card className="border border-gray-100 shadow-md">
                         <CardContent className="p-0">
-                          <div className="w-full h-full">
-                            <img src={study.image} alt={study.title} className="w-full h-auto object-contain" />
+                          <div className="w-full h-40 sm:h-48 overflow-hidden">
+                            <img src={study.image} alt={study.title} className="w-full h-full object-cover" />
                           </div>
                           <div className="p-4">
                             <h4 className="font-semibold text-lg">{study.title}</h4>
