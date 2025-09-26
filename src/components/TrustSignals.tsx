@@ -137,7 +137,7 @@ const TrustSignals = () => {
         >
           <div className="text-center mb-10">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4">
-              Tại sao chọn chúng tôi?
+              Cam kết & độ tin cậy
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               Chúng tôi cam kết mang đến dịch vụ mua hộ quốc tế an toàn, uy tín và chuyên nghiệp nhất

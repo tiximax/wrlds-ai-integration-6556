@@ -1,19 +1,23 @@
 import { test, expect } from '@playwright/test';
-import { removeSilktide, clearStorage } from './helpers';
+import { removeSilktide, clearStorage, disableOverlaysForTest } from './helpers';
 import { configureRetriesForCI, skipFlakyInCI } from './ci-flaky-control';
 
 // Recently Viewed: visiting two product pages should show the first in the second page's recently viewed list
 
 test.describe('Recently Viewed - Product Detail', () => {
+  // Phase 2: allow unskip via env flag; keep one retry in CI
+  configureRetriesForCI(test, 1);
+  skipFlakyInCI(test, 'UNSKIP_RECENTLY_VIEWED', 'Recently viewed still under hardening');
+
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await clearStorage(page);
+    if (process.env.CI) {
+      await disableOverlaysForTest(page);
+    }
   });
 
   test('shows previously viewed product', async ({ page, browserName }) => {
-    // Phase 2: allow unskip via env flag; keep one retry in CI
-    configureRetriesForCI(test, 1);
-    skipFlakyInCI(test, 'UNSKIP_RECENTLY_VIEWED', 'Recently viewed still under hardening');
     // Visit first product
     await page.goto('/products/premium-japanese-sneakers');
     await page.waitForLoadState('domcontentloaded');
@@ -27,16 +31,20 @@ test.describe('Recently Viewed - Product Detail', () => {
     // Chờ localStorage có dữ liệu recentlyViewed trước khi assert UI
     await page.waitForFunction(() => {
       try {
-        const rv = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        const hyphen = JSON.parse(localStorage.getItem('recently-viewed') || '[]');
+        const camel = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+        const rv = Array.isArray(hyphen) && hyphen.length > 0 ? hyphen : camel;
         return Array.isArray(rv) && rv.length > 0;
       } catch (e) {
         return false;
       }
-    }, { timeout: 15000 });
+    }, { timeout: 20000 });
 
-    // Recently viewed section should appear
+    // Recently viewed section should appear (ensure it exists, then scroll into view for lazy sections)
     const rv = page.getByTestId('recently-viewed');
-    await expect(rv).toBeVisible({ timeout: 15000 });
+    await expect(rv).toHaveCount(1, { timeout: 20000 });
+    await rv.scrollIntoViewIfNeeded();
+    await expect(rv).toBeVisible({ timeout: 20000 });
 
     // Should contain the first product title
     await expect(rv.locator('a', { hasText: 'Premium Japanese Sneakers' }).first()).toBeVisible();

@@ -18,7 +18,7 @@ const Careers = () => {
             <div className="max-w-6xl mx-auto">
               <Link to="/" className="inline-flex items-center text-gray-500 hover:text-gray-700 mb-6 transition-colors">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back to Home
+                Về trang chủ
               </Link>
               
               <motion.h1 
@@ -27,7 +27,7 @@ const Careers = () => {
                 transition={{ duration: 0.5 }} 
                 className="text-4xl font-bold mb-6"
               >
-                Join Our Team
+                Gia nhập đội ngũ
               </motion.h1>
               
               <div className="prose prose-lg max-w-none">
@@ -37,7 +37,7 @@ const Careers = () => {
                   transition={{ duration: 0.5, delay: 0.2 }} 
                   className="text-xl text-gray-600 mb-4"
                 >
-                  We're looking for passionate innovators to help us revolutionize the smart textile industry.
+                  Chúng tôi đang tìm kiếm những người đam mê đổi mới để cùng tạo ra sự khác biệt trong lĩnh vực mua hộ và logistics thông minh.
                 </motion.p>
                 
                 <motion.p
@@ -46,7 +46,7 @@ const Careers = () => {
                   transition={{ duration: 0.5, delay: 0.3 }}
                   className="text-xl text-gray-600 mb-12"
                 >
-                  We welcome both full-time professionals and interns who are eager to contribute to groundbreaking technology.
+                  Chúng tôi chào đón cả nhân sự toàn thời gian và thực tập sinh mong muốn đóng góp vào các giải pháp đột phá.
                 </motion.p>
                 
                 <motion.div 
@@ -55,20 +55,20 @@ const Careers = () => {
                   transition={{ duration: 0.6 }}
                   className="mb-16"
                 >
-                  <h2 className="text-3xl font-bold mb-6">Why Join WRLDS?</h2>
+                  <h2 className="text-3xl font-bold mb-6">Tại sao gia nhập WRLDS?</h2>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     {[
                       {
-                        title: "Innovation",
-                        description: "Work on cutting-edge technology that's changing multiple industries."
+                        title: "Đổi mới",
+                        description: "Cùng làm việc với các công nghệ tiên tiến tạo ảnh hưởng đến nhiều ngành."
                       },
                       {
-                        title: "Impact",
-                        description: "Create solutions that enhance safety, performance, and quality of life."
+                        title: "Tác động",
+                        description: "Tạo ra giải pháp nâng cao an toàn, hiệu suất và chất lượng cuộc sống."
                       },
                       {
-                        title: "Growth",
-                        description: "Develop your skills in a rapidly expanding field with diverse challenges."
+                        title: "Phát triển",
+                        description: "Phát triển kỹ năng của bạn trong lĩnh vực đang tăng trưởng nhanh với nhiều thách thức."
                       }
                     ].map((benefit, i) => (
                       <div key={i} className="bg-gray-50 p-6 rounded-lg border border-gray-100 h-full">
@@ -79,7 +79,7 @@ const Careers = () => {
                   </div>
                   
                   <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm mt-12">
-                    <h3 className="font-bold text-xl mb-6">Contact Our COO</h3>
+                    <h3 className="font-bold text-xl mb-6">Liên hệ COO của chúng tôi</h3>
                     <div className="bg-white rounded-xl p-6 border border-gray-200">
                       <div className="flex flex-col items-center text-center">
                         <img 
@@ -101,7 +101,7 @@ const Careers = () => {
                             className="flex items-center text-gray-700 hover:text-blue-600"
                           >
                             <Linkedin className="w-5 h-5 mr-2" />
-                            LinkedIn Profile
+                            Hồ sơ LinkedIn
                           </a>
                           <a href="tel:+46760149508" className="flex items-center text-gray-700 hover:text-blue-600">
                             <Phone className="w-5 h-5 mr-2" />

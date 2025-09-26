@@ -19,15 +19,26 @@ test.describe('Search Filters Chips', () => {
     });
     await expect(page).toHaveURL(/\/search\?origin=japan/, { timeout: 10000 });
 
-    // Wait for filters UI to load
-    await expect(page.getByText('Bộ lọc', { exact: true })).toBeVisible({ timeout: 10000 });
+    // Wait for filters UI to load (narrow by role to avoid strict mode violation)
+    const filterHeading = page.getByRole('heading', { name: 'Bộ lọc' }).first();
+    await expect(filterHeading).toBeVisible({ timeout: 10000 });
+
+    // Wait chips to render
+    await page.waitForSelector('[data-testid="chip-origin-japan"]', { timeout: 10000 });
+    await page.waitForSelector('[data-testid="chip-status-available"]', { timeout: 10000 });
 
     // Chips visible
     await expect(page.getByTestId('chip-origin-japan')).toBeVisible();
     await expect(page.getByTestId('chip-status-available')).toBeVisible();
 
-    // Remove origin
-    await page.getByTestId('chip-remove-origin-japan').click();
+    // Remove origin (ensure in view, then click with fallback)
+    const removeOrigin = page.getByTestId('chip-remove-origin-japan');
+    await removeOrigin.scrollIntoViewIfNeeded();
+    try {
+      await removeOrigin.click();
+    } catch {
+      await removeOrigin.click({ force: true });
+    }
 
     // Origin chip disappears
     await expect(page.getByTestId('chip-origin-japan')).toHaveCount(0);

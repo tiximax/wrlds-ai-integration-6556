@@ -70,10 +70,12 @@ test('can add product to wishlist from home and see it on wishlist page, then re
   await expect(page.locator('text=Danh sách yêu thích của bạn đang trống.')).toBeVisible();
 });
 
-test('adding to cart from wishlist updates cart sidebar', async ({ page, browserName }) => {
+test.describe('Wishlist add-to-cart (CI gate)', () => {
   // Phase 2: allow unskip via env flag; keep one retry in CI
   configureRetriesForCI(test, 1);
   skipFlakyInCI(test, 'UNSKIP_WISHLIST_ATC', 'Wishlist add-to-cart still under hardening');
+
+  test('adding to cart from wishlist updates cart sidebar', async ({ page, browserName }) => {
   // Prepare: add an item to wishlist
   await page.goto('/products');
   await page.waitForLoadState('domcontentloaded');
@@ -117,4 +119,5 @@ test('adding to cart from wishlist updates cart sidebar', async ({ page, browser
 
   // Header should contain "Cart (" indicating there is a count
   await expect(cartSidebar.locator('h2')).toContainText('Cart (');
+  });
 });

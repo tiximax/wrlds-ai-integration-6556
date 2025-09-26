@@ -89,7 +89,7 @@ const WhyWrlds = () => {
             Tại sao chọn chúng tôi?
           </motion.h2>
           <motion.p variants={itemVariants} className="text-gray-600 text-lg max-w-3xl mx-auto">
-            Trong lĩnh vực mua hộ quốc tế, chúng tôi mang đến sự đưn giản và chuyên nghiệp để đảm bảo thành công của bạn
+            Trong lĩnh vực mua hộ quốc tế, chúng tôi mang đến sự đơn giản và chuyên nghiệp để đảm bảo thành công của bạn
           </motion.p>
         </motion.div>
         
