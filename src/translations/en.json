@@ -234,6 +234,16 @@
   "checkout": {
     "title": "Checkout",
     "continueShopping": "Continue shopping",
+    "stepper": {
+      "address": "Address",
+      "payment": "Payment",
+      "review": "Review",
+      "complete": "Complete"
+    },
+    "draft": {
+      "notice": "Your information will be temporarily stored on this device.",
+      "clearSaved": "Clear saved data"
+    },
     "labels": {
       "fullName": "Full name",
       "phone": "Phone number",
