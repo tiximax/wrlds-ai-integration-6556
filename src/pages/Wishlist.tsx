@@ -15,13 +15,18 @@ const WishlistPage: React.FC = () => {
   return (
     <PageLayout>
       <div className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center justify-between mb-2">
           <h1 className="text-3xl font-bold text-gray-900">Wishlist</h1>
           {items.length > 0 && (
             <Button variant="outline" onClick={clearWishlist}>
               <Trash2 className="w-4 h-4 mr-2" /> Clear all
             </Button>
           )}
+        </div>
+
+        {/* Local storage note */}
+        <div className="mb-6 p-3 bg-blue-50 border border-blue-100 rounded text-sm text-blue-700">
+          Danh sách yêu thích được lưu cục bộ trên trình duyệt này. Bạn có thể thêm sản phẩm từ trang Sản phẩm.
         </div>
 
         {items.length === 0 ? (
