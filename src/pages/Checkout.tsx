@@ -142,7 +142,7 @@ const Checkout: React.FC = () => {
 
       {/* Draft controls */}
       <div className="mb-4 flex items-center justify-between text-sm text-gray-600">
-        <span>Thông tin của bạn sẽ được lưu tạm thời trên thiết bị này.</span>
+        <span>{t('checkout.draft.notice')}</span>
         <button
           type="button"
           className="text-blue-600 hover:underline"
@@ -156,8 +156,8 @@ const Checkout: React.FC = () => {
             paymentForm.reset({ method: undefined as unknown as any });
             setStep(1);
           }}
-        >
-          Xóa dữ liệu đã lưu
+>
+          {t('checkout.draft.clearSaved')}
         </button>
       </div>
 
@@ -168,7 +168,7 @@ const Checkout: React.FC = () => {
 
       {/* Stepper */}
       <div className="flex items-center justify-between mb-6">
-        {['Địa chỉ', 'Thanh toán', 'Xem lại', 'Hoàn tất'].map((label, idx) => {
+        {[t('checkout.stepper.address'), t('checkout.stepper.payment'), t('checkout.stepper.review'), t('checkout.stepper.complete')].map((label, idx) => {
           const index = idx + 1;
           const active = step === index;
           const complete = step > index;

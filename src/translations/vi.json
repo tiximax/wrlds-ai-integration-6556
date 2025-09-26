@@ -234,6 +234,16 @@
   "checkout": {
     "title": "Thanh toán",
     "continueShopping": "Tiếp tục mua sắm",
+    "stepper": {
+      "address": "Địa chỉ",
+      "payment": "Thanh toán",
+      "review": "Xem lại",
+      "complete": "Hoàn tất"
+    },
+    "draft": {
+      "notice": "Thông tin của bạn sẽ được lưu tạm thời trên thiết bị này.",
+      "clearSaved": "Xóa dữ liệu đã lưu"
+    },
     "labels": {
       "fullName": "Họ và tên",
       "phone": "Số điện thoại",
