@@ -266,7 +266,7 @@ const ProductDetail: React.FC = () => {
                     {product.name}
                   </h1>
                   <div className="flex items-center space-x-4 text-sm text-gray-600 flex-wrap">
-                    <span>{t('productDetail.brand')}: {product.brand?.name || 'Unknown'}</span>
+                    <span>{t('productDetail.brand')}: {product.brand?.name || t('productDetail.unknownBrand')}</span>
                     {product.category && (
                       <>
                         <span>•</span>
