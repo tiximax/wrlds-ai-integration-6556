@@ -162,7 +162,33 @@
     "avgRating": "Đánh giá TB",
     "viewAllRelated": "Xem tất cả sản phẩm liên quan",
     "alsoViewed": "Khách hàng cũng xem",
-    "recommendedForYou": "Gợi ý cho bạn"
+    "recommendedForYou": "Gợi ý cho bạn",
+
+    "back": "Quay lại",
+    "share": "Chia sẻ",
+    "compare": "So sánh",
+    "brand": "Thương hiệu",
+    "category": "Danh mục",
+    "origin": "Xuất xứ",
+    "sku": "Mã SKU",
+    "price": {
+      "base": "Giá cơ bản",
+      "original": "Giá gốc",
+      "total": "Tổng tiền"
+    },
+    "status": {
+      "available": "✅ Còn hàng",
+      "preorder": "⏳ Đặt trước",
+      "out_of_stock": "❌ Hết hàng"
+    },
+    "stock": "Còn {{count}} sản phẩm",
+    "quantity": "Số lượng",
+    "addToCart": "Thêm vào giỏ",
+    "outOfStock": "Hết hàng",
+    "description": "Mô tả",
+    "tags": "Từ khóa",
+    "reviews": "đánh giá",
+    "total": "Tổng"
   },
   "cart": {
     "title": "Giỏ hàng",
