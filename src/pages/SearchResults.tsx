@@ -6,6 +6,7 @@ import SearchFilters from '@/components/SearchFilters';
 import { simpleProducts } from '@/data/simpleProducts';
 import SimpleProductCard from '@/components/SimpleProductCard';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
+import { useTranslation } from 'react-i18next';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
 import { parseSearchParams, serializeSearchParams, performSearch, SortOption } from '@/utils/searchUtils';
@@ -13,6 +14,7 @@ import { FilterState, defaultFilters } from '@/utils/productFilters';
 
 const SearchResults: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const initial = useMemo(() => parseSearchParams(window.location.search), []);
@@ -90,8 +92,8 @@ const SearchResults: React.FC = () => {
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-gray-900" data-testid="search-results-heading">Search Results</h1>
-          <p className="text-gray-600 mt-2">Tìm thấy {result.total} sản phẩm</p>
+          <h1 className="text-3xl font-bold text-gray-900" data-testid="search-results-heading">{t('searchResults.title')}</h1>
+          <p className="text-gray-600 mt-2">{t('searchResults.found', { count: result.total })}</p>
         </div>
 
         {/* Content */}
@@ -113,7 +115,7 @@ const SearchResults: React.FC = () => {
               <div className="flex items-center gap-2 flex-wrap">
                 {query && (
                   <Badge variant="secondary" className="gap-1" data-testid="chip-query">
-                    Query: {query}
+                    {t('searchResults.query')}: {query}
                     <button
                       aria-label="Remove query"
                       className="ml-1 hover:text-red-500"
@@ -127,7 +129,7 @@ const SearchResults: React.FC = () => {
 
                 {filters.categories.map((c) => (
                   <Badge key={`cat-${c}`} variant="outline" className="gap-1" data-testid={`chip-category-${c}`}>
-                    Category: {c}
+                    {t('searchResults.category')}: {c}
                     <button
                       aria-label={`Remove category ${c}`}
                       className="ml-1 hover:text-red-500"
@@ -144,7 +146,7 @@ const SearchResults: React.FC = () => {
 
                 {filters.origins.map((o) => (
                   <Badge key={`origin-${o}`} variant="outline" className="gap-1" data-testid={`chip-origin-${o}`}>
-                    Origin: {o}
+                    {t('searchResults.origin')}: {o}
                     <button
                       aria-label={`Remove origin ${o}`}
                       className="ml-1 hover:text-red-500"
@@ -161,7 +163,7 @@ const SearchResults: React.FC = () => {
 
                 {filters.status.map((s) => (
                   <Badge key={`status-${s}`} variant="outline" className="gap-1" data-testid={`chip-status-${s}`}>
-                    Status: {s}
+                    {t('searchResults.status')}: {s}
                     <button
                       aria-label={`Remove status ${s}`}
                       className="ml-1 hover:text-red-500"
@@ -178,7 +180,7 @@ const SearchResults: React.FC = () => {
 
                 {filters.types.map((t) => (
                   <Badge key={`type-${t}`} variant="outline" className="gap-1" data-testid={`chip-type-${t}`}>
-                    Type: {t}
+                    {t('searchResults.type')}: {t}
                     <button
                       aria-label={`Remove type ${t}`}
                       className="ml-1 hover:text-red-500"
@@ -195,7 +197,7 @@ const SearchResults: React.FC = () => {
 
                 {filters.brands.map((b) => (
                   <Badge key={`brand-${b}`} variant="outline" className="gap-1" data-testid={`chip-brand-${b}`}>
-                    Brand: {b}
+                    {t('searchResults.brand')}: {b}
                     <button
                       aria-label={`Remove brand ${b}`}
                       className="ml-1 hover:text-red-500"
@@ -212,7 +214,7 @@ const SearchResults: React.FC = () => {
 
                 {(filters.priceRange[0] !== defaultFilters.priceRange[0] || filters.priceRange[1] !== defaultFilters.priceRange[1]) && (
                   <Badge variant="outline" className="gap-1" data-testid="chip-price">
-                    Price: {filters.priceRange[0]} - {filters.priceRange[1]}
+                    {t('searchResults.price')}: {filters.priceRange[0]} - {filters.priceRange[1]}
                     <button
                       aria-label="Reset price range"
                       className="ml-1 hover:text-red-500"
@@ -241,18 +243,18 @@ const SearchResults: React.FC = () => {
 
               <div className="flex items-center gap-2">
                 <Select value={sort} onValueChange={handleSortChange}>
-                  <SelectTrigger className="w-[180px]"><SelectValue placeholder="Sort" /></SelectTrigger>
+                  <SelectTrigger className="w-[180px]"><SelectValue placeholder={t('searchResults.sort')} /></SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="relevance">Relevance</SelectItem>
-                    <SelectItem value="price-asc">Price: Low to High</SelectItem>
-                    <SelectItem value="price-desc">Price: High to Low</SelectItem>
-                    <SelectItem value="rating">Highest Rated</SelectItem>
-                    <SelectItem value="popularity">Most Popular</SelectItem>
-                    <SelectItem value="newest">Newest</SelectItem>
+                    <SelectItem value="relevance">{t('searchResults.sortOptions.relevance')}</SelectItem>
+                    <SelectItem value="price-asc">{t('searchResults.sortOptions.priceAsc')}</SelectItem>
+                    <SelectItem value="price-desc">{t('searchResults.sortOptions.priceDesc')}</SelectItem>
+                    <SelectItem value="rating">{t('searchResults.sortOptions.rating')}</SelectItem>
+                    <SelectItem value="popularity">{t('searchResults.sortOptions.popularity')}</SelectItem>
+                    <SelectItem value="newest">{t('searchResults.sortOptions.newest')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <Select value={String(perPage)} onValueChange={handlePerPageChange}>
-                  <SelectTrigger className="w-[120px]"><SelectValue placeholder="Per page" /></SelectTrigger>
+                  <SelectTrigger className="w-[120px]"><SelectValue placeholder={t('searchResults.perPage')} /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="12">12</SelectItem>
                     <SelectItem value="24">24</SelectItem>
@@ -279,11 +281,11 @@ const SearchResults: React.FC = () => {
             {/* Pagination */}
             {result.pages > 1 && (
               <div className="flex justify-center gap-2">
-                <EnhancedButton variant="outline" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={result.page === 1}>Previous</EnhancedButton>
+                <EnhancedButton variant="outline" onClick={() => setPage(p => Math.max(1, p - 1))} disabled={result.page === 1}>{t('searchResults.previous')}</EnhancedButton>
                 {Array.from({ length: result.pages }, (_, i) => i + 1).map(p => (
                   <EnhancedButton key={p} variant={result.page === p ? 'primary' : 'outline'} onClick={() => setPage(p)} className="w-10">{p}</EnhancedButton>
                 ))}
-                <EnhancedButton variant="outline" onClick={() => setPage(p => Math.min(result.pages, p + 1))} disabled={result.page === result.pages}>Next</EnhancedButton>
+                <EnhancedButton variant="outline" onClick={() => setPage(p => Math.min(result.pages, p + 1))} disabled={result.page === result.pages}>{t('searchResults.next')}</EnhancedButton>
               </div>
             )}
           </div>
