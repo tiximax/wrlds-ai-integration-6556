@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, Filter, SlidersHorizontal, Grid3X3, List, ChevronDown, X } from 'lucide-react';
 import { Product } from '@/types/product';
@@ -76,6 +77,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
   isLoading = false,
   className = ''
 }) => {
+  const { t } = useTranslation();
+
   // Get unique values for filter options
   const filterOptions = useMemo(() => {
     if (!products || products.length === 0) {
@@ -174,11 +177,11 @@ const FilterBar: React.FC<FilterBarProps> = ({
   const FilterContent = () => (
     <div className="space-y-1">
       {/* Search */}
-      <FilterSection title="Tìm kiếm">
+      <FilterSection title={t('searchFilters.search')}>
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
           <Input
-            placeholder="Tìm sản phẩm..."
+            placeholder={t('searchFilters.searchPlaceholder') || '...'}
             value={filters.search}
             onChange={(e) => updateFilter('search', e.target.value)}
             className="pl-10"
@@ -187,7 +190,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       </FilterSection>
 
       {/* Categories */}
-      <FilterSection title="Danh mục">
+      <FilterSection title={t('searchFilters.categories')}>
         <div className="space-y-2">
           {filterOptions.categories.map(category => (
             <div key={category.id} className="space-y-1">
@@ -224,7 +227,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       </FilterSection>
 
       {/* Origin */}
-      <FilterSection title="Xuất xứ">
+      <FilterSection title={t('searchFilters.origin')}>
         <div className="space-y-2">
           {filterOptions.origins.map(origin => (
             <label key={origin} className="flex items-center space-x-2 cursor-pointer">
@@ -239,7 +242,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       </FilterSection>
 
       {/* Status */}
-      <FilterSection title="Trạng thái">
+      <FilterSection title={t('searchFilters.status')}>
         <div className="space-y-2">
           {filterOptions.status.map(status => (
             <label key={status} className="flex items-center space-x-2 cursor-pointer">
@@ -254,7 +257,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       </FilterSection>
 
       {/* Type */}
-      <FilterSection title="Loại sản phẩm">
+      <FilterSection title={t('searchFilters.type')}>
         <div className="space-y-2">
           {filterOptions.types.map(type => (
             <label key={type} className="flex items-center space-x-2 cursor-pointer">
@@ -270,7 +273,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
 
       {/* Brands */}
       {filterOptions.brands.length > 0 && (
-        <FilterSection title="Thương hiệu">
+        <FilterSection title={t('searchFilters.brands')}>
           <div className="space-y-2 max-h-40 overflow-y-auto">
             {filterOptions.brands.map(brand => (
               <label key={brand} className="flex items-center space-x-2 cursor-pointer">
@@ -286,7 +289,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       )}
 
       {/* Price Range */}
-      <FilterSection title="Khoảng giá">
+      <FilterSection title={t('searchFilters.priceRange')}>
         <div className="space-y-3">
           <Slider
             value={filters.priceRange}
@@ -304,18 +307,18 @@ const FilterBar: React.FC<FilterBarProps> = ({
       </FilterSection>
 
       {/* Quick Filters */}
-      <FilterSection title="Bộ lọc nhanh">
+      <FilterSection title={t('searchFilters.quickFilters')}>
         <div className="space-y-2">
           <Select value={filters.quickFilter || 'all'} onValueChange={(value) => updateFilter('quickFilter', value)}>
             <SelectTrigger>
-              <SelectValue placeholder="Chọn bộ lọc nhanh" />
+              <SelectValue placeholder={t('searchFilters.quickFilters')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">Tất cả</SelectItem>
-              <SelectItem value="in-stock">Còn hàng</SelectItem>
-              <SelectItem value="trending">Xu hướng</SelectItem>
-              <SelectItem value="featured">Nổi bật</SelectItem>
-              <SelectItem value="flash-deal">Flash Deal</SelectItem>
+              <SelectItem value="all">{t('searchFilters.quickOptions.all')}</SelectItem>
+              <SelectItem value="in-stock">{t('searchFilters.quickOptions.inStock')}</SelectItem>
+              <SelectItem value="trending">{t('searchFilters.quickOptions.trending')}</SelectItem>
+              <SelectItem value="featured">{t('searchFilters.quickOptions.featured')}</SelectItem>
+              <SelectItem value="flash-deal">{t('searchFilters.quickOptions.flashDeal')}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -331,7 +334,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
             className="w-full min-h-[44px]"
           >
             <X className="w-4 h-4 mr-2" />
-            Xóa bộ lọc ({activeFiltersCount})
+            {t('searchFilters.clearWithCount', { count: activeFiltersCount })}
           </EnhancedButton>
         </div>
       )}
@@ -343,7 +346,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
       {/* Desktop Filter Sidebar */}
       <div className="hidden lg:block w-64 bg-white border border-gray-200 rounded-lg p-4 h-fit sticky top-4">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-semibold text-gray-900">Bộ lọc</h3>
+          <h3 className="font-semibold text-gray-900">{t('searchFilters.filters')}</h3>
           {activeFiltersCount > 0 && (
             <Badge variant="secondary">{activeFiltersCount}</Badge>
           )}
@@ -362,7 +365,7 @@ const FilterBar: React.FC<FilterBarProps> = ({
               data-testid="mobile-filters-button"
             >
               <SlidersHorizontal className="w-4 h-4 mr-2" />
-              Bộ lọc
+              {t('searchFilters.filtersButton')}
               {activeFiltersCount > 0 && (
                 <Badge variant="destructive" className="absolute -top-2 -right-2 min-w-5 h-5 text-xs p-0 flex items-center justify-center">
                   {activeFiltersCount}
@@ -372,8 +375,8 @@ const FilterBar: React.FC<FilterBarProps> = ({
           </DrawerTrigger>
           <DrawerContent className="max-h-[80vh] overflow-y-auto" data-testid="mobile-filters-drawer">
             <DrawerHeader>
-              <DrawerTitle>Bộ lọc sản phẩm</DrawerTitle>
-              <DrawerDescription>Tùy chỉnh bộ lọc để tìm sản phẩm phù hợp</DrawerDescription>
+              <DrawerTitle>{t('searchFilters.productFiltersTitle')}</DrawerTitle>
+              <DrawerDescription>{t('searchFilters.productFiltersDesc')}</DrawerDescription>
             </DrawerHeader>
             <div className="px-4 pb-2">
               <FilterContent />
@@ -381,12 +384,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
             <DrawerFooter>
               <DrawerClose asChild>
                 <EnhancedButton variant="primary" size="lg" className="min-h-[44px]" data-testid="apply-filters-button">
-                  Áp dụng
+                  {t('searchFilters.apply')}
                 </EnhancedButton>
               </DrawerClose>
               {activeFiltersCount > 0 && (
                 <EnhancedButton variant="ghost" size="lg" className="min-h-[44px]" onClick={clearFilters} data-testid="reset-filters-button">
-                  Xóa bộ lọc ({activeFiltersCount})
+                  {t('searchFilters.clearWithCount', { count: activeFiltersCount })}
                 </EnhancedButton>
               )}
             </DrawerFooter>

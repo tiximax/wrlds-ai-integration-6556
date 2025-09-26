@@ -167,6 +167,57 @@
       "newest": "Newest"
     }
   },
+  "searchFilters": {
+    "filters": "Filters",
+    "search": "Search",
+    "searchPlaceholder": "Search products...",
+    "categories": "Categories",
+    "origin": "Origin",
+    "status": "Status",
+    "type": "Type",
+    "brands": "Brands",
+    "priceRange": "Price Range",
+    "quickFilters": "Quick Filters",
+    "quickOptions": {
+      "all": "All",
+      "inStock": "In stock",
+      "trending": "Trending",
+      "featured": "Featured",
+      "flashDeal": "Flash Deal"
+    },
+    "apply": "Apply",
+    "clear": "Clear filters",
+    "productFiltersTitle": "Product Filters",
+    "productFiltersDesc": "Adjust filters to find the right products",
+    "filtersButton": "Filters",
+    "clearWithCount": "Clear filters ({{count}})"
+  },
+  "productCard": {
+    "preorder": "Preorder",
+    "available": "Available",
+    "quickView": "Quick View",
+    "compare": "Compare",
+    "hot": "Hot",
+    "estimated": "Estimated",
+    "daysLeft": "{{days}} days left",
+    "inStock": "In stock",
+    "onlyLeft": "Only {{count}} left",
+    "outOfStock": "Out of Stock",
+    "join": "Join",
+    "depositPercent": "Deposit {{percent}}%",
+    "addToCart": "Add to Cart",
+    "inCart": "In Cart ({{count}})",
+    "featuredProducts": {
+      "title": "Featured Products",
+      "subtitle": "Discover our handpicked selection of premium products from around the world",
+      "viewAll": "View All Products"
+    },
+    "badges": {
+      "preorder": "Pre-order",
+      "featured": "Featured",
+      "trending": "Trending"
+    }
+  },
   "products": {
     "title": "Products",
     "subtitle": "Discover thousands of high-quality products from Japan, Korea, and USA at the most competitive prices.",

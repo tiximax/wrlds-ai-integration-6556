@@ -70,7 +70,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     
     if (product.status === 'preorder') {
       return {
-        text: 'Preorder',
+        text: t('productCard.preorder'),
         variant: 'outline' as const,
         icon: <Clock className="w-3 h-3" />
       };
@@ -78,7 +78,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     
     if (product.type === 'ready_stock' && product.stock > 0) {
       return {
-        text: 'Có sẵn',
+        text: t('productCard.available'),
         variant: 'secondary' as const,
         icon: <Package className="w-3 h-3" />
       };
@@ -92,7 +92,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     if (product.status === 'preorder') {
       const deposit = product.preorderInfo?.depositPercent || 0;
       return {
-        text: `Đặt cọc ${deposit}%`,
+        text: t('productCard.depositPercent', { percent: deposit }),
         icon: <Clock className="w-4 h-4" />,
         variant: 'outline' as const,
         available: true
@@ -101,7 +101,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     
     if (product.type === 'group_buy') {
       return {
-        text: 'Tham gia',
+        text: t('productCard.join'),
         icon: <Users className="w-4 h-4" />,
         variant: 'default' as const,
         available: true
@@ -110,7 +110,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     
     if (product.stock > 0) {
       return {
-        text: 'Thêm vào giỏ',
+        text: t('productCard.addToCart'),
         icon: <ShoppingCart className="w-4 h-4" />,
         variant: 'default' as const,
         available: true
@@ -118,7 +118,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
     }
     
     return {
-      text: 'Hết hàng',
+      text: t('productCard.outOfStock'),
       icon: <Package className="w-4 h-4" />,
       variant: 'secondary' as const,
       available: false
@@ -196,7 +196,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 onClick={(e) => { e.preventDefault(); setIsQuickOpen(true); }}
                 data-testid="quick-view-button"
               >
-                Quick View
+                {t('productCard.quickView')}
               </EnhancedButton>
             </div>
             
@@ -207,10 +207,10 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 compare.add(product.id);
               }}
               className="absolute bottom-3 left-3 p-2 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
-              aria-label="Add to compare"
+              aria-label={t('productCard.compare')}
               data-testid="add-to-compare"
             >
-              <span className="text-xs font-medium text-gray-700">Compare</span>
+              <span className="text-xs font-medium text-gray-700">{t('productCard.compare')}</span>
             </button>
 
             {/* Wishlist Button */}
@@ -301,7 +301,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               {/* Preorder Pricing */}
               {product.status === 'preorder' && product.preorderInfo?.estimatedPrice && (
                 <div className="text-xs text-gray-500 mt-1">
-                  Dự kiến: {formatPrice(product.preorderInfo.estimatedPrice.min)} - {formatPrice(product.preorderInfo.estimatedPrice.max)}
+                  {t('productCard.estimated')}: {formatPrice(product.preorderInfo.estimatedPrice.min)} - {formatPrice(product.preorderInfo.estimatedPrice.max)}
                 </div>
               )}
             </div>
@@ -334,7 +334,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
             {product.type === 'flash_deal' && product.deal?.isActive && product.deal.endDate && (
               <div className="mt-2 text-center">
                 <div className="text-xs text-red-600 font-medium">
-                  Còn {Math.max(0, differenceInDays(product.deal.endDate, new Date()))} ngày
+                  {t('productCard.daysLeft', { days: Math.max(0, differenceInDays(product.deal.endDate, new Date())) })}
                 </div>
               </div>
             )}

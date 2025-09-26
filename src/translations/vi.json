@@ -167,6 +167,57 @@
       "newest": "Mới nhất"
     }
   },
+  "searchFilters": {
+    "filters": "Bộ lọc",
+    "search": "Tìm kiếm",
+    "searchPlaceholder": "Tìm sản phẩm...",
+    "categories": "Danh mục",
+    "origin": "Xuất xứ",
+    "status": "Trạng thái",
+    "type": "Loại sản phẩm",
+    "brands": "Thương hiệu",
+    "priceRange": "Khoảng giá",
+    "quickFilters": "Bộ lọc nhanh",
+    "quickOptions": {
+      "all": "Tất cả",
+      "inStock": "Còn hàng",
+      "trending": "Xu hướng",
+      "featured": "Nổi bật",
+      "flashDeal": "Flash Deal"
+    },
+    "apply": "Áp dụng",
+    "clear": "Xóa bộ lọc",
+    "productFiltersTitle": "Bộ lọc sản phẩm",
+    "productFiltersDesc": "Tùy chỉnh bộ lọc để tìm sản phẩm phù hợp",
+    "filtersButton": "Bộ lọc",
+    "clearWithCount": "Xóa bộ lọc ({{count}})"
+  },
+  "productCard": {
+    "preorder": "Đặt trước",
+    "available": "Có sẵn",
+    "quickView": "Xem nhanh",
+    "compare": "So sánh",
+    "hot": "Hot",
+    "estimated": "Dự kiến",
+    "daysLeft": "Còn {{days}} ngày",
+    "inStock": "Còn hàng",
+    "onlyLeft": "Chỉ còn {{count}}",
+    "outOfStock": "Hết hàng",
+    "join": "Tham gia",
+    "depositPercent": "Đặt cọc {{percent}}%",
+    "addToCart": "Thêm vào giỏ",
+    "inCart": "Trong giỏ ({{count}})",
+    "featuredProducts": {
+      "title": "Sản phẩm nổi bật",
+      "subtitle": "Khám phá các sản phẩm tuyển chọn chất lượng từ khắp nơi trên thế giới",
+      "viewAll": "Xem tất cả sản phẩm"
+    },
+    "badges": {
+      "preorder": "Đặt trước",
+      "featured": "Nổi bật",
+      "trending": "Xu hướng"
+    }
+  },
   "products": {
     "title": "Sản phẩm",
     "subtitle": "Khám phá hàng ngàn sản phẩm chất lượng cao từ Nhật Bản, Hàn Quốc và Mỹ với giá cả cạnh tranh nhất.",
