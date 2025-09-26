@@ -152,12 +152,12 @@ export const SimpleCartProvider: React.FC<{ children: React.ReactNode }> = ({ ch
         finalPrice: product.sellingPrice
       }
     });
-    toast.success(`Added ${product.name} to cart`);
+    toast.success(`Đã thêm ${product.name} vào giỏ hàng`);
   };
 
   const removeFromCart = (itemId: string) => {
     dispatch({ type: 'REMOVE_FROM_CART', payload: { itemId } });
-    toast.success('Removed from cart');
+    toast.success('Đã xóa khỏi giỏ hàng');
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
@@ -166,7 +166,7 @@ export const SimpleCartProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const clearCart = () => {
     dispatch({ type: 'CLEAR_CART' });
-    toast.success('Cart cleared');
+    toast.success('Đã xóa giỏ hàng');
   };
 
   const getItemQuantity = (productId: string) => {

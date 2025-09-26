@@ -214,7 +214,7 @@ const ProductDetail: React.FC = () => {
                   onClick={() => navigate(-1)}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  Back
+                  {t('productDetail.back')}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -232,7 +232,7 @@ const ProductDetail: React.FC = () => {
                   }}
                 >
                   <Share2 className="w-4 h-4 mr-2" />
-                  Share
+                  {t('productDetail.share')}
                 </Button>
                 <Button
                   variant="outline"
@@ -245,7 +245,7 @@ const ProductDetail: React.FC = () => {
                   }}
                 >
                   <Copy className="w-4 h-4 mr-2" />
-                  Compare
+                  {t('productDetail.compare')}
                 </Button>
               </div>
             </div>
@@ -266,17 +266,17 @@ const ProductDetail: React.FC = () => {
                     {product.name}
                   </h1>
                   <div className="flex items-center space-x-4 text-sm text-gray-600 flex-wrap">
-                    <span>Brand: {product.brand?.name || 'Unknown'}</span>
+                    <span>{t('productDetail.brand')}: {product.brand?.name || 'Unknown'}</span>
                     {product.category && (
                       <>
                         <span>•</span>
-                        <span>Category: {product.category.name}</span>
+                        <span>{t('productDetail.category')}: {product.category.name}</span>
                       </>
                     )}
                     <span>•</span>
-                    <span>Origin: {product.origin.toUpperCase()}</span>
+                    <span>{t('productDetail.origin')}: {product.origin.toUpperCase()}</span>
                     <span>•</span>
-                    <span>SKU: {product.sku}</span>
+                    <span>{t('productDetail.sku')}: {product.sku}</span>
                   </div>
                 </div>
 
@@ -287,14 +287,14 @@ const ProductDetail: React.FC = () => {
                   </div>
                   {currentPrice !== product.sellingPrice && (
                     <div className="text-sm text-gray-500">
-                      Base price: {product.sellingPrice.toLocaleString('vi-VN')} {product.currency}
+                      {t('productDetail.price.base')}: {product.sellingPrice.toLocaleString('vi-VN')} {product.currency}
                     </div>
                   )}
                   {product.originalPrice && (
-                    <div className="text-sm text-gray-600">
-                      Original: ${product.originalPrice}
-                    </div>
-                  )}
+                      <div className="text-sm text-gray-600">
+                        {t('productDetail.price.original')}: {product.originalPrice.toLocaleString('vi-VN')} {product.currency}
+                      </div>
+                    )}
                 </div>
 
                 {/* Status & Stock */}
@@ -304,10 +304,14 @@ const ProductDetail: React.FC = () => {
                       ? 'bg-green-100 text-green-800'
                       : 'bg-yellow-100 text-yellow-800'
                   }`}>
-                    {product.status === 'available' ? '✅ In Stock' : '⏳ Preorder'}
+                    {product.status === 'available'
+                      ? t('productDetail.status.available')
+                      : product.status === 'preorder'
+                        ? t('productDetail.status.preorder')
+                        : t('productDetail.status.out_of_stock')}
                   </span>
                   <span className="text-sm text-gray-600">
-                    {product.stock} units available
+                    {t('productDetail.stock', { count: product.stock })}
                   </span>
                 </div>
 
@@ -324,7 +328,7 @@ const ProductDetail: React.FC = () => {
                     ))}
                   </div>
                   <span className="text-sm text-gray-600">
-                    {product.rating.average}/5 ({product.rating.count} reviews)
+                    {product.rating.average}/5 ({product.rating.count} {t('productDetail.reviews')})
                   </span>
                 </div>
 
@@ -344,7 +348,7 @@ const ProductDetail: React.FC = () => {
 
                 {/* Description */}
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">Description</h3>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">{t('productDetail.description')}</h3>
                   <p className="text-gray-600 leading-relaxed mb-4">
                     {product.description}
                   </p>
@@ -356,7 +360,7 @@ const ProductDetail: React.FC = () => {
                 {/* Tags */}
                 {product.tags.length > 0 && (
                   <div>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Tags</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">{t('productDetail.tags')}</h3>
                     <div className="flex flex-wrap gap-2">
                       {product.tags.map((tag, index) => (
                         <span key={index} className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full">
@@ -374,7 +378,7 @@ const ProductDetail: React.FC = () => {
                   {/* Quantity Selector */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Quantity
+                      {t('productDetail.quantity')}
                     </label>
                     <div className="flex items-center space-x-3">
                       <Button
@@ -404,7 +408,7 @@ const ProductDetail: React.FC = () => {
                       </Button>
                       
                       <span className="text-sm text-gray-500 ml-4">
-                        {product.stock > 0 ? `${product.stock} available` : 'Out of stock'}
+                        {product.stock > 0 ? t('productDetail.stock', { count: product.stock }) : t('productDetail.outOfStock')}
                       </span>
                     </div>
                   </div>
@@ -418,7 +422,7 @@ const ProductDetail: React.FC = () => {
                     onClick={handleAddToCart}
                     disabled={product.stock <= 0}
                   >
-                    {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+                    {product.stock > 0 ? t('productDetail.addToCart') : t('productDetail.outOfStock')}
                   </EnhancedButton>
 
                   {/* Current cart status */}
@@ -432,7 +436,7 @@ const ProductDetail: React.FC = () => {
 
                   {/* Total Price */}
                   <div className="text-center p-3 bg-gray-50 rounded">
-                    <div className="text-sm text-gray-600">Total Price</div>
+                    <div className="text-sm text-gray-600">{t('productDetail.price.total')}</div>
                     <div className="text-2xl font-bold text-gsa-primary">
                       {(currentPrice * quantity).toLocaleString('vi-VN')} {product.currency}
                     </div>
@@ -474,7 +478,7 @@ const ProductDetail: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center justify-between gap-3">
             <div className="min-w-0">
-              <div className="text-xs text-gray-500">Total</div>
+              <div className="text-xs text-gray-500">{t('productDetail.total')}</div>
               <div className="text-lg font-bold text-gsa-primary truncate">{(currentPrice * quantity).toLocaleString('vi-VN')} {product.currency}</div>
             </div>
             <EnhancedButton
@@ -485,7 +489,7 @@ const ProductDetail: React.FC = () => {
               onClick={handleAddToCart}
               disabled={product.stock <= 0}
             >
-              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+              {product.stock > 0 ? t('productDetail.addToCart') : t('productDetail.outOfStock')}
             </EnhancedButton>
           </div>
         </div>

@@ -162,7 +162,33 @@
     "avgRating": "Avg Rating",
     "viewAllRelated": "View all related products",
     "alsoViewed": "Customers also viewed",
-    "recommendedForYou": "Recommended for you"
+    "recommendedForYou": "Recommended for you",
+
+    "back": "Back",
+    "share": "Share",
+    "compare": "Compare",
+    "brand": "Brand",
+    "category": "Category",
+    "origin": "Origin",
+    "sku": "SKU",
+    "price": {
+      "base": "Base price",
+      "original": "Original",
+      "total": "Total Price"
+    },
+    "status": {
+      "available": "✅ In Stock",
+      "preorder": "⏳ Preorder",
+      "out_of_stock": "❌ Out of stock"
+    },
+    "stock": "{{count}} units available",
+    "quantity": "Quantity",
+    "addToCart": "Add to Cart",
+    "outOfStock": "Out of Stock",
+    "description": "Description",
+    "tags": "Tags",
+    "reviews": "reviews",
+    "total": "Total"
   },
   "cart": {
     "title": "Shopping Cart",
