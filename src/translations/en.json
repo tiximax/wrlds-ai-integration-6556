@@ -144,6 +144,29 @@
       "business": "Business"
     }
   },
+  "searchResults": {
+    "title": "Search Results",
+    "found": "Found {{count}} products",
+    "sort": "Sort",
+    "perPage": "Per page",
+    "query": "Query",
+    "category": "Category",
+    "origin": "Origin",
+    "status": "Status",
+    "type": "Type",
+    "brand": "Brand",
+    "price": "Price",
+    "previous": "Previous",
+    "next": "Next",
+    "sortOptions": {
+      "relevance": "Relevance",
+      "priceAsc": "Price: Low to High",
+      "priceDesc": "Price: High to Low",
+      "rating": "Highest Rated",
+      "popularity": "Most Popular",
+      "newest": "Newest"
+    }
+  },
   "products": {
     "title": "Products",
     "subtitle": "Discover thousands of high-quality products from Japan, Korea, and USA at the most competitive prices.",
