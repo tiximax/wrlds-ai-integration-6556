@@ -157,21 +157,23 @@ const FilterBar: React.FC<FilterBarProps> = ({
   };
 
   const getStatusLabel = (status: string) => {
-    const labels = {
-      'available': 'Có sẵn',
-      'preorder': 'Preorder',
-      'out_of_stock': 'Hết hàng'
+    const map: Record<string, string> = {
+      'available': t('searchFilters.statusLabels.available'),
+      'preorder': t('searchFilters.statusLabels.preorder'),
+      'out_of_stock': t('searchFilters.statusLabels.out_of_stock'),
+      'discontinued': t('searchFilters.statusLabels.discontinued'),
     };
-    return labels[status as keyof typeof labels] || status;
+    return map[status] || status;
   };
 
   const getTypeLabel = (type: string) => {
-    const labels = {
-      'ready_stock': 'Hàng có sẵn',
-      'flash_deal': 'Flash Deal',
-      'group_buy': 'Mua chung'
+    const map: Record<string, string> = {
+      'ready_stock': t('searchFilters.typeLabels.ready_stock'),
+      'pre_order': t('searchFilters.typeLabels.pre_order'),
+      'flash_deal': t('searchFilters.typeLabels.flash_deal'),
+      'group_buy': t('searchFilters.typeLabels.group_buy'),
     };
-    return labels[type as keyof typeof labels] || type;
+    return map[type] || type;
   };
 
   const FilterContent = () => (

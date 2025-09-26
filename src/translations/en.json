@@ -185,6 +185,18 @@
       "featured": "Featured",
       "flashDeal": "Flash Deal"
     },
+    "statusLabels": {
+      "available": "Available",
+      "preorder": "Preorder",
+      "out_of_stock": "Out of stock",
+      "discontinued": "Discontinued"
+    },
+    "typeLabels": {
+      "ready_stock": "Ready stock",
+      "pre_order": "Pre-order",
+      "flash_deal": "Flash Deal",
+      "group_buy": "Group buy"
+    },
     "apply": "Apply",
     "clear": "Clear filters",
     "productFiltersTitle": "Product Filters",

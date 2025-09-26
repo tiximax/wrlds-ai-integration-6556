@@ -185,6 +185,18 @@
       "featured": "Nổi bật",
       "flashDeal": "Flash Deal"
     },
+    "statusLabels": {
+      "available": "Có sẵn",
+      "preorder": "Đặt trước",
+      "out_of_stock": "Hết hàng",
+      "discontinued": "Ngừng kinh doanh"
+    },
+    "typeLabels": {
+      "ready_stock": "Hàng có sẵn",
+      "pre_order": "Đặt trước",
+      "flash_deal": "Flash Deal",
+      "group_buy": "Mua chung"
+    },
     "apply": "Áp dụng",
     "clear": "Xóa bộ lọc",
     "productFiltersTitle": "Bộ lọc sản phẩm",
