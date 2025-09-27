@@ -327,7 +327,7 @@ const Navbar = () => {
       {/* Mobile: Always-visible Search bar */}
       <div className="md:hidden px-4 pb-3">
         <EnhancedSearch
-          placeholder="Search products, brands..."
+          placeholder="Tìm kiếm sản phẩm..."
           variant="default"
           className="w-full"
           compact={false}
