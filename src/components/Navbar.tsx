@@ -374,6 +374,7 @@ const Navbar = () => {
                   { href: "/", label: t('navigation.home') },
                   { href: "/about", label: t('navigation.about') },
                   { href: "/products", label: t('navigation.products') },
+                  { href: "/search", label: 'Search' },
                 ].map((link, index) => (
                   <motion.div
                     key={link.href}

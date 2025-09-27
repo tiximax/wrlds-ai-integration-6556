@@ -22,7 +22,10 @@
     "test:e2e:remote": "playwright test -c playwright.remote.config.ts",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
-    "test:inp": "playwright test tests/performance-inp.spec.ts --reporter=line"
+    "test:inp": "playwright test tests/performance-inp.spec.ts --reporter=line",
+    "test:e2e:preview:checkout": "playwright test -c playwright.preview.config.ts --project=chromium --reporter=line tests/checkout.smoke.spec.ts",
+    "test:e2e:preview:group": "playwright test -c playwright.preview.config.ts --project=chromium --reporter=line tests/compare.spec.ts tests/lens-zoom.spec.ts tests/trending-searches.spec.ts",
+    "test:e2e:dev:group": "playwright test -c playwright.config.ts --project=chromium --reporter=line tests/visual-search.spec.ts tests/performance-virtual-scroll.spec.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^4.1.3",

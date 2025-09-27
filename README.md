@@ -131,6 +131,19 @@ Yes, both Vercel and Netlify support custom domains. Follow the respective provi
 
 ## Performance & PWA (Workbox) Guide
 
+### Dev Service Worker (opt-in)
+- Dev SW file: `public/dev-sw.js`
+- Mặc định DEV không đăng ký SW để giảm flakiness E2E
+- Bật thủ công khi cần: đặt `VITE_ENABLE_DEV_SW=1` trước khi chạy dev
+  - PowerShell: `$env:VITE_ENABLE_DEV_SW="1"; npm run dev`
+  - Bash: `VITE_ENABLE_DEV_SW=1 npm run dev`
+- Production/PWA không bị ảnh hưởng: vẫn dùng `VITE_ENABLE_PWA` hoặc PROD để đăng ký `/pwa-sw.js`
+
+### E2E scripts tiện lợi
+- Preview smoke checkout: `npm run test:e2e:preview:checkout`
+- Preview group ổn định: `npm run test:e2e:preview:group`
+- Dev group (khi Dev SW đang tắt): `npm run test:e2e:dev:group`
+
 This project includes progressive performance improvements and an optional PWA precache using Workbox via `vite-plugin-pwa`.
 
 ### Current defaults (safe in dev)
@@ -156,5 +169,7 @@ Notes:
 - When running PWA build on CI, set env `ENABLE_PWA=1` for the build step
 
 ### Bundle splitting
+- Nếu bài viết blog của bạn có mục `type: 'chart'`, components sẽ lazy-load `recharts` ở client và hiển thị fallback "Loading chart…" trong lúc chờ.
+- Để demo nhanh, thêm một section vào dữ liệu blog (ContentSection) với `type: 'chart'` và `chartData` gồm `title` và `data` dạng `{ name, value }[]`. Xem `EnhancedBlogContent.tsx` để biết cấu trúc.
 - Vite manualChunks configured to split vendor groups (react, router, framer-motion, radix, icons)
 - Goal: smaller initial chunks and better long-term caching

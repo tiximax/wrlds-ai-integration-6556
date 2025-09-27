@@ -177,7 +177,9 @@ const FilterBar: React.FC<FilterBarProps> = ({
   };
 
   const FilterContent = () => (
-    <div className="space-y-1">
+    <div className="space-y-3">
+      {/* Title for E2E and accessibility */}
+      <h2 className="text-lg font-semibold text-gray-900">{t('searchFilters.filtersTitle') || 'Bộ lọc'}</h2>
       {/* Search */}
       <FilterSection title={t('searchFilters.search')}>
         <div className="relative">

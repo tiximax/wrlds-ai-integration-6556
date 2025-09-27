@@ -68,10 +68,11 @@ const App = () => {
     // Service Worker (runtime cache for assets/images)
     try {
       if ('serviceWorker' in navigator) {
+        // Ưu tiên Dev SW nếu được bật qua env (áp dụng cả dev và preview)
+        const enableDevSw = (import.meta as any).env?.VITE_ENABLE_DEV_SW;
         const usePwa = (import.meta as any).env?.PROD || (import.meta as any).env?.VITE_ENABLE_PWA;
-        // Chỉ bật Dev SW khi được cho phép rõ ràng qua env để tránh flakiness trong E2E
-        const enableDevSw = (import.meta as any).env?.DEV && (import.meta as any).env?.VITE_ENABLE_DEV_SW;
-        const swUrl = usePwa ? '/pwa-sw.js' : (enableDevSw ? '/dev-sw.js' : null);
+        // VitePWA mặc định tạo file '/sw.js' khi bật generateSW
+        const swUrl = enableDevSw ? '/dev-sw.js' : (usePwa ? '/sw.js' : null);
         if (swUrl) {
           navigator.serviceWorker.register(swUrl).catch(() => {});
         }
