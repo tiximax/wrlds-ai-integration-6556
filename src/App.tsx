@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { useState, useEffect, lazy, Suspense } from "react";
 import { SimpleCartProvider } from "@/contexts/SimpleCartContext";
 import { WishlistProvider } from "@/contexts/WishlistContext";
@@ -10,6 +10,7 @@ import { CompareProvider } from "@/contexts/CompareContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
+import { AnalyticsProvider, useAnalytics } from "@/contexts/AnalyticsContext";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -34,6 +35,22 @@ const Wishlist = lazy(() => import("./pages/Wishlist"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const VectorDB = lazy(() => import("./pages/VectorDB"));
 
+const PageViewTracker = () => {
+  const { track } = useAnalytics();
+  const loc = useLocation();
+  useEffect(() => {
+    try {
+      track('page_view', {
+        path: loc.pathname,
+        search: loc.search,
+        title: document.title,
+        referrer: document.referrer || ''
+      });
+    } catch {}
+  }, [loc.pathname, loc.search]);
+  return null;
+};
+
 const App = () => {
   const [queryClient] = useState(() => new QueryClient());
 
@@ -41,10 +58,30 @@ const App = () => {
     // Add performance optimizations
     addResourceHints();
     preloadCriticalResources();
+
+    // Web Vitals
+    try {
+      const { initWebVitals } = require('@/utils/webVitals') as typeof import('@/utils/webVitals');
+      initWebVitals();
+    } catch {}
+
+    // Service Worker (runtime cache for assets/images)
+    try {
+      if ('serviceWorker' in navigator) {
+        const usePwa = (import.meta as any).env?.PROD || (import.meta as any).env?.VITE_ENABLE_PWA;
+        // Chỉ bật Dev SW khi được cho phép rõ ràng qua env để tránh flakiness trong E2E
+        const enableDevSw = (import.meta as any).env?.DEV && (import.meta as any).env?.VITE_ENABLE_DEV_SW;
+        const swUrl = usePwa ? '/pwa-sw.js' : (enableDevSw ? '/dev-sw.js' : null);
+        if (swUrl) {
+          navigator.serviceWorker.register(swUrl).catch(() => {});
+        }
+      }
+    } catch {}
   }, []);
 
   return (
     <LanguageProvider>
+      <AnalyticsProvider>
       <SimpleCartProvider>
         <WishlistProvider>
           <CompareProvider>
@@ -53,6 +90,7 @@ const App = () => {
           <Toaster />
           <Sonner />
         <BrowserRouter>
+          <PageViewTracker />
           <Suspense fallback={
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
               <div className="text-center space-y-4">
@@ -92,6 +130,7 @@ const App = () => {
           </CompareProvider>
         </WishlistProvider>
       </SimpleCartProvider>
+      </AnalyticsProvider>
     </LanguageProvider>
   );
 };

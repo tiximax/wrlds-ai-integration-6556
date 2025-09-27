@@ -38,9 +38,10 @@ test.describe('Enhanced Shopping Cart - Working Tests', () => {
     // Take screenshot of open cart
     await page.screenshot({ path: 'test-results/enhanced-cart-opened.png' });
     
-    // Verify cart header elements (SimpleCart shows "Cart (0 items)")
-    await expect(cartSidebar.locator('h2')).toBeVisible();
-    await expect(cartSidebar.locator('h2').filter({ hasText: /^Cart\b/i })).toBeVisible();
+    // Verify cart header elements (accept EN "Cart" or VI "Giỏ hàng")
+    const header = cartSidebar.locator('h2');
+    await expect(header).toBeVisible();
+    await expect(header.filter({ hasText: /^(Cart|Giỏ hàng)\b/i })).toBeVisible();
     console.log('✅ Cart header displays correctly');
     
     // Verify empty cart state (EN or VI)

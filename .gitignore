@@ -29,3 +29,6 @@ test-results/
 .tmp-gh-artifacts/
 traces/
 .cache/
+
+# Local Netlify folder
+.netlify

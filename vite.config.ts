@@ -11,7 +11,8 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
+    // Avoid running lovable-tagger inside Netlify Dev as it can interfere with HTML transform
+    mode === 'development' && !process.env.NETLIFY && !process.env.NETLIFY_DEV &&
     componentTagger(),
   ].filter(Boolean),
   resolve: {
