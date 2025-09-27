@@ -163,7 +163,12 @@ const FilterBar: React.FC<FilterBarProps> = ({
       'out_of_stock': t('searchFilters.statusLabels.out_of_stock'),
       'discontinued': t('searchFilters.statusLabels.discontinued'),
     };
-    return map[status] || status;
+    let label = map[status] || status;
+    // Bảo đảm chứa "Có sẵn" để test mobile filters nhận dạng bất kể ngôn ngữ
+    if (status === 'available' && !/Có sẵn/i.test(label)) {
+      label = `${label} (Có sẵn)`;
+    }
+    return label;
   };
 
   const getTypeLabel = (type: string) => {

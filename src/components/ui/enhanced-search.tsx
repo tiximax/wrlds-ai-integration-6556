@@ -47,6 +47,8 @@ interface EnhancedSearchProps {
   showHistory?: boolean;
   showSuggestions?: boolean;
   variant?: 'default' | 'navbar' | 'hero';
+  // E2E: allow overriding the data-testid of the hidden file input to avoid duplicates across layouts
+  visualInputTestId?: string;
 }
 
 // Suggestions and recent searches will be computed dynamically from data & history.
@@ -102,7 +104,8 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   compact = false,
   showHistory = true,
   showSuggestions = true,
-  variant = 'default'
+  variant = 'default',
+  visualInputTestId = 'search-visual-input'
 }) => {
   const navigate = useNavigate();
   const { track } = useAnalytics();
@@ -408,7 +411,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
               type="file"
               accept="image/*"
               onChange={handleImageUpload}
-              data-testid="search-visual-input"
+              data-testid={visualInputTestId}
               className="hidden"
             />
 

@@ -327,12 +327,13 @@ const Navbar = () => {
       {/* Mobile: Always-visible Search bar */}
       <div className="md:hidden px-4 pb-3">
         <EnhancedSearch
-          placeholder="Tìm kiếm sản phẩm..."
+          placeholder="Search products, brands..."
           variant="default"
           className="w-full"
           compact={false}
           showHistory={true}
           showSuggestions={true}
+          visualInputTestId="search-visual-input-mobile"
         />
         {/* Quick link to /search for tests that rely on link navigation */}
         <div className="mt-2">
