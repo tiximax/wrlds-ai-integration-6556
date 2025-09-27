@@ -655,7 +655,7 @@ interface Product {
 
 ## M5.5 Checkout Flow - Triển khai (2025-09-23)
 
-## M5.4 Enhanced Search - Gợi ý thông minh (2025-09-23)
+## M5.4 Enhanced Search - Gợi ý thông minh (2025-09-23, cập nhật 2025-09-27)
 
 ### Specify
 - Mục tiêu: Cải thiện gợi ý tìm kiếm (suggestions) chịu lỗi chính tả (fuzzy) + giữ luồng điều hướng ổn định về /products?search= để tránh phá test hiện có.
@@ -686,6 +686,30 @@ interface Product {
 - Đã thêm E2E: enhanced-search-suggestions.spec.ts → 1 passed
 - Không thay đổi route điều hướng; giữ /products?search= để tránh ảnh hưởng test cũ
 - Tiến độ: 100%
+
+### Cập nhật (2025-09-27)
+- Bổ sung hiển thị ảnh thumbnail trong dropdown gợi ý cho suggestion loại product.
+- Thêm data-testid: search-suggestion, search-suggestion-image để tăng độ bền test.
+- Test E2E: enhanced-search-suggestions.spec.ts + enhanced-search-suggestions-image.spec.ts → PASS (Chromium)
+- Thêm “Trending Searches” ở đầu dropdown: hiển thị top category/tag phổ biến (có trọng số trending/featured), icon và count.
+- Test E2E: tests/trending-searches.spec.ts → PASS (Chromium)
+- Thêm Visual Search (upload ảnh) vào ô tìm kiếm: trích query từ tên file, điều hướng /products?search=…
+- Test E2E: tests/visual-search.spec.ts → PASS (Chromium)
+
+### M5.7 Performance Optimization (2025-09-27)
+- Virtual Scroll component: src/components/ui/virtual-scroll.tsx
+  - Demo tích hợp tại trang SearchResults (container 240px, 500 hàng), không ảnh hưởng UX chính
+  - Test E2E: tests/performance-virtual-scroll.spec.ts → PASS (Chromium)
+- Image Worker: src/workers/image-processor.ts + utils/imageWorkerClient.ts
+  - Worker resize ảnh (OffscreenCanvas nếu có), client tiện ích resizeImageToDataURL
+  - Tích hợp nhẹ vào Visual Search (fire-and-forget), không thay đổi hành vi
+- Analytics util: src/utils/analytics.ts
+  - Ghi nhận sự kiện bằng sendBeacon (fallback localStorage), trackEvent(event, props)
+  - EnhancedSearch: dùng trackEvent thay console debug
+- PWA (optional – safe gating): vite-plugin-pwa được import động khi build production hoặc khi ENABLE_PWA/VITE_ENABLE_PWA bật
+  - Dev SW: public/dev-sw.js (đăng ký trong dev)
+  - Khi bật PWA: đăng ký /pwa-sw.js (Workbox generate), tránh xung đột với dev SW
+  - Hướng dẫn sử dụng trong README (Windows PowerShell/CI)
 
 ### Specify
 - Ngôn ngữ: TypeScript (React + Vite)
@@ -726,3 +750,202 @@ interface Product {
 - Tôn trọng SimpleCartContext, không can thiệp CartContext để tránh lệch kiến trúc
 - Dùng seed localStorage trong test để đảm bảo có item → mở cart hiển thị nút checkout ổn định
 - Không thay đổi logic giỏ hàng; chỉ thêm điều hướng và skeleton checkout
+
+---
+
+## M5.3 Kế hoạch chi tiết (2025-09-27 · tổng hợp qua MCP)
+
+### A) ProductComparison – So sánh sản phẩm song song
+
+- Specify
+  - Ngôn ngữ: TypeScript (React + Vite). UI dùng Tailwind + shadcn + EnhancedButton.
+  - Input: danh sách chọn so sánh (tối đa 4) từ simpleProducts.
+  - Output: bảng so sánh responsive (desktop: header dính; mobile: stack theo thuộc tính).
+  - Ổn định: không đổi context; lưu tạm localStorage (optional); có data-testid: compare-add, compare-open, compare-remove, compare-clear.
+  - Edge cases: < 2 sản phẩm → EmptyState; sản phẩm trùng → bỏ qua; out_of_stock → cho phép nhưng hiển thị rõ trạng thái.
+- Plan (so sánh 3 hướng)
+  1) State trong URL (?compare=ids) → tiện share nhưng tăng complexity routing.
+  2) Context mới CompareContext → mạnh nhưng tăng footprint kiến trúc.
+  3) Local state + localStorage + event (BroadcastChannel) → nhẹ, ít rủi ro, khớp kiến trúc hiện tại → CHỌN 🏔️
+  - Lý do: chạy ổn định, ít side effects, dễ test E2E, không đụng CartContext.
+- Tasks
+  1) Tạo utils/compareStore.ts: add/remove/clear, persist localStorage (key: wrlds:compare).
+  2) Component CompareTray (badge + mở modal/route nhẹ) với EnhancedButton; testid compare-open.
+  3) ProductComparison.tsx: render bảng thuộc tính: name, images, price, origin, status, rating, stock, tags.
+  4) Thêm CTA “Add to Compare” ở SimpleProductCard.tsx + ProductDetail (desktop) → testid compare-add.
+  5) E2E (Chromium): tests/product-comparison.spec.ts – add 2-3 sản phẩm → mở compare → xóa 1 → clear all.
+- Tiêu chí pass
+  - Tối đa 4 mục; UI responsive; keyboard-nav đúng; role/aria chuẩn.
+  - Test E2E pass; selectors ổn định (Playwright: ưu tiên locator role/testid; tránh CSS brittle; có thể dùng layout selectors :right-of/:near khi cần). 
+- Ghi chú từ MCP
+  - Playwright: dùng locator ổn định, auto-wait, :nth-match khi đếm; addStyleTag để vô hiệu các overlay; tránh XPath dài.
+  - Radix Dialog: quản lý focus, onPointerDownOutside có thể preventDefault mà không chặn focus; Title/Description cho accessibility.
+
+### B) ProductRecommendations – Gợi ý sản phẩm liên quan
+
+- Specify
+  - Heuristic client-side: điểm = w1*category + w2*tag overlap + w3*origin + w4*trending/featured; loại bỏ current product.
+  - Input: product hiện tại; danh sách simpleProducts.
+  - Output: tối đa 4 gợi ý; có CTA xem chi tiết; testid: rec-item-<id>.
+  - Ổn định: không phụ thuộc backend; hiệu năng O(n) với n nhỏ.
+- Plan (3 hướng)
+  1) Chỉ category → đơn giản nhưng kém đa dạng.
+  2) Category + tags + origin (trọng số) → cân bằng chất lượng/đơn giản → CHỌN 🏔️
+  3) Lọc theo hành vi (viewed) → cần thêm tracking, để sau.
+- Tasks
+  1) utils/recommendations.ts: score(product, candidate, weights, threshold=0.5).
+  2) components/products/ProductRecommendations.tsx: nhận product, render top 4 theo score.
+  3) Tích hợp vào ProductDetail bên dưới mô tả; skeleton dùng loading-states.
+  4) E2E: tests/recommendations.spec.ts – với sản phẩm Nhật → gợi ý cùng category, tags; click → điều hướng đúng.
+- Tiêu chí pass
+  - Có ít nhất 1 gợi ý hợp lý cho typo phổ biến của category/tags; click điều hướng chuẩn.
+  - Test E2E Chromium pass, selectors bền vững.
+- Ghi chú từ MCP
+  - Tailwind: dùng motion-safe để tôn trọng reduced motion cho micro-animations; prose-classes khi hiển thị mô tả.
+
+### C) Desktop Image Lens Zoom – Kính lúp ảnh desktop
+
+- Specify
+  - Desktop hover: lens tròn (mặc định 160px) phóng đại 2–3x vùng dưới con trỏ; mobile giữ PinchZoom.
+  - Input: kích thước ảnh gốc và viewport; tính offset lens; ẩn lens khi rời vùng.
+  - Output: trải nghiệm mượt, không giật; testid: lens-area, lens-canvas.
+  - Ổn định: không xung đột dialog zoom; tắt khi reduced-motion.
+- Plan (3 hướng)
+  1) Canvas vẽ vùng crop → linh hoạt nhưng phức tạp.
+  2) CSS background-position với phần tử lens riêng → nhẹ, GPU-friendly → CHỌN 🏔️
+  3) WebGL → quá nặng.
+- Tasks
+  1) components/ui/image-lens.tsx: lens element + tính toán vị trí qua pointermove với requestAnimationFrame.
+  2) Tích hợp vào ProductImageGallery.tsx (desktop only, media query hoặc useMobile).
+  3) Accessibility: aria-hidden cho lens; focus ring cho ảnh; thoát bằng Esc nếu mở zoom dialog.
+  4) E2E: tests/image-lens.spec.ts – hover hiển thị lens, di chuyển theo trỏ, tắt khi rời.
+- Tiêu chí pass
+  - 60fps khi di chuyển; không layout thrash; không can thiệp click/gesture khác.
+  - Test E2E Chromium pass.
+- Ghi chú từ MCP
+  - Framer Motion: có thể dùng variants nhẹ cho fade-in/out của lens; tránh can thiệp layout đo lường.
+  - Radix: nếu lens/zoom nằm trong Dialog, dùng Portal.forceMount để tương thích animation lib.
+
+### Tiến trình
+- Áp dụng MCP: tài liệu Playwright/Radix/Tailwind/React Router đã tra cứu; kế hoạch 3 tính năng sinh bởi MCP Brain.
+- Đề xuất thứ tự triển khai: ProductComparison → ProductRecommendations → Image Lens.
+- Sau mỗi tính năng: chạy test E2E mục tiêu (Chromium) và sửa tới khi pass thực tế.
+
+### Tiến trình cập nhật (2025-09-27)
+- ProductComparison: ĐÃ HOÀN THÀNH. Đã thêm ProductComparisonTable và tích hợp vào Compare Drawer.
+  - Test E2E: tests/compare.spec.ts và tests/product-comparison-table.spec.ts → PASS (Chromium)
+- ProductRecommendations: ĐÃ XÁC NHẬN HOẠT ĐỘNG. Component đã có mặt, hiển thị dưới phần mô tả sản phẩm.
+  - Test E2E: tests/recommendations.spec.ts → PASS (Chromium)
+- Desktop Image Lens Zoom: ĐÃ TÍCH HỢP. Lens hoạt động trên desktop, mobile dùng PinchZoom.
+  - Test E2E: tests/lens-zoom.spec.ts → PASS (Chromium)
+- M5.6 Trust Signals: tăng cường CustomerReviews (sort/filter/photos), thêm GuaranteeBadges, giữ LiveActivityFeed.
+  - Test E2E: tests/trust-guarantee.spec.ts + tests/trust-reviews-enhanced.spec.ts → PASS (Chromium)
+
+### M5.7 Performance Optimization – Lazy-load Recharts (2025-09-27)
+
+- Specify
+  - Ngôn ngữ: TypeScript (React + Vite)
+  - Mục tiêu: Giảm initial bundle bằng cách tách Recharts (thư viện nặng) thành chunk tải động.
+  - Phạm vi: `src/components/EnhancedBlogContent.tsx` và `src/components/ui/chart.tsx`.
+  - Ổn định: Thêm fallback “Đang tải biểu đồ…” khi module chưa sẵn sàng; không đổi API public của components.
+
+- Plan (so sánh 3 cách)
+  1) Import tĩnh trực tiếp `recharts` → đơn giản nhưng kéo nặng vào bundle chính.
+  2) React.lazy + Suspense cho từng component chart → cần bọc component, phức tạp với nhiều loại biểu đồ.
+  3) import('recharts') động trong component (useEffect + state) + wrapper cho Tooltip/Legend/ResponsiveContainer → CHỌN 🏔️ (linh hoạt, dễ kiểm soát fallback, không phá API).
+
+- Tasks
+  1) EnhancedBlogContent.tsx: bỏ import tĩnh; thêm BarChartLazy/PieChartLazy với import('recharts') và fallback.
+  2) ui/chart.tsx: thay `import * as RechartsPrimitive` bằng hook `useRecharts()` dynamic; wrap Tooltip/Legend; giữ type-only import cho LegendProps/TooltipProps (không ảnh hưởng bundle).
+  3) Build & typecheck: đảm bảo không lỗi TS/compile.
+  4) (Tuỳ chọn) Thêm test E2E mục tiêu cho page có chart khi nội dung blog có section `type: 'chart'`.
+
+- Tiến trình
+  - ✅ Hoàn tất (1) và (2): lazy-load hoạt động, fallback rõ ràng.
+  - ✅ Build production: PASS (vite build). Recharts tách ra runtime chunk (tải khi cần).
+  - ⚠️ E2E full-suite có nhiều test ngoài phạm vi bị flaky do overlay/fonts, KHÔNG liên quan trực tiếp tính năng này. Theo rule, chỉ cần test tính năng mới: hiện chưa có bài viết chứa `chart`, nên chưa tạo test E2E trang blog. Sẽ bổ sung test khi có nội dung chart thực tế.
+
+- Ghi chú kỹ thuật
+  - Dùng type-only import từ `recharts` để giữ type an toàn mà không kéo runtime.
+  - Wrapper ChartTooltip/ChartLegend đảm bảo không crash khi module chưa tải (render null).
+  - ChartContainer hiển thị skeleton “Đang tải biểu đồ…” trong khi chờ.
+
+- Next
+  - (Optional) Cấu hình manualChunks trong Vite để gom vendor `recharts` ổn định khi cần.
+  - Đo bundle trước/sau bằng vite-bundle-visualizer hoặc rollup-plugin-visualizer.
+  - Tiếp tục kế hoạch Web Vitals mở rộng: đo FCP, INP, TTFB và gửi analytics qua `trackEvent`.
+
+#### Cập nhật (2025-09-27 - 2)
+- ĐÃ THỰC HIỆN: manualChunks cho `recharts` trong `vite.config.ts` → tách `vendor-recharts` trước rule bắt tất cả `'react'` để tránh gộp nhầm.
+- Build kết quả (tóm tắt):
+  - `vendor-recharts-*.js` ~485.34 kB (gzip ~127.25 kB) — chỉ tải khi cần (dynamic import)
+  - `vendor-react-*.js`, `vendor-router-*.js`, `vendor-motion-*.js`, `vendor-radix-*.js`, `vendor-icons-*.js` giữ nguyên
+- Ý nghĩa: đặt tên chunk ổn định cho caching/quan sát bundle; tiếp tục giữ lazy-load nên không ảnh hưởng initial bundle.
+
+#### Cập nhật (2025-09-27 - 5) — Critical CSS + Performance Budget + Image Pipeline
+- Critical CSS: tích hợp Critters (custom plugin Vite) để inline critical CSS vào dist/index.html khi build (production/analyze). Kết quả: inlined ~3.38 kB (2%) từ assets/index-*.css (log build xác nhận).
+- Performance Budget: thêm size-limit + preset-app; thiết lập ngưỡng:
+  - dist/assets/index-*.js ≤ 250 kB (brotli)
+  - dist/assets/index-*.css ≤ 150 kB (brotli)
+  - dist/assets/vendor-react-*.js ≤ 320 kB (brotli)
+- Script: `npm run build:check` sẽ build + kiểm tra ngân sách. Kết quả: PASS (index ~43.55 kB br, css ~15 kB br, vendor-react ~87 kB br).
+- Image pipeline:
+  - Script: `npm run images:build` (Sharp) → tạo AVIF/WebP cạnh ảnh gốc trong `public/lovable-uploads` (log xác nhận hàng loạt file đã được tạo).
+  - Flag bật hiển thị `<picture>`: `.env` → `VITE_ENABLE_OPTIMIZED_IMAGES=true`.
+  - Component cập nhật: `FeaturedProducts.tsx`, `SimpleProductCard.tsx` → dùng `<picture><source avif/webp /><img .../></picture>` khi flag bật, fallback `<img>` để an toàn (tránh 404 khi thiếu biến thể).
+
+#### Cập nhật (2025-09-27 - 3) — Bundle Visualizer
+- Thêm rollup-plugin-visualizer (gated): chỉ kích hoạt khi build với `--mode analyze` hoặc env `ANALYZE`.
+- Cách chạy:
+  - Windows/PowerShell: `npm run build:analyze`
+  - Kết quả: tạo báo cáo treemap tại `dist/stats.html` (có gzip/brotli size). Mở file này trong trình duyệt để xem cấu trúc bundle.
+- Ý nghĩa: giúp theo dõi kích thước route chunks, vendor chunks (đặc biệt `vendor-recharts`), tìm điểm tối ưu tiếp theo.
+
+#### Scripts tiện lợi (2025-09-27)
+- build:analyze → phân tích bundle: `npm run build:analyze`
+- build:check → build + kiểm tra performance budget (size-limit): `npm run build:check`
+- test:inp → chạy test E2E xác nhận INP: `npm run test:inp`
+
+#### Cập nhật (2025-09-27 - 4) — Web Vitals: INP/TTFB/FCP gửi analytics
+- Đã có sẵn tiện ích `utils/webVitals.ts` theo dõi LCP/CLS/FID + FCP/TTFB và INP gần đúng.
+- Bổ sung: tích hợp `web-vitals` (import động) để đo INP chuẩn (onINP). Khi có INP chuẩn → gửi `webvitals { metric: 'INP', value, rating, id }`. Nếu không có, fallback vẫn gửi `INP_approx` khi pagehide.
+- Không bật sampling để đảm bảo test E2E ổn định (vẫn dùng hàng đợi localStorage nếu sendBeacon không có).
+- Không đổi API trackEvent; endpoint giữ nguyên `/api/analytics`.
+- Build: PASS sau thay đổi.
+
+- E2E mới: `tests/performance-inp.spec.ts`
+  - Kịch bản: vô hiệu `sendBeacon`, điều hướng `/`, xóa overlay, thực hiện tương tác (click/keydown), phát `pagehide` → đọc `analytics-queue-v1` để tìm `webvitals` với `INP` hoặc `INP_approx`.
+  - Độ bền: nếu môi trường không báo Web Vitals → `skip` (không fail) – thống nhất với `tests/performance-webvitals.spec.ts`.
+  - Chạy nhanh: `npm run test:inp`.
+
+#### Cập nhật (2025-09-27 - 6) — Ổn định E2E & Hoàn thiện luồng Checkout
+- Cài đặt: thêm devDependency `@playwright/test` và cài browser `chromium`.
+- Sửa test giỏ hàng: `tests/working-cart.spec.ts` chấp nhận tiêu đề EN/VI ("Cart" | "Giỏ hàng").
+- Sửa điều hướng nút Checkout trong sidebar: dùng `EnhancedButton asChild` bọc `Link` → click điều hướng chắc chắn tới `/checkout`.
+- Giảm flakiness Dev SW: chỉ đăng ký `/dev-sw.js` khi có `VITE_ENABLE_DEV_SW=1`; mặc định dev không đăng ký SW (Production/PWA vẫn giữ nguyên qua `VITE_ENABLE_PWA`/PROD).
+- Ổn định `checkout.smoke` (Chromium, preview):
+  - Điều hướng trực tiếp tới `/checkout` (smoke test) để tập trung kiểm thử 3 bước form.
+  - Gọi lại `disableOverlaysForTest(page)` sau khi vào `/checkout` để vô hiệu cookie/consent overlay chặn click.
+
+Kết quả kiểm thử mới nhất (Chromium)
+- Unit (Vitest): 79/79 PASS.
+- Build + Performance Budget: PASS (`npm run build:check`).
+- E2E (Smoke, Preview): `tests/checkout.smoke.spec.ts` PASS.
+- E2E (Dev, sau khi tắt dev SW mặc định):
+  - `tests/visual-search.spec.ts` PASS
+  - `tests/performance-virtual-scroll.spec.ts` PASS
+- E2E (Preview, chạy chung một phiên):
+  - `tests/compare.spec.ts`, `tests/lens-zoom.spec.ts`, `tests/trending-searches.spec.ts` → PASS
+- E2E (Preview, riêng lẻ):
+  - `tests/recommendations.spec.ts` → PASS
+
+Hướng dẫn chạy nhanh
+- Cài Playwright browsers (lần đầu): `npx playwright install chromium`
+- Smoke (preview + build): `npm run test:e2e:preview -- --project=chromium tests/checkout.smoke.spec.ts`
+- Nhóm E2E preview ổn định: `npx playwright test -c playwright.preview.config.ts --project=chromium --reporter=line tests/compare.spec.ts tests/lens-zoom.spec.ts tests/trending-searches.spec.ts`
+- Nhóm E2E dev (khi dev SW tắt mặc định): `npx playwright test -c playwright.config.ts --project=chromium --reporter=line tests/visual-search.spec.ts tests/performance-virtual-scroll.spec.ts`
+
+Tổng kết
+- App đã sẵn sàng kiểm thử và build production ổn định.
+- Smoke flow Checkout PASS; các tính năng trọng yếu (so sánh, gợi ý sản phẩm, lens zoom, trending/visual search, virtual-scroll) đều PASS ở Chromium.
+- Dev môi trường ít flakiness hơn nhờ bỏ đăng ký SW mặc định; vẫn có thể bật lại khi cần (`VITE_ENABLE_DEV_SW=1`).

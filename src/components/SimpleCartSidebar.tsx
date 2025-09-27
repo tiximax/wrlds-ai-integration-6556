@@ -4,6 +4,7 @@ import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 
 interface SimpleCartSidebarProps {
   isOpen: boolean;
@@ -22,6 +23,45 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
     removeFromCart,
     clearCart,
   } = useSimpleCart();
+
+  const { track } = useAnalytics();
+
+  const handleUpdateQuantity = (item: any, newQty: number) => {
+    const oldQty = item.quantity;
+    const delta = newQty - oldQty;
+    updateQuantity(item.id, newQty);
+    try {
+      track('update_quantity', {
+        productId: item.product.id,
+        name: item.product.name,
+        old_quantity: oldQty,
+        new_quantity: newQty,
+        delta,
+        unit_price: item.finalPrice,
+        currency: (item.product as any)?.currency || 'VND',
+      });
+    } catch {}
+  };
+
+  const handleRemoveFromCart = (item: any) => {
+    removeFromCart(item.id);
+    try {
+      track('remove_from_cart', {
+        productId: item.product.id,
+        name: item.product.name,
+        quantity: item.quantity,
+        unit_price: item.finalPrice,
+        currency: (item.product as any)?.currency || 'VND',
+      });
+    } catch {}
+  };
+
+  const handleClearCart = () => {
+    try {
+      track('clear_cart', { total_items: totalItems, total_price: totalPrice });
+    } catch {}
+    clearCart();
+  };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -142,7 +182,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                               variant="outline"
                               size="sm"
                               className="w-10 h-10 sm:w-8 sm:h-8 p-0"
-                              onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                              onClick={() => handleUpdateQuantity(item, item.quantity - 1)}
                               aria-label="Decrease quantity"
                             >
                               <Minus className="w-3 h-3" />
@@ -154,7 +194,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                               variant="outline"
                               size="sm"
                               className="w-10 h-10 sm:w-8 sm:h-8 p-0"
-                              onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                              onClick={() => handleUpdateQuantity(item, item.quantity + 1)}
                               aria-label="Increase quantity"
                             >
                               <Plus className="w-3 h-3" />
@@ -171,7 +211,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                             variant="ghost"
                             size="sm"
                             className="text-red-500 hover:text-red-700 p-1"
-                            onClick={() => removeFromCart(item.id)}
+                            onClick={() => handleRemoveFromCart(item)}
                           >
                             <Trash2 className="w-4 h-4" />
                           </Button>
@@ -186,7 +226,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                   <div className="mt-6 pt-4 border-t">
                     <Button
                       variant="outline"
-                      onClick={clearCart}
+                      onClick={handleClearCart}
                       className="w-full text-red-600 hover:text-red-700 hover:bg-red-50"
                     >
                       <Trash2 className="w-4 h-4 mr-2" />
@@ -208,11 +248,11 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
 
                 {/* Action Buttons */}
                 <div className="space-y-2">
-                  <Link to="/checkout" data-testid="go-checkout" onClick={onClose}>
-                    <EnhancedButton className="w-full" size="lg" variant="gradient">
+                  <EnhancedButton asChild className="w-full" size="lg" variant="gradient">
+                    <Link to="/checkout" data-testid="go-checkout" onClick={onClose}>
                       Thanh toán ({totalItems} sản phẩm)
-                    </EnhancedButton>
-                  </Link>
+                    </Link>
+                  </EnhancedButton>
                   <EnhancedButton
                     variant="outline"
                     className="w-full"
