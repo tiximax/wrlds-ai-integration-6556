@@ -38,10 +38,25 @@ const ProjectPageLayout: React.FC<ProjectPageLayoutProps> = ({
           className={`relative w-full h-[40vh] md:h-[50vh] overflow-hidden flex items-center justify-center`}
         >
           {/* Background Image with Overlay */}
-          <div 
-            className="absolute inset-0 bg-cover bg-center" 
-            style={{ backgroundImage: `url(${imageUrl})` }}
-          ></div>
+          <div className="absolute inset-0">
+            {(() => {
+              const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+              const url = imageUrl;
+              const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+              if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                return (
+                  <picture>
+                    <source srcSet={make('avif')} type="image/avif" />
+                    <source srcSet={make('webp')} type="image/webp" />
+                    <img src={url} alt={title} className="w-full h-full object-cover" loading="eager" decoding="async" />
+                  </picture>
+                );
+              }
+              return (
+                <img src={url} alt={title} className="w-full h-full object-cover" loading="eager" decoding="async" />
+              );
+            })()}
+          </div>
           <div className={`absolute inset-0 ${darkMode ? 'bg-black/70' : 'bg-white/70'}`}></div>
           
           <div className="absolute inset-0 flex flex-col items-center justify-center p-4 z-10">

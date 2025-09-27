@@ -11,7 +11,8 @@ import {
   Building2,
   Loader2,
   ArrowRight,
-  Command
+  Command,
+  ImageUp
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { simpleProducts } from '@/data/simpleProducts';
 import { generateSearchSuggestions as genSuggestions, getSearchHistory, addToSearchHistory, performAdvancedSearch, defaultSearchFilters } from '@/utils/advancedSearch';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 
 interface SearchSuggestion {
   id: string;
@@ -103,6 +105,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   variant = 'default'
 }) => {
   const navigate = useNavigate();
+  const { track } = useAnalytics();
   const [query, setQuery] = useState(initialQuery);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -110,14 +113,38 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
   const [recentSearches, setRecentSearches] = useState<SearchHistoryItem[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
+  const [trending, setTrending] = useState<SearchSuggestion[]>([]);
   
   const searchRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   // Initialize recent searches from history
   useEffect(() => {
     setRecentSearches(getSearchHistory());
+  }, []);
+
+  // Compute trending searches (top categories and tags with simple weights)
+  useEffect(() => {
+    try {
+      const catMap = new Map<string, number>();
+      const tagMap = new Map<string, number>();
+      (simpleProducts as any[]).forEach((p) => {
+        const weight = (p?.trending ? 1 : 0) + (p?.featured ? 1 : 0) + 1; // base 1 + bonuses
+        if (p?.category?.name) {
+          catMap.set(p.category.name, (catMap.get(p.category.name) || 0) + weight);
+        }
+        if (Array.isArray(p?.tags)) {
+          p.tags.forEach((t: string) => tagMap.set(t, (tagMap.get(t) || 0) + 1));
+        }
+      });
+      const items: SearchSuggestion[] = [];
+      catMap.forEach((count, text) => items.push({ type: 'category', text, count } as any));
+      tagMap.forEach((count, text) => items.push({ type: 'tag', text, count } as any));
+      const top = items.sort((a, b) => (b.count || 0) - (a.count || 0)).slice(0, 6);
+      setTrending(top);
+    } catch {}
   }, []);
 
   // Debounced search effect using advanced search suggestions
@@ -133,14 +160,23 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
       timeoutRef.current = setTimeout(() => {
         try {
           const generated = genSuggestions(simpleProducts as any, query);
-          const mapped: SearchSuggestion[] = generated.map((s, idx) => ({
-            id: `${s.type}-${idx}-${s.text}`,
-            text: s.text,
-            type: s.type as any,
-            url: `/products?search=${encodeURIComponent(s.text)}`,
-            description: s.count ? `${s.count} results` : undefined,
-            count: s.count,
-          }));
+          const mapped: SearchSuggestion[] = generated.map((s, idx) => {
+            // Attach product image for product-type suggestions
+            let image: string | undefined;
+            if (s.type === 'product') {
+              const prod = (simpleProducts as any[]).find(p => p.name === s.text);
+              image = prod?.images?.[0]?.url;
+            }
+            return {
+              id: `${s.type}-${idx}-${s.text}`,
+              text: s.text,
+              type: s.type as any,
+              url: `/products?search=${encodeURIComponent(s.text)}`,
+              description: s.count ? `${s.count} results` : undefined,
+              count: s.count,
+              image,
+            };
+          });
           setSuggestions(mapped);
         } catch (err) {
           // Hide old suggestions and inform user gracefully
@@ -191,6 +227,42 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     setIsFocused(false);
   };
 
+  const handleVisualClick = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      // Optional: resize image in worker (for performance)
+      try {
+        const { resizeImageToDataURL } = require('@/utils/imageWorkerClient') as typeof import('@/utils/imageWorkerClient');
+        // Fire and forget resize to ensure worker path ok
+        resizeImageToDataURL(file, 256).catch(() => {});
+      } catch {}
+
+      // Derive a search query from the filename, e.g. "japanese-sneakers.png" => "japanese sneakers"
+      const base = file.name.replace(/\.[^.]+$/, '');
+      const queryFromName = base
+        .replace(/[\-_]+/g, ' ')
+        .replace(/[^a-zA-Z0-9\s]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      if (queryFromName.length >= 2) {
+        handleSearch(queryFromName);
+      } else {
+        // Fallback: open suggestions dropdown to let user proceed
+        setIsOpen(true);
+      }
+    } catch {
+      setIsOpen(true);
+    } finally {
+      // Reset input so onChange triggers again if same file selected later
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
   const handleSearch = useCallback((searchQuery: string) => {
     if (!searchQuery.trim()) return;
 
@@ -204,6 +276,11 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     const results = performAdvancedSearch(simpleProducts as any, filters);
     addToSearchHistory(trimmedQuery, results.length);
     setRecentSearches(getSearchHistory());
+
+    // Track search event
+    try {
+      track('search', { query: trimmedQuery, result_count: results.length });
+    } catch {}
 
     if (onSearch) {
       onSearch(trimmedQuery);
@@ -269,12 +346,9 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     }
   };
 
-  // Simple analytics stub
+  // Analytics integration via context
   const logSearchEvent = (event: string, payload: Record<string, any>) => {
-    try {
-      // eslint-disable-next-line no-console
-      console.debug('[analytics]', event, payload);
-    } catch {}
+    try { track(event, payload); } catch {}
   };
 
   // Highlight matched query parts in suggestion text
@@ -328,6 +402,29 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
           />
           
           <div className="flex items-center pr-3 space-x-2">
+            {/* Hidden file input for visual search */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              data-testid="search-visual-input"
+              className="hidden"
+            />
+
+            {/* Visual search button */}
+            <motion.button
+              type="button"
+              onClick={handleVisualClick}
+              className="text-gray-400 hover:text-gray-600"
+              aria-label="Visual search (upload image)"
+              data-testid="search-visual-button"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <ImageUp className="w-4 h-4" />
+            </motion.button>
+
             {isLoading && (
               <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />
             )}
@@ -354,7 +451,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
       {/* Search Dropdown */}
       <AnimatePresence>
-        {isOpen && (query.length >= 2 ? suggestions.length > 0 : recentSearches.length > 0) && (
+        {isOpen && (query.length >= 2 ? suggestions.length > 0 || trending.length > 0 : recentSearches.length > 0 || trending.length > 0) && (
           <motion.div
             className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 z-50 overflow-hidden"
             variants={dropdownVariants}
@@ -362,6 +459,43 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
             animate="visible"
             exit="exit"
           >
+            {/* Trending Searches */}
+            {trending.length > 0 && (
+              <>
+                <div className="px-4 py-3 border-b border-gray-100">
+                  <div className="flex items-center gap-2 text-sm font-medium text-gray-900">
+                    <TrendingUp className="w-4 h-4" />
+                    Trending Searches
+                  </div>
+                </div>
+                <div className="py-1">
+                  {trending.map((item, index) => (
+                    <motion.button
+                      key={`trending-${item.type}-${item.text}-${index}`}
+                      variants={itemVariants}
+                      className={cn(
+                        "w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors group"
+                      )}
+                      onClick={() => handleSearch(item.text)}
+                      data-testid="trending-search"
+                    >
+                      {getSuggestionIcon(item.type as any)}
+                      <div className="flex-1">
+                        <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600">
+                          {item.text}
+                        </div>
+                      </div>
+                      {item.count && (
+                        <Badge variant="secondary" className="text-xs" data-testid="trending-search-count">
+                          {item.count}
+                        </Badge>
+                      )}
+                    </motion.button>
+                  ))}
+                </div>
+              </>
+            )}
+
             {query.length < 2 && showHistory && recentSearches.length > 0 && (
               <>
                 <div className="px-4 py-3 border-b border-gray-100">
@@ -410,8 +544,21 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                       logSearchEvent('suggestion_click', { text: suggestion.text, type: suggestion.type, query });
                       handleSearch(suggestion.text);
                     }}
+                    data-testid="search-suggestion"
                   >
-                    {getSuggestionIcon(suggestion.type)}
+                    {suggestion.type === 'product' && suggestion.image ? (
+                      <div className="w-10 h-10 rounded overflow-hidden bg-gray-50 flex-shrink-0">
+                        <img
+                          src={suggestion.image}
+                          alt={suggestion.text}
+                          className="w-full h-full object-cover"
+                          loading="lazy"
+                          data-testid="search-suggestion-image"
+                        />
+                      </div>
+                    ) : (
+                      getSuggestionIcon(suggestion.type)
+                    )}
                     <div className="flex-1">
                       <div className="text-sm font-medium text-gray-900 group-hover:text-blue-600">
                         {renderHighlightedText(suggestion.text, query)}
