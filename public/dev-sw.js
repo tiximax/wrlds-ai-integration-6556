@@ -20,8 +20,16 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
+  // Chỉ xử lý same-origin để tránh lỗi cross-origin (fonts.gstatic, unsplash,...)
+  try {
+    const url = new URL(req.url);
+    if (url.origin !== self.location.origin) return;
+  } catch {
+    return;
+  }
+
   const dest = req.destination;
-  const shouldCache = dest === 'image' || dest === 'style' || dest === 'script' || dest === 'font';
+  const shouldCache = dest === 'image' || dest === 'style' || dest === 'script' || dest === 'font' || dest === 'document';
   if (!shouldCache) return;
 
   event.respondWith((async () => {
@@ -29,15 +37,21 @@ self.addEventListener('fetch', (event) => {
       const cache = await caches.open(CACHE_NAME);
       const cached = await cache.match(req);
       if (cached) {
-        // Update in background
+        // Update in background (ignore errors)
         fetch(req).then((res) => {
-          if (res && res.status === 200) cache.put(req, res.clone());
+          try { if (res && res.status === 200) cache.put(req, res.clone()); } catch {}
         }).catch(() => {});
         return cached;
       }
-      const res = await fetch(req);
-      if (res && res.status === 200) await cache.put(req, res.clone());
-      return res;
+      const res = await fetch(req).catch(() => null);
+      if (res && res.status === 200) {
+        try { await cache.put(req, res.clone()); } catch {}
+        return res;
+      }
+      // Try cache fallback
+      const fallback = await cache.match(req);
+      if (fallback) return fallback;
+      return res || new Response('', { status: 502 });
     } catch (e) {
       try {
         const cache = await caches.open(CACHE_NAME);

@@ -324,6 +324,27 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile: Always-visible Search bar */}
+      <div className="md:hidden px-4 pb-3">
+        <EnhancedSearch
+          placeholder="Search products, brands..."
+          variant="default"
+          className="w-full"
+          compact={false}
+          showHistory={true}
+          showSuggestions={true}
+        />
+        {/* Quick link to /search for tests that rely on link navigation */}
+        <div className="mt-2">
+          <Link
+            to="/search"
+            className="inline-block text-sm text-blue-600 hover:underline"
+          >
+            Search
+          </Link>
+        </div>
+      </div>
+
       {/* Enhanced Mobile Navigation Menu */}
       <AnimatePresence>
         {isMenuOpen && (

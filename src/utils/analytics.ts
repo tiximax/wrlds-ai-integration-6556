@@ -17,24 +17,22 @@ function enqueueLS(evt: AnalyticsEvent) {
 export function trackEvent(name: string, props?: Record<string, any>) {
   try {
     const evt: AnalyticsEvent = { name, props: { ...props, ts: Date.now() } };
-    // Attempt sendBeacon (no-op endpoint)
-    const endpoint = '/api/analytics';
-    const payload = JSON.stringify(evt);
-    // @ts-ignore
-    const ok = typeof navigator !== 'undefined' && navigator.sendBeacon && navigator.sendBeacon(endpoint, payload);
 
-    // Mirror to localStorage when running E2E/dev to make tests robust
-    // VITE_E2E is set by Playwright webServer env; MODE is 'production' only for build preview
-    const isE2E = (import.meta as any).env?.VITE_E2E;
-    const isDevMode = (import.meta as any).env?.MODE !== 'production';
-    if (isE2E || isDevMode) {
-      enqueueLS(evt);
-    } else if (!ok) {
-      // Fallback: enqueue in localStorage when beacon is not available
-      enqueueLS(evt);
-    }
+    // Luôn mirror vào localStorage để test có thể đọc được hàng đợi một cách ổn định
+    enqueueLS(evt);
 
-    // Also log to console in dev
+    // Thử gửi beacon (sẽ 404 trong dev, chấp nhận)
+    try {
+      const endpoint = '/api/analytics';
+      const payload = JSON.stringify(evt);
+      // @ts-ignore
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        // @ts-ignore
+        navigator.sendBeacon(endpoint, payload);
+      }
+    } catch {}
+
+    // Log ra console để debug
     // eslint-disable-next-line no-console
     console.debug('[analytics]', name, props || {});
   } catch {
