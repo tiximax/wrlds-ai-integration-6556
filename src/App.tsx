@@ -11,6 +11,7 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
 import { AnalyticsProvider, useAnalytics } from "@/contexts/AnalyticsContext";
+import { Auth0ProviderWithNavigate } from "@/contexts/Auth0Context";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -34,6 +35,11 @@ const SearchResults = lazy(() => import("./pages/SearchResults"));
 const Wishlist = lazy(() => import("./pages/Wishlist"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const VectorDB = lazy(() => import("./pages/VectorDB"));
+
+// Auth pages (Phase 1.2)
+const Login = lazy(() => import("./pages/Login"));
+const Callback = lazy(() => import("./pages/Callback"));
+const Profile = lazy(() => import("./pages/Profile"));
 
 const PageViewTracker = () => {
   const { track } = useAnalytics();
@@ -91,6 +97,7 @@ const App = () => {
           <Toaster />
           <Sonner />
         <BrowserRouter>
+          <Auth0ProviderWithNavigate>
           <PageViewTracker />
           <Suspense fallback={
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -122,9 +129,16 @@ const App = () => {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/vector-db" element={<VectorDB />} />
+            
+            {/* Auth routes (Phase 1.2) */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/callback" element={<Callback />} />
+            <Route path="/profile" element={<Profile />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
+          </Auth0ProviderWithNavigate>
         </BrowserRouter>
           </TooltipProvider>
           </QueryClientProvider>

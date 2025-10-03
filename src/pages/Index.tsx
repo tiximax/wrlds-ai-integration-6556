@@ -9,7 +9,8 @@ import TrustSignals from '@/components/TrustSignals';
 import FeaturedProducts from '@/components/FeaturedProducts';
 import SEO from '@/components/SEO';
 import { useEffect } from 'react';
-import LiveActivityFeed from '@/components/trust/LiveActivityFeed';
+// REMOVED: Fake live activity feed damages trust - replaced with static trust badges
+// import LiveActivityFeed from '@/components/trust/LiveActivityFeed';
 import { Helmet } from 'react-helmet-async';
 import { simpleProducts } from '@/data/simpleProducts';
 
@@ -49,7 +50,8 @@ const Index = () => {
       <Features />
       <FeaturedProducts />
       <TrustSignals />
-      <LiveActivityFeed />
+      {/* REMOVED: Fake live activity feed - see P0.3 audit finding */}
+      {/* <LiveActivityFeed /> */}
       <WhyWrlds />
       <Projects />
       <BlogPreview />

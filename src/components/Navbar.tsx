@@ -17,14 +17,18 @@ import MobileCategoryMenu from './MobileCategoryMenu';
 import { MegaMenu } from '@/components/ui/mega-menu';
 import { servicesSections, featuredService } from '@/data/mega-menu-data';
 import { EnhancedButton } from '@/components/ui/enhanced-button';
+import { useAuth } from '@/contexts/Auth0Context';
+import { User, LogIn } from 'lucide-react';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const { t } = useTranslation();
   const { totalItems } = useSimpleCart();
   const { getWishlistCount } = useWishlist();
+  const { isAuthenticated, user, isLoading } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -40,10 +44,23 @@ const Navbar = () => {
     const openCartListener = () => setIsCartOpen(true);
     window.addEventListener('wrlds:open-cart' as unknown as string, openCartListener as EventListener);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('wrlds:open-cart' as unknown as string, openCartListener as EventListener);
-    };
+    // Track viewport for conditional mobile search rendering
+    try {
+      const mql = window.matchMedia('(max-width: 767px)');
+      const onChange = (e: MediaQueryListEvent) => setIsMobile(e.matches);
+      setIsMobile(mql.matches);
+      mql.addEventListener('change', onChange);
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('wrlds:open-cart' as unknown as string, openCartListener as EventListener);
+        mql.removeEventListener('change', onChange);
+      };
+    } catch {
+      return () => {
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('wrlds:open-cart' as unknown as string, openCartListener as EventListener);
+      };
+    }
   }, []);
 
   const toggleMenu = () => {
@@ -77,11 +94,13 @@ const Navbar = () => {
           ease: "easeInOut"
         }
       }}
+      role="navigation"
+      aria-label="Main navigation"
     >
       <div className="w-full px-4 sm:px-6 lg:px-8 mx-auto">
         <div className="flex items-center justify-between h-16">
           <div className="flex-shrink-0">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center" aria-label="Go to homepage">
               <img src="/lovable-uploads/7d120ee6-3614-4b75-9c35-716d54490d67.png" alt="WRLDS Technologies Logo" className={cn("h-8 w-auto", isScrolled ? "" : "brightness-0 invert")} />
             </Link>
           </div>
@@ -253,18 +272,47 @@ const Navbar = () => {
             {/* Right side controls */}
             <div className="flex items-center space-x-2">
               <LanguageSwitcher />
+              
+              {/* Login / Profile Button */}
+              {!isLoading && (
+                isAuthenticated ? (
+                  <Link
+                    to="/profile"
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
+                      isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
+                    )}
+                    aria-label={`View profile for ${user?.name || 'user'}`}
+                  >
+                    <User className="w-5 h-5" aria-hidden="true" />
+                    <span className="hidden sm:inline">{user?.name?.split(' ')[0] || 'Profile'}</span>
+                  </Link>
+                ) : (
+                  <Link to="/login" aria-label="Login to your account">
+                    <EnhancedButton
+                      variant={isScrolled ? "secondary" : "ghost"}
+                      size="sm"
+                      className={isScrolled ? "" : "text-white hover:bg-gray-700"}
+                      leftIcon={<LogIn className="w-4 h-4" aria-hidden="true" />}
+                      aria-label={t('navigation.login')}
+                    >
+                      {t('navigation.login')}
+                    </EnhancedButton>
+                  </Link>
+                )
+              )}
               <Link
                 to="/wishlist"
                 className={cn(
                   "relative flex items-center gap-2 px-3 py-2 rounded-md transition-colors",
                   isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
                 )}
-                aria-label="Open wishlist"
+                aria-label={`Open wishlist (${getWishlistCount()} items)`}
               >
-                <Heart className="w-5 h-5" />
+                <Heart className="w-5 h-5" aria-hidden="true" />
                 <span className="hidden sm:inline">Wishlist</span>
                 {getWishlistCount() > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-5 h-5 px-1 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-pink-500 text-white text-xs rounded-full min-w-5 h-5 px-1 flex items-center justify-center" aria-label={`${getWishlistCount()} items in wishlist`}>
                     {getWishlistCount()}
                   </span>
                 )}
@@ -278,12 +326,12 @@ const Navbar = () => {
                   "relative",
                   isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
                 )}
-                aria-label="Open cart"
-                leftIcon={<ShoppingCart className="w-5 h-5" />}
+                aria-label={`Open cart (${totalItems} items)`}
+                leftIcon={<ShoppingCart className="w-5 h-5" aria-hidden="true" />}
               >
                 <span className="hidden sm:inline">Cart</span>
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center" aria-label={`${totalItems} items in cart`}>
                     {totalItems}
                   </span>
                 )}
@@ -302,11 +350,11 @@ const Navbar = () => {
                 "relative w-11 h-11",
                 isScrolled ? "text-gray-700 hover:text-gray-900 hover:bg-gray-100" : "text-gray-100 hover:text-white hover:bg-gray-800"
               )}
-              aria-label="Open cart"
+              aria-label={`Open cart (${totalItems} items)`}
             >
-              <ShoppingCart className="w-5 h-5" />
+              <ShoppingCart className="w-5 h-5" aria-hidden="true" />
               {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center" aria-label={`${totalItems} items in cart`}>
                   {totalItems}
                 </span>
               )}
@@ -316,35 +364,39 @@ const Navbar = () => {
               variant="ghost" 
               size="icon"
               className={cn("w-11 h-11", isScrolled ? "text-gray-700" : "text-white")}
-              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              aria-label={isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
             </EnhancedButton>
           </div>
         </div>
       </div>
 
       {/* Mobile: Always-visible Search bar */}
-      <div className="md:hidden px-4 pb-3">
-        <EnhancedSearch
-          placeholder="Search products, brands..."
-          variant="default"
-          className="w-full"
-          compact={false}
-          showHistory={true}
-          showSuggestions={true}
-          visualInputTestId="search-visual-input-mobile"
-        />
-        {/* Quick link to /search for tests that rely on link navigation */}
-        <div className="mt-2">
-          <Link
-            to="/search"
-            className="inline-block text-sm text-blue-600 hover:underline"
-          >
-            Search
-          </Link>
+      {isMobile && (
+        <div className="md:hidden px-4 pb-3">
+          <EnhancedSearch
+            placeholder="Search products, brands..."
+            variant="default"
+            className="w-full"
+            compact={false}
+            showHistory={true}
+            showSuggestions={true}
+            visualInputTestId="search-visual-input-mobile"
+          />
+          {/* Quick link to /search for tests that rely on link navigation */}
+          <div className="mt-2">
+            <Link
+              to="/search"
+              className="inline-block text-sm text-blue-600 hover:underline"
+            >
+              Search
+            </Link>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Enhanced Mobile Navigation Menu */}
       <AnimatePresence>
