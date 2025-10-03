@@ -10,6 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useSimpleCart } from '@/contexts/SimpleCartContext';
 import QuickViewModal from '@/components/ui/quick-view-modal';
 import { useCompare } from '@/contexts/CompareContext';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 
 interface SimpleProductCardProps {
   product: SimpleProduct;
@@ -28,6 +29,7 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
   const { t } = useTranslation();
   const { addToCart, isInCart, getItemQuantity } = useSimpleCart();
   const compare = useCompare();
+  const { track } = useAnalytics();
   const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
   const inCart = isInCart(product.id);
   const cartQuantity = getItemQuantity(product.id);
@@ -35,6 +37,16 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     addToCart(product);
+    try {
+      track('add_to_cart', {
+        productId: product.id,
+        name: product.name,
+        quantity: 1,
+        price: product.sellingPrice,
+        currency: product.currency,
+        origin: product.origin,
+      });
+    } catch {}
   };
 
   const escapeRegExp = (str: string) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -70,12 +82,39 @@ const SimpleProductCard: React.FC<SimpleProductCardProps> = ({
         <CardContent className="p-0">
           {/* Image Container */}
           <div className="relative overflow-hidden rounded-t-lg">
-            <img
-              src={primaryImage?.url || '/placeholder.svg'}
-              alt={primaryImage?.alt || product.name}
-              className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-200"
-              loading="lazy"
-            />
+            {(() => {
+              const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+              const url = primaryImage?.url || '/placeholder.svg';
+              const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+              if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                return (
+                  <picture>
+                    <source srcSet={make('avif')} type="image/avif" />
+                    <source srcSet={make('webp')} type="image/webp" />
+                    <img
+                      src={url}
+                      alt={primaryImage?.alt || product.name}
+                      className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+                      loading="lazy"
+                      decoding="async"
+                      width={768}
+                      height={192}
+                    />
+                  </picture>
+                );
+              }
+              return (
+                <img
+                  src={url}
+                  alt={primaryImage?.alt || product.name}
+                  className="w-full h-40 sm:h-48 object-cover group-hover:scale-105 transition-transform duration-200"
+                  loading="lazy"
+                  decoding="async"
+                  width={768}
+                  height={192}
+                />
+              );
+            })()}
             
             {/* Badges */}
             <div className="absolute top-2 left-2 space-y-1">

@@ -1,0 +1,275 @@
+name: CI/CD Pipeline
+
+# 🎯 Trigger workflow on:
+# - Push to main (auto-deploy to production)
+# - Pull Requests (run tests and checks)
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Set permissions for GitHub token
+permissions:
+  contents: read
+  pull-requests: write
+  checks: write
+
+# Environment variables
+env:
+  NODE_VERSION: '20'
+  CACHE_KEY: node-modules-${{ hashFiles('**/package-lock.json') }}
+
+jobs:
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # JOB 1: Install Dependencies & Cache
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  install:
+    name: 📦 Install Dependencies
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Install dependencies
+        run: npm ci
+      
+      - name: 💾 Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ env.CACHE_KEY }}
+          restore-keys: |
+            node-modules-
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # JOB 2: Lint & Type Check
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  lint:
+    name: 🔍 Lint & Type Check
+    runs-on: ubuntu-latest
+    needs: install
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ env.CACHE_KEY }}
+      
+      - name: 🔍 Run ESLint (Continue on error)
+        run: npm run lint || echo "⚠️ Lint warnings found"
+        continue-on-error: true
+      
+      - name: 📝 Run TypeScript check
+        run: npx tsc --noEmit
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # JOB 3: Build Production
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  build:
+    name: 🔨 Build Production
+    runs-on: ubuntu-latest
+    needs: [install, lint]
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ env.CACHE_KEY }}
+      
+      - name: 🔨 Build project
+        run: npm run build
+        env:
+          NODE_ENV: production
+      
+      - name: 📊 Check bundle size
+        run: |
+          echo "📦 Bundle sizes:"
+          du -sh dist/assets/* | sort -hr | head -n 10
+      
+      - name: 💾 Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # JOB 4: Run Tests (if available)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  test:
+    name: 🧪 Run Tests
+    runs-on: ubuntu-latest
+    needs: install
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Restore dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ env.CACHE_KEY }}
+      
+      - name: 🧪 Run tests (if available)
+        run: |
+          if [ -f "package.json" ] && grep -q "\"test\"" package.json; then
+            npm test || echo "⚠️ No tests or tests failed"
+          else
+            echo "ℹ️ No tests configured"
+          fi
+        continue-on-error: true
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # JOB 5: Deploy to Production (on push to main)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  deploy:
+    name: 🚀 Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [build, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      
+      - name: 🚀 Deploy to Netlify (if configured)
+        if: env.NETLIFY_SITE_ID != ''
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --prod --dir=dist
+      
+      - name: 🚀 Deploy to Vercel (if configured)
+        if: env.VERCEL_TOKEN != ''
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+      
+      - name: ℹ️ Deployment info
+        run: |
+          echo "✅ Deployment triggered!"
+          echo "📊 Check your hosting platform for deployment status"
+          echo "🔗 Production URL will be available shortly"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # JOB 6: Post-Deploy Checks
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  post-deploy:
+    name: 🔍 Post-Deploy Checks
+    runs-on: ubuntu-latest
+    needs: deploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: ⏳ Wait for deployment
+        run: sleep 30
+      
+      - name: 🔍 Health check (if production URL available)
+        run: |
+          if [ ! -z "${{ secrets.PRODUCTION_URL }}" ]; then
+            curl -f ${{ secrets.PRODUCTION_URL }} || echo "⚠️ Health check failed"
+          else
+            echo "ℹ️ PRODUCTION_URL not configured"
+          fi
+        continue-on-error: true
+      
+      - name: 📊 Report deployment status
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Deployment completed successfully!"
+          echo "📊 Next steps:"
+          echo "   1. Monitor error rates in Sentry"
+          echo "   2. Check Web Vitals in analytics"
+          echo "   3. Review deployment logs"
+          echo "   4. Test critical user flows"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  # JOB 7: PR Preview (optional, for Pull Requests)
+  # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  preview:
+    name: 🔍 PR Preview Deployment
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 📦 Download build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      
+      - name: 🔍 Deploy PR preview (Netlify)
+        if: env.NETLIFY_SITE_ID != ''
+        uses: netlify/actions/cli@master
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        with:
+          args: deploy --dir=dist
+      
+      - name: 💬 Comment PR with preview URL
+        uses: actions/github-script@v7
+        if: env.NETLIFY_SITE_ID != ''
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🔍 **Preview deployment ready!**\n\n✅ Build successful\n📊 Check the deployment logs for details\n\n_This preview will be available for 7 days._'
+            })

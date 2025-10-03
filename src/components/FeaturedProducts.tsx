@@ -78,8 +78,9 @@ const FeaturedProducts = () => {
           whileInView="visible"
           viewport={{ once: true }}
         >
-          {featuredProducts.map((product) => {
+          {featuredProducts.map((product, idx) => {
             const primaryImage = product.images.find(img => img.isPrimary) || product.images[0];
+            const isFirst = idx === 0;
             
             return (
               <motion.div
@@ -93,11 +94,41 @@ const FeaturedProducts = () => {
                     <CardContent className="p-0">
                       {/* Image Container */}
                       <div className="relative overflow-hidden rounded-t-lg">
-                        <img
-                          src={primaryImage?.url || '/placeholder.svg'}
-                          alt={primaryImage?.alt || product.name}
-                          className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
-                        />
+                        {(() => {
+                          const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+                          const url = primaryImage?.url || '/placeholder.svg';
+                          const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+                          if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                            return (
+                              <picture>
+                                <source srcSet={make('avif')} type="image/avif" />
+                                <source srcSet={make('webp')} type="image/webp" />
+                                <img
+                                  src={url}
+                                  alt={primaryImage?.alt || product.name}
+                                  className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                                  loading={isFirst ? 'eager' : 'lazy'}
+                                  decoding="async"
+                                  fetchpriority={isFirst ? ('high' as any) : ('auto' as any)}
+                                  width={768}
+                                  height={192}
+                                />
+                              </picture>
+                            );
+                          }
+                          return (
+                            <img
+                              src={url}
+                              alt={primaryImage?.alt || product.name}
+                              className="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-300"
+                              loading={isFirst ? 'eager' : 'lazy'}
+                              decoding="async"
+                              fetchpriority={isFirst ? ('high' as any) : ('auto' as any)}
+                              width={768}
+                              height={192}
+                            />
+                          );
+                        })()}
                         
                         {/* Status Badge */}
                         <div className="absolute top-3 left-3">

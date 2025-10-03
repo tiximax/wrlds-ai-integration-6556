@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { simpleProducts } from '@/data/simpleProducts';
 import { getRecentlyViewedIds } from '@/utils/recentlyViewed';
@@ -10,6 +10,18 @@ interface RecentlyViewedProps {
 }
 
 const RecentlyViewed: React.FC<RecentlyViewedProps> = ({ excludeId, className }) => {
+  const [version, setVersion] = useState(0);
+
+  useEffect(() => {
+    const onUpdate = () => setVersion(v => v + 1);
+    window.addEventListener('rv:update', onUpdate as EventListener);
+    window.addEventListener('storage', onUpdate as EventListener);
+    return () => {
+      window.removeEventListener('rv:update', onUpdate as EventListener);
+      window.removeEventListener('storage', onUpdate as EventListener);
+    };
+  }, []);
+
   const ids = getRecentlyViewedIds();
   const items = ids
     .filter(id => id !== excludeId)

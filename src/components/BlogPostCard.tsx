@@ -25,11 +25,37 @@ const BlogPostCard = ({
     <Link to={`/blog/${slug}`}>
       <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 h-full">
         <div className="grid grid-rows-[200px,1fr]">
-          <div
-            className="bg-cover bg-center"
-            style={{ backgroundImage: `url('${imageUrl}')` }}
-          >
-            <div className="w-full h-full bg-black/20 flex items-center justify-center">
+          <div className="relative w-full h-[200px] overflow-hidden">
+            {(() => {
+              const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+              const url = imageUrl || '/placeholder.svg';
+              const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+              if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                return (
+                  <picture>
+                    <source srcSet={make('avif')} type="image/avif" />
+                    <source srcSet={make('webp')} type="image/webp" />
+                    <img
+                      src={url}
+                      alt={title}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                );
+              }
+              return (
+                <img
+                  src={url}
+                  alt={title}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  decoding="async"
+                />
+              );
+            })()}
+            <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
               <span className="px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium text-white inline-block">
                 {category}
               </span>

@@ -109,7 +109,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
         {/* Content */}
         <div className="flex flex-col h-full">
           {/* Local data notice */}
-          <div className="px-4 py-2 text-xs text-gray-500 bg-gray-50 border-b">
+          <div className="px-4 py-2 text-xs text-gray-600 bg-gray-50 border-b">
             Lưu ý: Giỏ hàng được lưu cục bộ trên trình duyệt này.
           </div>
           {items.length === 0 ? (
@@ -119,7 +119,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
               <h3 className="text-lg font-medium text-gray-900 mb-2">
                 Giỏ hàng trống
               </h3>
-              <p className="text-gray-500 mb-6">
+              <p className="text-gray-600 mb-6">
                 Thêm sản phẩm để bắt đầu mua sắm
               </p>
               <Button onClick={onClose} className="w-full max-w-xs">
@@ -152,7 +152,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                           </h4>
                         </Link>
                         
-                        <p className="text-xs text-gray-500 mt-1">
+                        <p className="text-xs text-gray-600 mt-1">
                           {item.product.category.name}
                         </p>
 
@@ -162,7 +162,7 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                             {Object.entries(item.selectedVariants).map(([key, value]) => (
                               <span
                                 key={key}
-                                className="text-xs text-gray-500 mr-2"
+                                className="text-xs text-gray-600 mr-2"
                               >
                                 {key}: {String(value)}
                               </span>

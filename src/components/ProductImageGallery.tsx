@@ -49,12 +49,23 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
                   </div>
                   {/* Mobile/Tablet image */}
                   <div className="block lg:hidden w-full h-full">
-                    <img
-                      src={img.url}
-                      alt={img.alt || productName}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
+                    {(() => {
+                      const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+                      const url = img.url;
+                      const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+                      if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                        return (
+                          <picture>
+                            <source srcSet={make('avif')} type="image/avif" />
+                            <source srcSet={make('webp')} type="image/webp" />
+                            <img src={url} alt={img.alt || productName} className="w-full h-full object-cover" loading="lazy" />
+                          </picture>
+                        );
+                      }
+                      return (
+                        <img src={url} alt={img.alt || productName} className="w-full h-full object-cover" loading="lazy" />
+                      );
+                    })()}
                   </div>
                 </div>
               </CarouselItem>
@@ -86,7 +97,23 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
                   activeIndex === idx ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'
                 )}
               >
-                <img src={img.url} alt={img.alt || productName} className="w-full h-full object-cover" />
+                {(() => {
+                  const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+                  const url = img.url;
+                  const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+                  if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                    return (
+                      <picture>
+                        <source srcSet={make('avif')} type="image/avif" />
+                        <source srcSet={make('webp')} type="image/webp" />
+                        <img src={url} alt={img.alt || productName} className="w-full h-full object-cover" loading="lazy" />
+                      </picture>
+                    );
+                  }
+                  return (
+                    <img src={url} alt={img.alt || productName} className="w-full h-full object-cover" loading="lazy" />
+                  );
+                })()}
               </button>
             ))}
           </div>
@@ -105,7 +132,23 @@ const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({ images, produ
                   activeIndex === idx ? 'border-blue-500 ring-2 ring-blue-200' : 'border-gray-200'
                 )}
               >
-                <img src={img.url} alt={img.alt || productName} className="w-full h-full object-cover" />
+                {(() => {
+                  const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+                  const url = img.url;
+                  const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+                  if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                    return (
+                      <picture>
+                        <source srcSet={make('avif')} type="image/avif" />
+                        <source srcSet={make('webp')} type="image/webp" />
+                        <img src={url} alt={img.alt || productName} className="w-full h-full object-cover" loading="lazy" />
+                      </picture>
+                    );
+                  }
+                  return (
+                    <img src={url} alt={img.alt || productName} className="w-full h-full object-cover" loading="lazy" />
+                  );
+                })()}
               </button>
             ))}
           </div>

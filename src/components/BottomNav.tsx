@@ -44,9 +44,9 @@ const BottomNav: React.FC = () => {
           <EnhancedButton
             variant={/\/products/i.test(location.pathname) ? 'primary' : 'ghost'}
             size="icon"
-            aria-label="Open search"
+            aria-label="Open quick search"
           >
-            <Search className="w-5 h-5" />
+            <Search className="w-5 h-5" aria-hidden="true" />
           </EnhancedButton>
         </Link>
 

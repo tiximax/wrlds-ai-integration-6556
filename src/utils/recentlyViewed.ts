@@ -16,6 +16,7 @@ export function recordRecentlyViewed(productId: string, limit = 10): void {
     current.unshift(productId);
     const next = current.slice(0, limit);
     localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(next));
+    try { window.dispatchEvent(new CustomEvent('rv:update', { detail: { ids: next } })); } catch {}
   } catch {
     // ignore
   }

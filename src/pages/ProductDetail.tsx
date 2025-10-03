@@ -20,7 +20,9 @@ import ProductRecommendations from '@/components/products/ProductRecommendations
 import { recordRecentlyViewed } from '@/utils/recentlyViewed';
 import CustomerReviews from '@/components/trust/CustomerReviews';
 import AssurancePolicies from '@/components/trust/AssurancePolicies';
+import GuaranteeBadges from '@/components/trust/GuaranteeBadges';
 import RatingDistribution from '@/components/trust/RatingDistribution';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 
 const ProductDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -35,6 +37,7 @@ const ProductDetail: React.FC = () => {
   
   // Cart context
   const { addToCart, isInCart, getItemQuantity } = useSimpleCart();
+  const { track } = useAnalytics();
 
   // Variant handlers
   const handleVariantChange = (variantType: string, value: string) => {
@@ -54,14 +57,16 @@ const ProductDetail: React.FC = () => {
       // Add to cart with current selections
       addToCart(product, quantity);
       
-      // Show success message
-      // You can replace this with a toast notification
-      console.log('Added to cart:', {
-        product: product.name,
-        quantity,
-        variants: selectedVariants,
-        price: currentPrice
-      });
+      try {
+        track('add_to_cart', {
+          productId: product.id,
+          name: product.name,
+          quantity,
+          variants: selectedVariants,
+          price: currentPrice,
+          currency: product.currency,
+        });
+      } catch {}
     } catch (error) {
       console.error('Failed to add to cart:', error);
     } finally {
@@ -88,6 +93,17 @@ const ProductDetail: React.FC = () => {
   React.useEffect(() => {
     if (product?.id) {
       recordRecentlyViewed(product.id);
+      try {
+        track('product_view', {
+          productId: product.id,
+          name: product.name,
+          price: product.sellingPrice,
+          currency: product.currency,
+          category: product.category?.name,
+          origin: product.origin,
+          stock: product.stock,
+        });
+      } catch {}
     }
   }, [product?.id]);
 
@@ -337,6 +353,9 @@ const ProductDetail: React.FC = () => {
 
                 {/* Assurance Policies */}
                 <AssurancePolicies />
+
+                {/* Guarantee Badges */}
+                <GuaranteeBadges className="mt-4" />
 
                 {/* Product Variants */}
                 <ProductVariants 

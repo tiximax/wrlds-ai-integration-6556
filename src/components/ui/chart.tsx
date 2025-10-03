@@ -1,5 +1,5 @@
 import * as React from "react"
-import * as RechartsPrimitive from "recharts"
+import type { LegendProps, TooltipProps } from "recharts"
 
 import { cn } from "@/lib/utils"
 
@@ -32,17 +32,26 @@ function useChart() {
   return context
 }
 
+const useRecharts = () => {
+  const [mod, setMod] = React.useState<any>(null)
+  React.useEffect(() => {
+    let mounted = true
+    import("recharts").then((m) => mounted && setMod(m)).catch(() => setMod(null))
+    return () => { mounted = false }
+  }, [])
+  return mod
+}
+
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
     config: ChartConfig
-    children: React.ComponentProps<
-      typeof RechartsPrimitive.ResponsiveContainer
-    >["children"]
+    children: React.ReactNode
   }
 >(({ id, className, children, config, ...props }, ref) => {
   const uniqueId = React.useId()
   const chartId = `chart-${id || uniqueId.replace(/:/g, "")}`
+  const R = useRecharts()
 
   return (
     <ChartContext.Provider value={{ config }}>
@@ -56,9 +65,13 @@ const ChartContainer = React.forwardRef<
         {...props}
       >
         <ChartStyle id={chartId} config={config} />
-        <RechartsPrimitive.ResponsiveContainer>
-          {children}
-        </RechartsPrimitive.ResponsiveContainer>
+        {R ? (
+          <R.ResponsiveContainer>
+            {children as any}
+          </R.ResponsiveContainer>
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground">Đang tải biểu đồ…</div>
+        )}
       </div>
     </ChartContext.Provider>
   )
@@ -98,11 +111,16 @@ ${colorConfig
   )
 }
 
-const ChartTooltip = RechartsPrimitive.Tooltip
+const ChartTooltip: React.FC<any> = (props) => {
+  const R = useRecharts()
+  if (!R) return null
+  const T = R.Tooltip
+  return <T {...props} />
+}
 
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
-  React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
+  Partial<TooltipProps<any, any>> &
     React.ComponentProps<"div"> & {
       hideLabel?: boolean
       hideIndicator?: boolean
@@ -254,12 +272,17 @@ const ChartTooltipContent = React.forwardRef<
 )
 ChartTooltipContent.displayName = "ChartTooltip"
 
-const ChartLegend = RechartsPrimitive.Legend
+const ChartLegend: React.FC<any> = (props) => {
+  const R = useRecharts()
+  if (!R) return null
+  const L = R.Legend
+  return <L {...props} />
+}
 
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> &
-    Pick<RechartsPrimitive.LegendProps, "payload" | "verticalAlign"> & {
+    Pick<LegendProps, "payload" | "verticalAlign"> & {
       hideIcon?: boolean
       nameKey?: string
     }

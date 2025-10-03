@@ -84,7 +84,7 @@ export const PinchZoom: React.FC<PinchZoomProps> = ({
     const last = state.current.lastTap;
     const dt = now - last.time;
     const dist = Math.hypot(pt.x - last.x, pt.y - last.y);
-    if (dt < 350 && dist < 25) {
+    if (dt < 500 && dist < 30) {
       // toggle
       const nextScale = Math.abs(state.current.scale - initialScale) < 0.01 ? doubleTapScale : initialScale;
 

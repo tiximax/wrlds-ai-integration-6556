@@ -4,6 +4,7 @@ import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { useCompare } from '@/contexts/CompareContext';
 import { X } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import ProductComparisonTable from '@/components/products/ProductComparisonTable';
 
 const CompareBar: React.FC = () => {
   const { items, remove, clear } = useCompare();
@@ -32,7 +33,7 @@ const CompareBar: React.FC = () => {
           <DrawerHeader>
             <DrawerTitle>Compare Products</DrawerTitle>
           </DrawerHeader>
-          <div className="px-4 pb-2">
+          <div className="px-4 pb-4 space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {items.map(p => (
                 <div key={p.id} className="border rounded-lg p-3 bg-white relative">
@@ -59,6 +60,18 @@ const CompareBar: React.FC = () => {
                 </div>
               ))}
             </div>
+
+            {/* Detailed comparison table (shows when >= 2 items) */}
+            {items.length >= 2 ? (
+              <div>
+                <h4 className="text-sm font-semibold text-gray-900 mb-2">So sánh chi tiết</h4>
+                <div className="rounded-lg border bg-white p-2">
+                  <ProductComparisonTable items={items} />
+                </div>
+              </div>
+            ) : (
+              <div className="text-sm text-gray-600">Thêm ít nhất 2 sản phẩm để so sánh chi tiết.</div>
+            )}
           </div>
           <DrawerFooter>
             <DrawerClose asChild>

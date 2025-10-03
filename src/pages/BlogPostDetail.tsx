@@ -47,11 +47,37 @@ const BlogPostDetail = () => {
         {/* Hero Section - Taller to accommodate text content */}
         <div className="banner-container h-96 sm:h-[450px] md:h-[500px] lg:h-[550px] relative">
           {post.imageUrl && (
-            <img 
-              src={post.imageUrl} 
-              alt={post.title}
-              className="absolute inset-0 w-full h-full object-cover filter grayscale"
-            />
+            (() => {
+              const enableOpt = (import.meta as any).env?.VITE_ENABLE_OPTIMIZED_IMAGES;
+              const url = post.imageUrl as string;
+              const make = (ext: string) => url.replace(/\.(png|jpg|jpeg)$/i, `.${ext}`);
+              if (enableOpt && /\.(png|jpe?g)$/i.test(url)) {
+                return (
+                  <picture>
+                    <source srcSet={make('avif')} type="image/avif" />
+                    <source srcSet={make('webp')} type="image/webp" />
+                    <img
+                      src={url}
+                      alt={post.title}
+                      className="absolute inset-0 w-full h-full object-cover filter grayscale"
+                      loading="eager"
+                      decoding="async"
+                      fetchpriority={'high' as any}
+                    />
+                  </picture>
+                );
+              }
+              return (
+                <img
+                  src={url}
+                  alt={post.title}
+                  className="absolute inset-0 w-full h-full object-cover filter grayscale"
+                  loading="eager"
+                  decoding="async"
+                  fetchpriority={'high' as any}
+                />
+              );
+            })()
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80"></div>
           

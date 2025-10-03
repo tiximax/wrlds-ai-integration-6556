@@ -3,7 +3,6 @@ import React from 'react';
 import { ContentSection } from '@/data/blogPosts';
 import { DollarSign, Users, TrendingUp, Shield, Zap, Settings, Database } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 interface EnhancedBlogContentProps {
   content: ContentSection[];
@@ -109,9 +108,50 @@ const EnhancedBlogContent: React.FC<EnhancedBlogContentProps> = ({ content }) =>
       
       case 'chart': {
         if (!section.chartData) return null;
-        
+
         const colors = ['#000000', '#666666', '#999999', '#CCCCCC'];
-        
+
+        const BarChartLazy: React.FC<{ data: any[] }> = ({ data }) => {
+          const [mod, setMod] = React.useState<any>(null);
+          React.useEffect(() => { import('recharts').then(setMod).catch(() => setMod(null)); }, []);
+          if (!mod) return <div className="h-full w-full flex items-center justify-center text-sm text-gray-500">Loading chart…</div>;
+          const { ResponsiveContainer, BarChart, Bar, XAxis, YAxis } = mod;
+          return (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={data}>
+                <XAxis dataKey="name" stroke="#000" />
+                <YAxis stroke="#000" />
+                <Bar dataKey="value" fill="#000000" />
+              </BarChart>
+            </ResponsiveContainer>
+          );
+        };
+
+        const PieChartLazy: React.FC<{ data: any[] }> = ({ data }) => {
+          const [mod, setMod] = React.useState<any>(null);
+          React.useEffect(() => { import('recharts').then(setMod).catch(() => setMod(null)); }, []);
+          if (!mod) return <div className="h-full w-full flex items-center justify-center text-sm text-gray-500">Loading chart…</div>;
+          const { ResponsiveContainer, PieChart, Pie, Cell } = mod;
+          return (
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart>
+                <Pie
+                  data={data}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  dataKey="value"
+                  label={(entry: any) => `${entry.name}: ${entry.value}%`}
+                >
+                  {data.map((entry: any, index: number) => (
+                    <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
+          );
+        };
+
         return (
           <Card key={index} className="border-2 border-black mb-8">
             <CardContent className="p-6">
@@ -120,30 +160,9 @@ const EnhancedBlogContent: React.FC<EnhancedBlogContentProps> = ({ content }) =>
               </h4>
               <div className="h-64 w-full">
                 {section.chartData.title.includes('Market Growth') ? (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={section.chartData.data}>
-                      <XAxis dataKey="name" stroke="#000" />
-                      <YAxis stroke="#000" />
-                      <Bar dataKey="value" fill="#000000" />
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <BarChartLazy data={section.chartData.data} />
                 ) : (
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={section.chartData.data}
-                        cx="50%"
-                        cy="50%"
-                        outerRadius={80}
-                        dataKey="value"
-                        label={(entry) => `${entry.name}: ${entry.value}%`}
-                      >
-                        {section.chartData.data.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
-                        ))}
-                      </Pie>
-                    </PieChart>
-                  </ResponsiveContainer>
+                  <PieChartLazy data={section.chartData.data} />
                 )}
               </div>
             </CardContent>

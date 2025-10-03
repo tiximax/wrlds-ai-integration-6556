@@ -24,17 +24,32 @@ jobs:
       - name: Run unit tests (Vitest)
         run: npm test --silent
 
+  e2e-matrix:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, firefox, webkit]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
       - name: Install Playwright browsers and OS dependencies
         run: npx playwright install --with-deps
-
-      - name: Run E2E smoke (dev server)
-        run: npm run test:e2e -- tests/working-cart.spec.ts --reporter=line
-
+      - name: Run E2E subset on ${{ matrix.browser }}
+        run: npx playwright test -c playwright.config.ts --project="${{ matrix.browser }}" --reporter=line tests/working-cart.spec.ts
       - name: Upload Playwright report (if generated)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-dev
+          name: playwright-report-${{ matrix.browser }}
           path: playwright-report/
           if-no-files-found: ignore
 

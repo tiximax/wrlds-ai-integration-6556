@@ -292,7 +292,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
                 </span>
                 
                 {product.compareAtPrice && (
-                  <span className="text-sm text-gray-500 line-through">
+                  <span className="text-sm text-gray-600 line-through">
                     {formatPrice(product.compareAtPrice)}
                   </span>
                 )}
@@ -300,7 +300,7 @@ const ProductCard: React.FC<ProductCardProps> = ({
               
               {/* Preorder Pricing */}
               {product.status === 'preorder' && product.preorderInfo?.estimatedPrice && (
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-gray-600 mt-1">
                   {t('productCard.estimated')}: {formatPrice(product.preorderInfo.estimatedPrice.min)} - {formatPrice(product.preorderInfo.estimatedPrice.max)}
                 </div>
               )}

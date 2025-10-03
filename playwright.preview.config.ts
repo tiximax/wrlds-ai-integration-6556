@@ -25,5 +25,10 @@ export default defineConfig({
     command: 'npm run preview:build',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
+    timeout: 180000,
+    env: {
+      VITE_ENABLE_DEV_SW: '1',
+      VITE_E2E: '1',
+    },
   },
 });

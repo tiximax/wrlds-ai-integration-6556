@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Badge } from '@/components/ui/badge';
 import { parseSearchParams, serializeSearchParams, performSearch, SortOption } from '@/utils/searchUtils';
 import { FilterState, defaultFilters } from '@/utils/productFilters';
+import VirtualScroll from '@/components/ui/virtual-scroll';
 
 const SearchResults: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -288,6 +289,32 @@ const SearchResults: React.FC = () => {
                 <EnhancedButton variant="outline" onClick={() => setPage(p => Math.min(result.pages, p + 1))} disabled={result.page === result.pages}>{t('searchResults.next')}</EnhancedButton>
               </div>
             )}
+          </div>
+        </div>
+
+        {/* Performance Demo: Virtual Scroll (does not affect main UX) */}
+        <div className="mt-12">
+          <h2 className="text-lg font-semibold text-gray-800 mb-2">Performance Demo</h2>
+          <p className="text-sm text-gray-600 mb-3">Virtualized list of 500 rows (container height 240px, item 32px)</p>
+          <div className="border rounded">
+            {(() => {
+              const demoItems = Array.from({ length: 500 }, (_, i) => `Row #${i + 1}`);
+              return (
+                <VirtualScroll
+                  items={demoItems}
+                  itemHeight={32}
+                  height={240}
+                  overscan={6}
+                  data-testid="virtual-scroll-demo"
+                  renderItem={(txt, idx) => (
+                    <div className="px-3 flex items-center justify-between text-sm">
+                      <span>{txt}</span>
+                      <span className="text-gray-400">{idx + 1}</span>
+                    </div>
+                  )}
+                />
+              );
+            })()}
           </div>
         </div>
       </div>
