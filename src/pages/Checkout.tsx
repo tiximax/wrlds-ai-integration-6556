@@ -10,6 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import AssurancePolicies from '@/components/trust/AssurancePolicies';
+import { useAnalytics } from '@/contexts/AnalyticsContext';
 
 const formatPrice = (price: number) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(price);
 
@@ -34,10 +35,18 @@ const Checkout: React.FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { items, totalItems, totalPrice, clearCart } = useSimpleCart();
+  const { track } = useAnalytics();
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
 
   const goNext = () => setStep((s) => (s < 4 ? ((s + 1) as any) : s));
   const goBack = () => setStep((s) => (s > 1 ? ((s - 1) as any) : s));
+
+  // Track step changes
+  React.useEffect(() => {
+    try {
+      track('checkout_step', { step, total_items: totalItems, total_price: totalPrice });
+    } catch {}
+  }, [step, totalItems, totalPrice]);
 
   // Load saved drafts
   // Dynamic schemas with i18n
@@ -343,7 +352,7 @@ const Checkout: React.FC = () => {
               <EnhancedButton variant="secondary" leftIcon={<ArrowLeft className="w-4 h-4" />} onClick={goBack}>
                 {t('checkout.actions.back')}
               </EnhancedButton>
-              <EnhancedButton data-testid="place-order" rightIcon={<CheckCircle className="w-4 h-4" />} onClick={() => setStep(4)}>
+              <EnhancedButton data-testid="place-order" rightIcon={<CheckCircle className="w-4 h-4" />} onClick={() => { try { track('order_placed', { total_items: totalItems, total_price: totalPrice }); } catch {}; setStep(4); }}>
                 {t('checkout.actions.placeOrder')}
               </EnhancedButton>
             </div>

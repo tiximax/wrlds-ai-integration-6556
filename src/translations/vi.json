@@ -30,7 +30,13 @@
     "careers": "Tuyển dụng",
     "privacyPolicy": "Chính sách bảo mật",
     "categories": "Danh mục",
-    "viewAllProducts": "Xem tất cả sản phẩm"
+    "viewAllProducts": "Xem tất cả sản phẩm",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "profile": "Tài khoản",
+    "signup": "Đăng ký",
+    "wishlist": "Danh sách yêu thích",
+    "cart": "Giỏ hàng"
   },
   "hero": {
     "title": "Dịch vụ Mua hộ Quốc tế Uy tín #1",

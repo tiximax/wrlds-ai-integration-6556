@@ -11,6 +11,9 @@ import { LanguageProvider } from "@/contexts/LanguageContext";
 import { addResourceHints, preloadCriticalResources } from "@/utils/performance";
 import { LoadingAnimation } from "@/components/LoadingAnimation";
 import { AnalyticsProvider, useAnalytics } from "@/contexts/AnalyticsContext";
+import { Auth0ProviderWithNavigate } from "@/contexts/Auth0Context";
+import { logger, formatError } from "@/utils/logger";
+import { registerServiceWorker } from "@/utils/serviceWorker";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -35,6 +38,11 @@ const Wishlist = lazy(() => import("./pages/Wishlist"));
 const Checkout = lazy(() => import("./pages/Checkout"));
 const VectorDB = lazy(() => import("./pages/VectorDB"));
 
+// Auth pages (Phase 1.2)
+const Login = lazy(() => import("./pages/Login"));
+const Callback = lazy(() => import("./pages/Callback"));
+const Profile = lazy(() => import("./pages/Profile"));
+
 const PageViewTracker = () => {
   const { track } = useAnalytics();
   const loc = useLocation();
@@ -46,7 +54,9 @@ const PageViewTracker = () => {
         title: document.title,
         referrer: document.referrer || ''
       });
-    } catch {}
+    } catch (error) {
+      logger.error('Failed to track page view', formatError(error));
+    }
   }, [loc.pathname, loc.search]);
   return null;
 };
@@ -56,27 +66,27 @@ const App = () => {
 
   useEffect(() => {
     // Add performance optimizations
-    addResourceHints();
-    preloadCriticalResources();
+    try {
+      addResourceHints();
+      preloadCriticalResources();
+      logger.debug('Performance optimizations applied');
+    } catch (error) {
+      logger.error('Failed to apply performance optimizations', formatError(error));
+    }
 
-    // Web Vitals
+    // Web Vitals monitoring
     try {
       const { initWebVitals } = require('@/utils/webVitals') as typeof import('@/utils/webVitals');
       initWebVitals();
-    } catch {}
+      logger.debug('Web Vitals monitoring initialized');
+    } catch (error) {
+      logger.warn('Failed to initialize Web Vitals', formatError(error));
+    }
 
-    // Service Worker (runtime cache for assets/images)
-    try {
-      if ('serviceWorker' in navigator) {
-        const usePwa = (import.meta as any).env?.PROD || (import.meta as any).env?.VITE_ENABLE_PWA;
-        // Chỉ bật Dev SW khi được cho phép rõ ràng qua env để tránh flakiness trong E2E
-        const enableDevSw = (import.meta as any).env?.DEV && (import.meta as any).env?.VITE_ENABLE_DEV_SW;
-        const swUrl = usePwa ? '/pwa-sw.js' : (enableDevSw ? '/dev-sw.js' : null);
-        if (swUrl) {
-          navigator.serviceWorker.register(swUrl).catch(() => {});
-        }
-      }
-    } catch {}
+    // Service Worker registration (with proper error handling)
+    registerServiceWorker().catch((error) => {
+      logger.warn('Service Worker registration encountered an issue', formatError(error));
+    });
   }, []);
 
   return (
@@ -90,6 +100,7 @@ const App = () => {
           <Toaster />
           <Sonner />
         <BrowserRouter>
+          <Auth0ProviderWithNavigate>
           <PageViewTracker />
           <Suspense fallback={
             <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
@@ -121,9 +132,16 @@ const App = () => {
             <Route path="/wishlist" element={<Wishlist />} />
             <Route path="/checkout" element={<Checkout />} />
             <Route path="/vector-db" element={<VectorDB />} />
+            
+            {/* Auth routes (Phase 1.2) */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/callback" element={<Callback />} />
+            <Route path="/profile" element={<Profile />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
           </Suspense>
+          </Auth0ProviderWithNavigate>
         </BrowserRouter>
           </TooltipProvider>
           </QueryClientProvider>

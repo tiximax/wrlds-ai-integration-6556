@@ -32,3 +32,10 @@ traces/
 
 # Local Netlify folder
 .netlify
+
+# Env files
+.env
+.env.*.local
+
+# Avoid committing a root SW that can conflict with scope
+public/sw.js

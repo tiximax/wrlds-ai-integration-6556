@@ -9,11 +9,18 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noImplicitAny": false,
-    "noUnusedParameters": false,
+    // Gradually enable strict mode - Phase 1: Start with these
+    "noImplicitAny": true,           // Prevent implicit 'any' types
+    "noUnusedParameters": true,      // Flag unused function parameters
+    "noUnusedLocals": true,          // Flag unused local variables
+    "strictNullChecks": true,        // Strict null and undefined checks
+    
+    // Additional safety checks
+    "noFallthroughCasesInSwitch": true,  // Prevent fallthrough in switch
+    "noImplicitReturns": true,           // All code paths must return a value
+    
+    // Keep these for compatibility
     "skipLibCheck": true,
-    "allowJs": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": false
+    "allowJs": true
   }
 }

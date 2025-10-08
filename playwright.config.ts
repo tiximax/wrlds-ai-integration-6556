@@ -66,5 +66,11 @@ export default defineConfig({
     command: process.env.CI ? 'npm run preview:build' : 'npm run dev',
     url: 'http://localhost:8080',
     reuseExistingServer: !process.env.CI,
+    // Increase timeout slightly for local cold starts and ensure E2E flags are set
+    timeout: process.env.CI ? 180000 : 120000,
+    env: {
+      VITE_ENABLE_DEV_SW: '1',
+      VITE_E2E: '1',
+    },
   },
 });
