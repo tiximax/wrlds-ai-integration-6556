@@ -12,6 +12,8 @@ import { addResourceHints, preloadCriticalResources } from "@/utils/performance"
 import { LoadingAnimation } from "@/components/LoadingAnimation";
 import { AnalyticsProvider, useAnalytics } from "@/contexts/AnalyticsContext";
 import { Auth0ProviderWithNavigate } from "@/contexts/Auth0Context";
+import { logger, formatError } from "@/utils/logger";
+import { registerServiceWorker } from "@/utils/serviceWorker";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -52,7 +54,9 @@ const PageViewTracker = () => {
         title: document.title,
         referrer: document.referrer || ''
       });
-    } catch {}
+    } catch (error) {
+      logger.error('Failed to track page view', formatError(error));
+    }
   }, [loc.pathname, loc.search]);
   return null;
 };
@@ -62,28 +66,27 @@ const App = () => {
 
   useEffect(() => {
     // Add performance optimizations
-    addResourceHints();
-    preloadCriticalResources();
+    try {
+      addResourceHints();
+      preloadCriticalResources();
+      logger.debug('Performance optimizations applied');
+    } catch (error) {
+      logger.error('Failed to apply performance optimizations', formatError(error));
+    }
 
-    // Web Vitals
+    // Web Vitals monitoring
     try {
       const { initWebVitals } = require('@/utils/webVitals') as typeof import('@/utils/webVitals');
       initWebVitals();
-    } catch {}
+      logger.debug('Web Vitals monitoring initialized');
+    } catch (error) {
+      logger.warn('Failed to initialize Web Vitals', formatError(error));
+    }
 
-    // Service Worker (runtime cache for assets/images)
-    try {
-      if ('serviceWorker' in navigator) {
-        // Ưu tiên Dev SW nếu được bật qua env (áp dụng cả dev và preview)
-        const enableDevSw = (import.meta as any).env?.VITE_ENABLE_DEV_SW;
-        const usePwa = (import.meta as any).env?.PROD || (import.meta as any).env?.VITE_ENABLE_PWA;
-        // VitePWA mặc định tạo file '/sw.js' khi bật generateSW
-        const swUrl = enableDevSw ? '/dev-sw.js' : (usePwa ? '/sw.js' : null);
-        if (swUrl) {
-          navigator.serviceWorker.register(swUrl).catch(() => {});
-        }
-      }
-    } catch {}
+    // Service Worker registration (with proper error handling)
+    registerServiceWorker().catch((error) => {
+      logger.warn('Service Worker registration encountered an issue', formatError(error));
+    });
   }, []);
 
   return (
