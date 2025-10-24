@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 import { simpleProducts } from '@/data/simpleProducts';
 import { generateSearchSuggestions as genSuggestions, getSearchHistory, addToSearchHistory, performAdvancedSearch, defaultSearchFilters } from '@/utils/advancedSearch';
 import { useAnalytics } from '@/contexts/AnalyticsContext';
@@ -242,8 +243,12 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
       try {
         const { resizeImageToDataURL } = require('@/utils/imageWorkerClient') as typeof import('@/utils/imageWorkerClient');
         // Fire and forget resize to ensure worker path ok
-        resizeImageToDataURL(file, 256).catch(() => {});
-      } catch {}
+        resizeImageToDataURL(file, 256).catch((err) => {
+          logger.warn('Image resize worker failed', { error: String(err), fileName: file.name });
+        });
+      } catch (err) {
+        logger.debug('Image worker client not available', { error: String(err) });
+      }
 
       // Derive a search query from the filename, e.g. "japanese-sneakers.png" => "japanese sneakers"
       const base = file.name.replace(/\.[^.]+$/, '');
@@ -283,7 +288,9 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     // Track search event
     try {
       track('search', { query: trimmedQuery, result_count: results.length });
-    } catch {}
+    } catch (err) {
+      logger.warn('Search tracking failed', { query: trimmedQuery, error: String(err) });
+    }
 
     if (onSearch) {
       onSearch(trimmedQuery);
@@ -351,7 +358,11 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
   // Analytics integration via context
   const logSearchEvent = (event: string, payload: Record<string, any>) => {
-    try { track(event, payload); } catch {}
+    try { 
+      track(event, payload);
+    } catch (err) {
+      logger.debug('Analytics event tracking failed', { event, error: String(err) });
+    }
   };
 
   // Highlight matched query parts in suggestion text

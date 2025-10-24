@@ -3,6 +3,7 @@ import React from 'react';
 import { ContentSection } from '@/data/blogPosts';
 import { DollarSign, Users, TrendingUp, Shield, Zap, Settings, Database } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { logger } from '@/utils/logger';
 
 interface EnhancedBlogContentProps {
   content: ContentSection[];
@@ -113,7 +114,14 @@ const EnhancedBlogContent: React.FC<EnhancedBlogContentProps> = ({ content }) =>
 
         const BarChartLazy: React.FC<{ data: any[] }> = ({ data }) => {
           const [mod, setMod] = React.useState<any>(null);
-          React.useEffect(() => { import('recharts').then(setMod).catch(() => setMod(null)); }, []);
+          React.useEffect(() => { 
+            import('recharts')
+              .then(setMod)
+              .catch((err) => {
+                logger.warn('Failed to load recharts library for BarChart', { error: String(err) });
+                setMod(null);
+              }); 
+          }, []);
           if (!mod) return <div className="h-full w-full flex items-center justify-center text-sm text-gray-500">Loading chart…</div>;
           const { ResponsiveContainer, BarChart, Bar, XAxis, YAxis } = mod;
           return (
@@ -129,7 +137,14 @@ const EnhancedBlogContent: React.FC<EnhancedBlogContentProps> = ({ content }) =>
 
         const PieChartLazy: React.FC<{ data: any[] }> = ({ data }) => {
           const [mod, setMod] = React.useState<any>(null);
-          React.useEffect(() => { import('recharts').then(setMod).catch(() => setMod(null)); }, []);
+          React.useEffect(() => { 
+            import('recharts')
+              .then(setMod)
+              .catch((err) => {
+                logger.warn('Failed to load recharts library for PieChart', { error: String(err) });
+                setMod(null);
+              }); 
+          }, []);
           if (!mod) return <div className="h-full w-full flex items-center justify-center text-sm text-gray-500">Loading chart…</div>;
           const { ResponsiveContainer, PieChart, Pie, Cell } = mod;
           return (
