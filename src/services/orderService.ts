@@ -789,110 +789,52 @@ export class OrderService {
 
   // Email notification methods
   private async sendOrderConfirmationEmail(order: Order): Promise<void> {
-    const notification: EmailNotification = {
-      type: 'order_confirmation',
-      to: order.customerEmail,
-      subject: `Order Confirmation - ${order.orderNumber}`,
-      template: 'order_confirmation',
-      data: {
-        orderNumber: order.orderNumber,
-        customerName: `${order.shippingDetails.address.firstName} ${order.shippingDetails.address.lastName}`,
-        items: order.items,
-        total: order.total,
-        estimatedDelivery: order.shippingDetails.estimatedDelivery
-      },
-      status: 'pending'
-    };
+    try {
+      logger.debug('Sending order confirmation email', { orderId: order.id, email: order.customerEmail });
 
-    // Simulate sending email
-    setTimeout(() => {
-      notification.status = 'sent';
-      notification.sentAt = new Date();
-    }, 1000);
+      const notification: EmailNotification = {
+        type: 'order_confirmation',
+        to: order.customerEmail,
+        subject: `Order Confirmation - ${order.orderNumber}`,
+        template: 'order_confirmation',
+        data: {
+          orderNumber: order.orderNumber,
+          customerName: `${order.shippingDetails.address.firstName} ${order.shippingDetails.address.lastName}`,
+          items: order.items,
+          total: order.total,
+          estimatedDelivery: order.shippingDetails.estimatedDelivery
+        },
+        status: 'pending'
+      };
 
-    this.notifications.push(notification);
+      // Simulate sending email
+      setTimeout(() => {
+        notification.status = 'sent';
+        notification.sentAt = new Date();
+        logger.info('Order confirmation email sent', { orderId: order.id, email: order.customerEmail });
+      }, 1000);
+
+      this.notifications.push(notification);
+    } catch (error) {
+      logger.error('Failed to send order confirmation email', { error: String(error), orderId: order.id, email: order.customerEmail });
+      // Don't throw - email failure shouldn't block order creation
+    }
   }
 
   private async sendShippingNotificationEmail(order: Order): Promise<void> {
-    const notification: EmailNotification = {
-      type: 'order_shipped',
-      to: order.customerEmail,
-      subject: `Your Order Has Shipped - ${order.orderNumber}`,
-      template: 'order_shipped',
-      data: {
-        orderNumber: order.orderNumber,
-        trackingNumber: order.shippingDetails.trackingNumber,
-        carrier: order.shippingDetails.carrier,
-        estimatedDelivery: order.shippingDetails.estimatedDelivery
-      },
-      status: 'pending'
-    };
+    try {
+      logger.debug('Sending shipping notification email', { orderId: order.id, trackingNumber: order.shippingDetails.trackingNumber });
 
-    setTimeout(() => {
-      notification.status = 'sent';
-      notification.sentAt = new Date();
-    }, 1000);
-
-    this.notifications.push(notification);
-  }
-
-  private async sendDeliveryNotificationEmail(order: Order): Promise<void> {
-    const notification: EmailNotification = {
-      type: 'order_delivered',
-      to: order.customerEmail,
-      subject: `Your Order Has Been Delivered - ${order.orderNumber}`,
-      template: 'order_delivered',
-      data: {
-        orderNumber: order.orderNumber,
-        deliveredAt: order.deliveredAt,
-        items: order.items
-      },
-      status: 'pending'
-    };
-
-    setTimeout(() => {
-      notification.status = 'sent';
-      notification.sentAt = new Date();
-    }, 1000);
-
-    this.notifications.push(notification);
-  }
-
-  private async sendRefundNotificationEmail(order: Order, refundAmount: number, reason?: string): Promise<void> {
-    const notification: EmailNotification = {
-      type: 'refund_processed',
-      to: order.customerEmail,
-      subject: `Refund Processed - ${order.orderNumber}`,
-      template: 'refund_processed',
-      data: {
-        orderNumber: order.orderNumber,
-        refundAmount,
-        reason,
-        originalAmount: order.total
-      },
-      status: 'pending'
-    };
-
-    setTimeout(() => {
-      notification.status = 'sent';
-      notification.sentAt = new Date();
-    }, 1000);
-
-    this.notifications.push(notification);
-  }
-
-  private async handleStatusChangeNotification(order: Order, previousStatus: OrderStatus, newStatus: OrderStatus): Promise<void> {
-    // Send appropriate notifications based on status changes
-    if (newStatus === 'cancelled' && previousStatus !== 'cancelled') {
       const notification: EmailNotification = {
-        type: 'order_cancelled',
+        type: 'order_shipped',
         to: order.customerEmail,
-        subject: `Order Cancelled - ${order.orderNumber}`,
-        template: 'order_cancelled',
+        subject: `Your Order Has Shipped - ${order.orderNumber}`,
+        template: 'order_shipped',
         data: {
           orderNumber: order.orderNumber,
-          reason: order.cancellationReason,
-          refundInfo: 'Your refund will be processed within 5-7 business days.'
+          trackingNumber: order.shippingDetails.trackingNumber,
+          carrier: order.shippingDetails.carrier,
+          estimatedDelivery: order.shippingDetails.estimatedDelivery
         },
         status: 'pending'
       };
@@ -900,9 +842,107 @@ export class OrderService {
       setTimeout(() => {
         notification.status = 'sent';
         notification.sentAt = new Date();
+        logger.info('Shipping notification email sent', { orderId: order.id, trackingNumber: order.shippingDetails.trackingNumber });
       }, 1000);
 
       this.notifications.push(notification);
+    } catch (error) {
+      logger.error('Failed to send shipping notification email', { error: String(error), orderId: order.id });
+      // Don't throw - email failure shouldn't block shipping update
+    }
+  }
+
+  private async sendDeliveryNotificationEmail(order: Order): Promise<void> {
+    try {
+      logger.debug('Sending delivery notification email', { orderId: order.id, deliveredAt: order.deliveredAt });
+
+      const notification: EmailNotification = {
+        type: 'order_delivered',
+        to: order.customerEmail,
+        subject: `Your Order Has Been Delivered - ${order.orderNumber}`,
+        template: 'order_delivered',
+        data: {
+          orderNumber: order.orderNumber,
+          deliveredAt: order.deliveredAt,
+          items: order.items
+        },
+        status: 'pending'
+      };
+
+      setTimeout(() => {
+        notification.status = 'sent';
+        notification.sentAt = new Date();
+        logger.info('Delivery notification email sent', { orderId: order.id });
+      }, 1000);
+
+      this.notifications.push(notification);
+    } catch (error) {
+      logger.error('Failed to send delivery notification email', { error: String(error), orderId: order.id });
+      // Don't throw - email failure shouldn't block delivery update
+    }
+  }
+
+  private async sendRefundNotificationEmail(order: Order, refundAmount: number, reason?: string): Promise<void> {
+    try {
+      logger.debug('Sending refund notification email', { orderId: order.id, refundAmount });
+
+      const notification: EmailNotification = {
+        type: 'refund_processed',
+        to: order.customerEmail,
+        subject: `Refund Processed - ${order.orderNumber}`,
+        template: 'refund_processed',
+        data: {
+          orderNumber: order.orderNumber,
+          refundAmount,
+          reason,
+          originalAmount: order.total
+        },
+        status: 'pending'
+      };
+
+      setTimeout(() => {
+        notification.status = 'sent';
+        notification.sentAt = new Date();
+        logger.info('Refund notification email sent', { orderId: order.id, refundAmount });
+      }, 1000);
+
+      this.notifications.push(notification);
+    } catch (error) {
+      logger.error('Failed to send refund notification email', { error: String(error), orderId: order.id, refundAmount });
+      // Don't throw - email failure shouldn't block refund processing
+    }
+  }
+
+  private async handleStatusChangeNotification(order: Order, previousStatus: OrderStatus, newStatus: OrderStatus): Promise<void> {
+    try {
+      // Send appropriate notifications based on status changes
+      if (newStatus === 'cancelled' && previousStatus !== 'cancelled') {
+        logger.debug('Sending order cancellation email', { orderId: order.id, previousStatus, newStatus });
+
+        const notification: EmailNotification = {
+          type: 'order_cancelled',
+          to: order.customerEmail,
+          subject: `Order Cancelled - ${order.orderNumber}`,
+          template: 'order_cancelled',
+          data: {
+            orderNumber: order.orderNumber,
+            reason: order.cancellationReason,
+            refundInfo: 'Your refund will be processed within 5-7 business days.'
+          },
+          status: 'pending'
+        };
+
+        setTimeout(() => {
+          notification.status = 'sent';
+          notification.sentAt = new Date();
+          logger.info('Order cancellation email sent', { orderId: order.id });
+        }, 1000);
+
+        this.notifications.push(notification);
+      }
+    } catch (error) {
+      logger.error('Failed to handle status change notification', { error: String(error), orderId: order.id, newStatus });
+      // Don't throw - notification failure shouldn't block status update
     }
   }
 
