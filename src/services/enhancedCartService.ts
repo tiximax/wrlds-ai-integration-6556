@@ -1,6 +1,8 @@
 // Enhanced Cart Service - Advanced shopping cart features
 // Includes cart sharing, saved carts, bulk operations, price alerts, and abandonment recovery
 
+import { logger } from '@/utils/logger';
+
 export interface CartItem {
   id: string;
   productId: string;
@@ -610,11 +612,11 @@ export class EnhancedCartService {
 
     // Send notifications (mock implementation)
     if (alert.emailNotifications) {
-      console.log(`Email sent: Price alert for product ${alert.productId} - now $${currentPrice}`);
+      logger.info('Price alert email sent', { productId: alert.productId, currentPrice });
     }
 
     if (alert.pushNotifications) {
-      console.log(`Push notification sent: Price alert for product ${alert.productId}`);
+      logger.info('Price alert push notification sent', { productId: alert.productId });
     }
 
     // Deactivate if max notifications reached
@@ -683,7 +685,7 @@ export class EnhancedCartService {
     abandonmentData.lastRecoveryAttempt = new Date();
 
     // Mock email sending
-    console.log(`Recovery email sent: ${type} for session ${abandonmentData.sessionId}`);
+    logger.info('Cart abandonment recovery email sent', { sessionId: abandonmentData.sessionId, emailType: type });
   }
 
   async markCartAsRecovered(sessionId: string): Promise<boolean> {
@@ -824,7 +826,7 @@ export class EnhancedCartService {
     // Track cart abandonment patterns
     setInterval(() => {
       // Check for abandoned carts and trigger recovery sequences
-      console.log('Checking for cart abandonment patterns...');
+      logger.debug('Checking for cart abandonment patterns');
     }, 10 * 60 * 1000); // Every 10 minutes
   }
 }

@@ -1,6 +1,8 @@
 // Order Management Service - Handles all order-related operations
 // Complete order lifecycle management system
 
+import { logger } from '@/utils/logger';
+
 export interface OrderItem {
   id: string;
   productId: string;
@@ -357,8 +359,10 @@ export class OrderService {
       // Send order confirmation email
       await this.sendOrderConfirmationEmail(order);
 
+      logger.info('Order created successfully', { orderId, orderNumber, customerId: orderData.customerId, total });
       return order;
     } catch (error) {
+      logger.error('Failed to create order', { error: String(error), customerId: orderData.customerId });
       throw new Error(`Failed to create order: ${error}`);
     }
   }
@@ -513,6 +517,7 @@ export class OrderService {
     }
 
     this.orders.set(orderId, order);
+    logger.info('Order status updated', { orderId, previousStatus, newStatus: status });
 
     // Send notifications for status changes
     await this.handleStatusChangeNotification(order, previousStatus, status);
@@ -563,6 +568,7 @@ export class OrderService {
     }
 
     this.orders.set(orderId, order);
+    logger.info('Shipping tracking updated', { orderId, status: update.status, trackingNumber: update.trackingNumber });
 
     // Send shipping notification
     if (update.status === 'shipped') {
@@ -578,8 +584,10 @@ export class OrderService {
   async confirmOrder(orderId: string): Promise<boolean> {
     try {
       await this.updateOrderStatus(orderId, 'confirmed');
+      logger.info('Order confirmed', { orderId });
       return true;
     } catch (error) {
+      logger.error('Failed to confirm order', { orderId, error: String(error) });
       return false;
     }
   }
@@ -605,8 +613,10 @@ export class OrderService {
       }
       
       this.orders.set(orderId, order);
+      logger.info('Order shipped', { orderId, trackingNumber: shippingData.trackingNumber, carrier: shippingData.carrier });
       return true;
     } catch (error) {
+      logger.error('Failed to ship order', { orderId, error: String(error) });
       return false;
     }
   }
@@ -625,8 +635,10 @@ export class OrderService {
   async cancelOrder(orderId: string, reason?: string): Promise<boolean> {
     try {
       await this.updateOrderStatus(orderId, 'cancelled', reason);
+      logger.info('Order cancelled', { orderId, reason });
       return true;
     } catch (error) {
+      logger.error('Failed to cancel order', { orderId, error: String(error) });
       return false;
     }
   }
@@ -651,6 +663,7 @@ export class OrderService {
     
     order.updatedAt = new Date();
     this.orders.set(orderId, order);
+    logger.info('Refund processed', { orderId, refundAmount, reason });
 
     // Send refund notification
     await this.sendRefundNotificationEmail(order, refundAmount, reason);
