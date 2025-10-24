@@ -1,5 +1,6 @@
 import { CartItem } from '@/types/product';
 import toast from 'react-hot-toast';
+import { logger } from './logger';
 
 // Storage keys
 export const CART_STORAGE_KEYS = {
@@ -86,7 +87,7 @@ export const saveCart = (items: CartItem[]): boolean => {
     
     return true;
   } catch (error) {
-    console.error('Failed to save cart:', error);
+    logger.error('Failed to save cart', { error: String(error) });
     toast.error('Không thể lưu giỏ hàng');
     return false;
   }
@@ -114,7 +115,7 @@ export const loadCart = (): { items: CartItem[]; metadata: CartMetadata | null }
       // Validate cart hash
       const currentHash = generateCartHash(items);
       if (currentHash !== metadata.cartHash) {
-        console.warn('Cart hash mismatch, possible data corruption');
+        logger.warn('Cart hash mismatch, possible data corruption');
         // Try backup
         return loadBackupCart();
       }
@@ -131,7 +132,7 @@ export const loadCart = (): { items: CartItem[]; metadata: CartMetadata | null }
     // Try backup if primary fails
     return loadBackupCart();
   } catch (error) {
-    console.error('Failed to load cart:', error);
+    logger.error('Failed to load cart', { error: String(error) });
     return loadBackupCart();
   }
 };
@@ -152,7 +153,7 @@ export const loadBackupCart = (): { items: CartItem[]; metadata: CartMetadata | 
     }
     return null;
   } catch (error) {
-    console.error('Failed to load backup cart:', error);
+    logger.error('Failed to load backup cart', { error: String(error) });
     return null;
   }
 };
@@ -175,7 +176,7 @@ export const saveAbandonedCart = (items: CartItem[], metadata: CartMetadata): vo
     const limitedAbandoned = existingAbandoned.slice(0, CART_CONFIG.MAX_BACKUP_SIZE);
     localStorage.setItem(CART_STORAGE_KEYS.ABANDONED, JSON.stringify(limitedAbandoned));
   } catch (error) {
-    console.error('Failed to save abandoned cart:', error);
+    logger.error('Failed to save abandoned cart', { error: String(error) });
   }
 };
 
@@ -184,7 +185,7 @@ export const getAbandonedCarts = (): AbandonedCart[] => {
   try {
     return JSON.parse(localStorage.getItem(CART_STORAGE_KEYS.ABANDONED) || '[]');
     } catch (error: unknown) {
-    console.error('Failed to load abandoned carts:', error);
+    logger.error('Failed to load abandoned carts', { error: String(error) });
     return [];
   }
 };
@@ -196,7 +197,7 @@ export const clearCart = (): void => {
     localStorage.removeItem(CART_STORAGE_KEYS.METADATA);
     sessionStorage.removeItem(CART_STORAGE_KEYS.BACKUP);
   } catch (error) {
-    console.error('Failed to clear cart:', error);
+    logger.error('Failed to clear cart', { error: String(error) });
   }
 };
 
@@ -243,7 +244,7 @@ export class CartSyncManager {
           this.onSyncCallback(processedItems);
         }
       } catch (error) {
-        console.error('Failed to sync cart from other tab:', error);
+        logger.error('Failed to sync cart from other tab', { error: String(error) });
       }
     }
   }
@@ -297,7 +298,7 @@ export const cleanupExpiredCarts = (): void => {
     );
     localStorage.setItem(CART_STORAGE_KEYS.ABANDONED, JSON.stringify(cleanedCarts));
   } catch (error) {
-    console.error('Failed to cleanup expired carts:', error);
+    logger.error('Failed to cleanup expired carts', { error: String(error) });
   }
 };
 

@@ -1,6 +1,8 @@
 // Payment Service - Handles all payment-related operations
 // This is a comprehensive payment integration system
 
+import { logger } from '@/utils/logger';
+
 export interface PaymentMethod {
   id: string;
   type: 'card' | 'paypal' | 'apple_pay' | 'google_pay' | 'bank_transfer';
@@ -135,16 +137,16 @@ export class PaymentService {
       // Initialize Stripe
       if (this.config.stripePublicKey && typeof window !== 'undefined') {
         // In real app: this.stripe = Stripe(this.config.stripePublicKey);
-        console.log('Stripe initialized with key:', this.config.stripePublicKey.substring(0, 10) + '...');
+        logger.debug('Stripe initialized successfully');
       }
 
       // Initialize PayPal
       if (this.config.paypalClientId) {
         // In real app: initialize PayPal SDK
-        console.log('PayPal initialized with client ID:', this.config.paypalClientId.substring(0, 10) + '...');
+        logger.debug('PayPal SDK initialized successfully');
       }
     } catch (error) {
-      console.error('Failed to initialize payment providers:', error);
+      logger.error('Failed to initialize payment providers', { error: String(error) });
     }
   }
 
@@ -809,22 +811,22 @@ export const handlePaymentWebhook = async (event: any): Promise<void> => {
   try {
     switch (event.type) {
       case 'payment_intent.succeeded':
-        console.log('Payment succeeded:', event.data.object.id);
+        logger.info('Payment succeeded', { paymentId: event.data.object.id });
         // Handle successful payment
         break;
       case 'payment_intent.payment_failed':
-        console.log('Payment failed:', event.data.object.id);
+        logger.warn('Payment failed', { paymentId: event.data.object.id });
         // Handle failed payment
         break;
       case 'payment_method.attached':
-        console.log('Payment method attached:', event.data.object.id);
+        logger.info('Payment method attached', { paymentMethodId: event.data.object.id });
         // Handle payment method attachment
         break;
       default:
-        console.log('Unhandled event type:', event.type);
+        logger.debug('Unhandled webhook event type', { eventType: event.type });
     }
   } catch (error) {
-    console.error('Webhook error:', error);
+    logger.error('Webhook processing error', { error: String(error) });
     throw error;
   }
 };
