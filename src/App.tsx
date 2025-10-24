@@ -14,6 +14,7 @@ import { AnalyticsProvider, useAnalytics } from "@/contexts/AnalyticsContext";
 import { Auth0ProviderWithNavigate } from "@/contexts/Auth0Context";
 import { logger, formatError } from "@/utils/logger";
 import { registerServiceWorker } from "@/utils/serviceWorker";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Lazy load pages for better performance
 const Index = lazy(() => import("./pages/Index"));
@@ -90,66 +91,68 @@ const App = () => {
   }, []);
 
   return (
-    <LanguageProvider>
-      <AnalyticsProvider>
-      <SimpleCartProvider>
-        <WishlistProvider>
-          <CompareProvider>
-          <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-          <Toaster />
-          <Sonner />
-        <BrowserRouter>
-          <Auth0ProviderWithNavigate>
-          <PageViewTracker />
-          <Suspense fallback={
-            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
-              <div className="text-center space-y-4">
-                <LoadingAnimation variant="wave" size="lg" />
-                <p className="text-gray-600 text-sm font-medium">Loading...</p>
+    <ErrorBoundary level="page">
+      <LanguageProvider>
+        <AnalyticsProvider>
+        <SimpleCartProvider>
+          <WishlistProvider>
+            <CompareProvider>
+            <QueryClientProvider client={queryClient}>
+            <TooltipProvider>
+            <Toaster />
+            <Sonner />
+          <BrowserRouter>
+            <Auth0ProviderWithNavigate>
+            <PageViewTracker />
+            <Suspense fallback={
+              <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">
+                <div className="text-center space-y-4">
+                  <LoadingAnimation variant="wave" size="lg" />
+                  <p className="text-gray-600 text-sm font-medium">Loading...</p>
+                </div>
               </div>
-            </div>
-          }>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/projects/firecat" element={<FireCatProject />} />
-            <Route path="/projects/sport-retail" element={<SportRetailProject />} />
-            <Route path="/projects/workwear" element={<WorkwearProject />} />
-            <Route path="/projects/hockey" element={<HockeyProject />} />
-            <Route path="/projects/pet-tracker" element={<PetProject />} />
-            <Route path="/tech-details" element={<TechDetails />} />
-            <Route path="/development-process" element={<DevelopmentProcess />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogPostDetail />} />
-            <Route path="/products" element={<SimpleProducts />} />
-            <Route path="/products/:slug" element={<ProductDetail />} />
-            <Route path="/search" element={<SearchResults />} />
-            <Route path="/category/:categorySlug" element={<CategoryPage />} />
-            <Route path="/category/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
-            <Route path="/wishlist" element={<Wishlist />} />
-            <Route path="/checkout" element={<Checkout />} />
-            <Route path="/vector-db" element={<VectorDB />} />
-            
-            {/* Auth routes (Phase 1.2) */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/callback" element={<Callback />} />
-            <Route path="/profile" element={<Profile />} />
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          </Suspense>
-          </Auth0ProviderWithNavigate>
-        </BrowserRouter>
-          </TooltipProvider>
-          </QueryClientProvider>
-          </CompareProvider>
-        </WishlistProvider>
-      </SimpleCartProvider>
-      </AnalyticsProvider>
-    </LanguageProvider>
+            }>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/projects/firecat" element={<FireCatProject />} />
+              <Route path="/projects/sport-retail" element={<SportRetailProject />} />
+              <Route path="/projects/workwear" element={<WorkwearProject />} />
+              <Route path="/projects/hockey" element={<HockeyProject />} />
+              <Route path="/projects/pet-tracker" element={<PetProject />} />
+              <Route path="/tech-details" element={<TechDetails />} />
+              <Route path="/development-process" element={<DevelopmentProcess />} />
+              <Route path="/about" element={<About />} />
+              <Route path="/careers" element={<Careers />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPostDetail />} />
+              <Route path="/products" element={<SimpleProducts />} />
+              <Route path="/products/:slug" element={<ProductDetail />} />
+              <Route path="/search" element={<SearchResults />} />
+              <Route path="/category/:categorySlug" element={<CategoryPage />} />
+              <Route path="/category/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
+              <Route path="/wishlist" element={<Wishlist />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/vector-db" element={<VectorDB />} />
+              
+              {/* Auth routes (Phase 1.2) */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/callback" element={<Callback />} />
+              <Route path="/profile" element={<Profile />} />
+              
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            </Suspense>
+            </Auth0ProviderWithNavigate>
+          </BrowserRouter>
+            </TooltipProvider>
+            </QueryClientProvider>
+            </CompareProvider>
+          </WishlistProvider>
+        </SimpleCartProvider>
+        </AnalyticsProvider>
+      </LanguageProvider>
+    </ErrorBoundary>
   );
 };
 
