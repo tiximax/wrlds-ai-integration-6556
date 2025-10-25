@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useSearchParams } from 'react-router-dom';
 import { SimpleProduct } from '@/types/simple';
@@ -8,9 +8,10 @@ import { EnhancedButton } from '@/components/ui/enhanced-button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
-import { Search, Filter, Grid, List } from 'lucide-react';
+import { Search, Filter, Grid, List, AlertCircle, RotateCcw } from 'lucide-react';
 import PageLayout from '@/components/PageLayout';
-import { ProductCardSkeleton } from '@/components/ui/loading-states';
+import { ProductCardSkeleton } from '@/components/skeletons';
+import { useLoadingState } from '@/hooks/useLoadingState';
 
 const SimpleProducts: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,7 +23,13 @@ const SimpleProducts: React.FC = () => {
   const [sortBy, setSortBy] = useState(searchParams.get('sort') || 'name');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(true);
+  
+  // Loading state with retry logic
+  const { isLoading, error, load, retry } = useLoadingState({
+    timeout: 8000,
+    autoRetry: true,
+    maxRetries: 3,
+  });
   
   const ITEMS_PER_PAGE = 12;
 
@@ -80,11 +87,14 @@ const SimpleProducts: React.FC = () => {
     updateUrlParams();
   }, [searchTerm, selectedOrigin, selectedStatus, sortBy]);
 
-  // Simulate loading to show skeletons
-  React.useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 300);
-    return () => clearTimeout(timer);
-  }, []);
+  // Initialize loading with products
+  useEffect(() => {
+    load(async () => {
+      // Simulate loading products (replace with real API call if needed)
+      return simpleProducts;
+    });
+  }, [load]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -225,8 +235,32 @@ const SimpleProducts: React.FC = () => {
           </p>
         </div>
 
+        {/* Error State */}
+        {error && paginatedProducts.length === 0 && (
+          <div className="mb-8 p-6 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-start gap-4">
+              <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-red-900 mb-2">
+                  Failed to Load Products
+                </h3>
+                <p className="text-red-700 mb-4">
+                  {error.message || 'An error occurred while loading products. Please try again.'}
+                </p>
+                <button
+                  onClick={retry}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Retry
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Products Grid */}
-        {isLoading ? (
+        {isLoading && paginatedProducts.length === 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
             {Array.from({ length: 12 }).map((_, i) => (
               <ProductCardSkeleton key={i} />
