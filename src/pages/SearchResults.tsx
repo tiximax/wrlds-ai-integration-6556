@@ -12,6 +12,9 @@ import { Badge } from '@/components/ui/badge';
 import { parseSearchParams, serializeSearchParams, performSearch, SortOption } from '@/utils/searchUtils';
 import { FilterState, defaultFilters } from '@/utils/productFilters';
 import VirtualScroll from '@/components/ui/virtual-scroll';
+import { SearchResultsSkeleton } from '@/components/skeletons';
+import { useLoadingState } from '@/hooks/useLoadingState';
+import { AlertCircle, RotateCcw } from 'lucide-react';
 
 const SearchResults: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,13 +28,35 @@ const SearchResults: React.FC = () => {
   const [sort, setSort] = useState<SortOption>(initial.sort || 'relevance');
   const [page, setPage] = useState<number>(initial.page || 1);
   const [perPage, setPerPage] = useState<number>(initial.perPage || 12);
+  
+  // Loading state for search results
+  const { isLoading, error, load, retry } = useLoadingState({
+    timeout: 8000,
+    autoRetry: true,
+    maxRetries: 3,
+  });
 
   // keep filters.search synced with query
   useEffect(() => {
     setFilters((prev) => ({ ...prev, search: query }));
   }, [query]);
 
-  // recompute results
+  // Load search results when params change
+  useEffect(() => {
+    load(async () => {
+      // Perform search (can be replaced with real API call)
+      const results = performSearch(simpleProducts as any, {
+        query,
+        filters,
+        sort,
+        page,
+        perPage,
+      });
+      return results;
+    });
+  }, [query, filters, sort, page, perPage, load]);
+
+  // recompute results without loading state for display
   const result = useMemo(() => {
     return performSearch(simpleProducts as any, {
       query,
@@ -265,8 +290,37 @@ const SearchResults: React.FC = () => {
               </div>
             </div>
 
+            {/* Error State */}
+            {error && result.items.length === 0 && (
+              <div className="p-6 bg-red-50 border border-red-200 rounded-lg mb-8">
+                <div className="flex items-start gap-4">
+                  <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-red-900 mb-2">
+                      Search Failed
+                    </h3>
+                    <p className="text-red-700 mb-4">
+                      {error.message || 'An error occurred while searching. Please try again.'}
+                    </p>
+                    <button
+                      onClick={retry}
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+                    >
+                      <RotateCcw className="w-4 h-4" />
+                      Retry
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Loading Skeleton */}
+            {isLoading && result.items.length === 0 && (
+              <SearchResultsSkeleton productCount={perPage} showFilters={true} />
+            )}
+
             {/* Grid */}
-              {result.items.length > 0 ? (
+              {!isLoading && result.items.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-6 mb-8" data-testid="search-results-grid">
                 {result.items.map((product) => (
                   <SimpleProductCard key={product.id} product={product as any} highlightQuery={query} />
