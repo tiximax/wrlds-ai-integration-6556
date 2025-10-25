@@ -32,6 +32,11 @@ export default tseslint.config(
           "caughtErrorsIgnorePattern": "^_",
         },
       ],
+      // Configure no-unused-expressions to allow optional chaining
+      "@typescript-eslint/no-unused-expressions": [
+        "warn",
+        { allowShortCircuit: true, allowTernary: true },
+      ],
     },
   }
 );

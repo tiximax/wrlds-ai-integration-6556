@@ -177,27 +177,30 @@ export const SimpleCartSidebar: React.FC<SimpleCartSidebarProps> = ({
                           </span>
                           
                           {/* Quantity Controls */}
-                          <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-2 sm:gap-3">
                             <Button
                               variant="outline"
                               size="sm"
-                              className="w-10 h-10 sm:w-8 sm:h-8 p-0"
-                              onClick={() => handleUpdateQuantity(item, item.quantity - 1)}
+                              className="min-h-[44px] min-w-[44px] p-0 active:scale-95 transition-transform"
+                              onClick={() => handleUpdateQuantity(item, Math.max(1, item.quantity - 1))}
                               aria-label="Decrease quantity"
+                              title="Decrease item quantity"
+                              disabled={item.quantity <= 1}
                             >
-                              <Minus className="w-3 h-3" />
+                              <Minus className="w-4 h-4" />
                             </Button>
-                            <span className="w-8 text-center text-sm font-medium">
+                            <span className="w-12 text-center text-sm font-semibold text-gray-900">
                               {item.quantity}
                             </span>
                             <Button
                               variant="outline"
                               size="sm"
-                              className="w-10 h-10 sm:w-8 sm:h-8 p-0"
+                              className="min-h-[44px] min-w-[44px] p-0 active:scale-95 transition-transform"
                               onClick={() => handleUpdateQuantity(item, item.quantity + 1)}
                               aria-label="Increase quantity"
+                              title="Increase item quantity"
                             >
-                              <Plus className="w-3 h-3" />
+                              <Plus className="w-4 h-4" />
                             </Button>
                           </div>
                         </div>

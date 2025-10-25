@@ -18,6 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { logger } from '@/utils/logger';
 import { simpleProducts } from '@/data/simpleProducts';
 import { generateSearchSuggestions as genSuggestions, getSearchHistory, addToSearchHistory, performAdvancedSearch, defaultSearchFilters } from '@/utils/advancedSearch';
 import { useAnalytics } from '@/contexts/AnalyticsContext';
@@ -242,8 +243,12 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
       try {
         const { resizeImageToDataURL } = require('@/utils/imageWorkerClient') as typeof import('@/utils/imageWorkerClient');
         // Fire and forget resize to ensure worker path ok
-        resizeImageToDataURL(file, 256).catch(() => {});
-      } catch {}
+        resizeImageToDataURL(file, 256).catch((err) => {
+          logger.warn('Image resize worker failed', { error: String(err), fileName: file.name });
+        });
+      } catch (err) {
+        logger.debug('Image worker client not available', { error: String(err) });
+      }
 
       // Derive a search query from the filename, e.g. "japanese-sneakers.png" => "japanese sneakers"
       const base = file.name.replace(/\.[^.]+$/, '');
@@ -283,7 +288,9 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
     // Track search event
     try {
       track('search', { query: trimmedQuery, result_count: results.length });
-    } catch {}
+    } catch (err) {
+      logger.warn('Search tracking failed', { query: trimmedQuery, error: String(err) });
+    }
 
     if (onSearch) {
       onSearch(trimmedQuery);
@@ -351,7 +358,11 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
 
   // Analytics integration via context
   const logSearchEvent = (event: string, payload: Record<string, any>) => {
-    try { track(event, payload); } catch {}
+    try { 
+      track(event, payload);
+    } catch (err) {
+      logger.debug('Analytics event tracking failed', { event, error: String(err) });
+    }
   };
 
   // Highlight matched query parts in suggestion text
@@ -401,6 +412,11 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
             onBlur={handleInputBlur}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
+            aria-label={placeholder}
+            role="searchbox"
+            aria-expanded={isOpen}
+            aria-controls="search-results"
+            aria-autocomplete="list"
             className="border-0 bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-2"
           />
           
@@ -437,6 +453,8 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                 type="button"
                 onClick={() => setQuery('')}
                 className="text-gray-400 hover:text-gray-600"
+                aria-label="Clear search"
+                title="Clear search query"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
@@ -444,7 +462,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
               </motion.button>
             )}
             
-            <div className="hidden md:flex items-center space-x-1 text-xs text-gray-400">
+            <div className="hidden md:flex items-center space-x-1 text-xs text-gray-400 px-2 py-1 bg-gray-100 rounded">
               <Command className="w-3 h-3" />
               <span>K</span>
             </div>
@@ -456,6 +474,11 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
       <AnimatePresence>
         {isOpen && (query.length >= 2 ? suggestions.length > 0 || trending.length > 0 : recentSearches.length > 0 || trending.length > 0) && (
           <motion.div
+            id="search-results"
+            role="listbox"
+            aria-label="Search suggestions"
+            aria-live="polite"
+            aria-atomic="true"
             className="absolute top-full mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 z-50 overflow-hidden"
             variants={dropdownVariants}
             initial="hidden"
@@ -476,6 +499,8 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                     <motion.button
                       key={`trending-${item.type}-${item.text}-${index}`}
                       variants={itemVariants}
+                      role="option"
+                      aria-selected={selectedIndex === index}
                       className={cn(
                         "w-full flex items-center gap-3 px-4 py-2 text-left hover:bg-gray-50 transition-colors group"
                       )}
@@ -511,6 +536,8 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                   <motion.button
                     key={`${item.query}-${item.timestamp.getTime()}`}
                     variants={itemVariants}
+                    role="option"
+                    aria-selected={selectedIndex === index}
                     className={cn(
                       "w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors",
                       selectedIndex === index && "bg-blue-50"
@@ -539,6 +566,8 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
                   <motion.button
                     key={suggestion.id}
                     variants={itemVariants}
+                    role="option"
+                    aria-selected={selectedIndex === index}
                     className={cn(
                       "w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 transition-colors group",
                       selectedIndex === index && "bg-blue-50"

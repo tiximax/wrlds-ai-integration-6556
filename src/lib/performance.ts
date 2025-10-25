@@ -15,6 +15,7 @@
  */
 
 import { onCLS, onFID, onLCP, onFCP, onTTFB, onINP, type Metric } from 'web-vitals';
+import metricsCollector from '@/utils/metricsCollector';
 
 /**
  * Performance thresholds theo Google recommendations
@@ -117,6 +118,18 @@ function sendToAnalytics(metric: Metric) {
  * Gọi hàm này trong main.tsx để start tracking
  */
 export function initPerformanceMonitoring() {
+  // Initialize metrics collector for Core Web Vitals
+  const isProduction = import.meta.env.PROD;
+  const sampleRate = isProduction ? 0.1 : 1.0; // Sample 10% of production traffic
+  
+  metricsCollector['config'] = {
+    sampleRate,
+    debug: import.meta.env.DEV,
+    environment: isProduction ? 'production' : 'development',
+    endpoint: '/api/metrics',
+  };
+  metricsCollector.init();
+  
   // Track all Core Web Vitals
   onCLS(sendToAnalytics);
   onFID(sendToAnalytics);
@@ -133,6 +146,7 @@ export function initPerformanceMonitoring() {
   
   if (import.meta.env.DEV) {
     console.log('📊 Performance monitoring initialized');
+    console.log('🎯 Metrics collector session:', metricsCollector.getSessionId());
   }
 }
 

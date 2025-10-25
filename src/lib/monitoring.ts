@@ -26,21 +26,9 @@ export function initMonitoring() {
       // Performance Monitoring
       tracesSampleRate: 0.1, // Capture 10% of transactions (giảm cost)
       
-      // Integrations
-      integrations: [
-        // Browser performance tracking
-        new Sentry.BrowserTracing({
-          // Trace navigation và user interactions
-          tracingOrigins: ["localhost", /^\//],
-          routingInstrumentation: Sentry.reactRouterV6Instrumentation,
-        }),
-        
-        // Session Replay - ghi lại user sessions khi có lỗi
-        new Sentry.Replay({
-          maskAllText: false, // Hiển thị text để debug dễ hơn
-          blockAllMedia: false, // Allow media để thấy context
-        }),
-      ],
+      // Integrations will be added automatically by Sentry v10+
+      // (BrowserTracing and Replay are auto-enabled)
+      integrations: [],
       
       // Session Replay sampling rates
       replaysSessionSampleRate: 0.1, // Capture 10% sessions bình thường

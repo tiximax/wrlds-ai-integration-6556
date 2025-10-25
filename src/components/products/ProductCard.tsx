@@ -187,42 +187,46 @@ const ProductCard: React.FC<ProductCardProps> = ({
               </span>
             </div>
 
-            {/* Quick View Button */}
-            <div className="absolute inset-x-0 bottom-3 flex justify-center md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
+            {/* Quick View Button - Always visible on mobile */}
+            <div className="absolute inset-x-0 bottom-3 flex justify-center opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200">
               <EnhancedButton
                 variant="secondary"
                 size="sm"
-                className="min-h-[36px] px-3 py-2"
+                className="min-h-[44px] px-4 py-2.5 text-sm font-medium"
                 onClick={(e) => { e.preventDefault(); setIsQuickOpen(true); }}
                 data-testid="quick-view-button"
+                title="Quick view product details"
               >
                 {t('productCard.quickView')}
               </EnhancedButton>
             </div>
             
-            {/* Compare Button */}
+            {/* Compare Button - Always visible on mobile */}
             <button
               onClick={(e) => {
                 e.preventDefault();
                 compare.add(product.id);
               }}
-              className="absolute bottom-3 left-3 p-2 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
+              className="absolute bottom-3 left-3 min-h-[44px] min-w-[44px] p-2 bg-white rounded-full shadow-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50 active:scale-95"
               aria-label={t('productCard.compare')}
               data-testid="add-to-compare"
+              title="Compare with other products"
             >
               <span className="text-xs font-medium text-gray-700">{t('productCard.compare')}</span>
             </button>
 
-            {/* Wishlist Button */}
+            {/* Wishlist Button - Always visible on mobile */}
             {showWishlist && (
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   onAddToWishlist?.(product.id);
                 }}
-                className="absolute bottom-3 right-3 p-2 bg-white rounded-full shadow-sm opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50"
+                className="absolute bottom-3 right-3 min-h-[44px] min-w-[44px] p-2 bg-white rounded-full shadow-sm opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 hover:bg-gray-50 active:scale-95"
+                aria-label="Add to wishlist"
+                title="Add to your wishlist"
               >
-                <Heart className="w-4 h-4 text-gray-600" />
+                <Heart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors" />
               </button>
             )}
             

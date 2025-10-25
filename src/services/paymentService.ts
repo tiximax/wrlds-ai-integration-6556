@@ -1,6 +1,8 @@
 // Payment Service - Handles all payment-related operations
 // This is a comprehensive payment integration system
 
+import { logger } from '@/utils/logger';
+
 export interface PaymentMethod {
   id: string;
   type: 'card' | 'paypal' | 'apple_pay' | 'google_pay' | 'bank_transfer';
@@ -135,16 +137,16 @@ export class PaymentService {
       // Initialize Stripe
       if (this.config.stripePublicKey && typeof window !== 'undefined') {
         // In real app: this.stripe = Stripe(this.config.stripePublicKey);
-        console.log('Stripe initialized with key:', this.config.stripePublicKey.substring(0, 10) + '...');
+        logger.debug('Stripe initialized successfully');
       }
 
       // Initialize PayPal
       if (this.config.paypalClientId) {
         // In real app: initialize PayPal SDK
-        console.log('PayPal initialized with client ID:', this.config.paypalClientId.substring(0, 10) + '...');
+        logger.debug('PayPal SDK initialized successfully');
       }
     } catch (error) {
-      console.error('Failed to initialize payment providers:', error);
+      logger.error('Failed to initialize payment providers', { error: String(error) });
     }
   }
 
@@ -157,8 +159,11 @@ export class PaymentService {
     try {
       // Validate amount
       if (amount <= 0) {
+        logger.warn('Invalid payment amount provided', { amount, currency });
         throw new Error('Invalid amount: Amount must be greater than 0');
       }
+
+      logger.debug('Creating payment intent', { amount, currency, metadata });
 
       // In real app, this would make an API call to your backend
       const mockPaymentIntent: PaymentIntent = {
@@ -174,8 +179,10 @@ export class PaymentService {
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 500));
 
+      logger.info('Payment intent created successfully', { paymentIntentId: mockPaymentIntent.id, amount });
       return mockPaymentIntent;
     } catch (error) {
+      logger.error('Failed to create payment intent', { error: String(error), amount, currency });
       throw new Error('Failed to create payment intent');
     }
   }
@@ -199,11 +206,14 @@ export class PaymentService {
     }
   ): Promise<PaymentResult> {
     try {
+      logger.debug('Processing card payment', { clientSecret, cardBrand: this.detectCardBrand(paymentData.cardNumber) });
+
       // Simulate payment processing
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Mock validation logic
       if (paymentData.cardNumber.includes('4000000000000002')) {
+        logger.warn('Card payment declined', { clientSecret, reason: 'Card declined' });
         return {
           success: false,
           error: {
@@ -215,6 +225,7 @@ export class PaymentService {
       }
 
       if (paymentData.cardNumber.includes('4000000000009995')) {
+        logger.warn('Card payment failed - insufficient funds', { clientSecret });
         return {
           success: false,
           error: {
@@ -226,6 +237,7 @@ export class PaymentService {
       }
 
       if (paymentData.cardNumber.includes('4000000000003220')) {
+        logger.info('Card payment requires 3D Secure authentication', { clientSecret });
         return {
           success: false,
           requiresAction: {
@@ -236,6 +248,7 @@ export class PaymentService {
       }
 
       if (clientSecret === 'invalid_secret') {
+        logger.error('Invalid client secret provided for card payment', { clientSecret });
         return {
           success: false,
           error: {
@@ -258,11 +271,13 @@ export class PaymentService {
         createdAt: new Date()
       };
 
+      logger.info('Card payment succeeded', { paymentIntentId: paymentIntent.id, clientSecret });
       return {
         success: true,
         paymentIntent
       };
     } catch (error) {
+      logger.error('Card payment processing error', { error: String(error), clientSecret });
       return {
         success: false,
         error: {
@@ -281,6 +296,8 @@ export class PaymentService {
     orderId: string
   ): Promise<PaymentResult> {
     try {
+      logger.debug('Processing PayPal payment', { amount, currency, orderId });
+
       // Simulate PayPal processing
       await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -295,11 +312,13 @@ export class PaymentService {
         createdAt: new Date()
       };
 
+      logger.info('PayPal payment processed successfully', { paymentIntentId: paymentIntent.id, orderId, amount });
       return {
         success: true,
         paymentIntent
       };
     } catch (error) {
+      logger.error('PayPal payment processing failed', { error: String(error), orderId, amount });
       return {
         success: false,
         error: {
@@ -453,6 +472,8 @@ export class PaymentService {
     }
   ): Promise<CreditCardPaymentMethod> {
     try {
+      logger.debug('Saving payment method', { customerId, cardBrand: this.detectCardBrand(paymentMethodData.cardNumber) });
+
       // In real app, this would securely tokenize and save the payment method
       await new Promise(resolve => setTimeout(resolve, 1000));
 
@@ -485,8 +506,10 @@ export class PaymentService {
         metadata: { customerId }
       };
 
+      logger.info('Payment method saved successfully', { customerId, paymentMethodId: savedPaymentMethod.id, brand });
       return savedPaymentMethod;
     } catch (error) {
+      logger.error('Failed to save payment method', { error: String(error), customerId });
       throw new Error('Failed to save payment method');
     }
   }
@@ -578,8 +601,11 @@ export class PaymentService {
     reason: 'duplicate' | 'fraudulent' | 'requested_by_customer' = 'requested_by_customer'
   ): Promise<RefundResult> {
     try {
+      logger.debug('Processing refund', { paymentIntentId, amount, reason });
+
       // Check if payment exists (simulate failure for specific IDs)
       if (paymentIntentId === 'pi_non_existent') {
+        logger.warn('Refund requested for non-existent payment', { paymentIntentId });
         return {
           success: false,
           error: {
@@ -591,6 +617,7 @@ export class PaymentService {
 
       // Simulate refund failure for invalid refunds
       if (paymentIntentId === 'pi_invalid_refund') {
+        logger.error('Refund failed for payment', { paymentIntentId, reason: 'Invalid refund state' });
         return {
           success: false,
           error: {
@@ -611,11 +638,13 @@ export class PaymentService {
         createdAt: new Date()
       };
 
+      logger.info('Refund processed successfully', { refundId: refund.id, paymentIntentId, amount, reason });
       return {
         success: true,
         refund
       };
     } catch (error) {
+      logger.error('Refund processing error', { error: String(error), paymentIntentId, amount });
       return {
         success: false,
         error: {
@@ -809,22 +838,22 @@ export const handlePaymentWebhook = async (event: any): Promise<void> => {
   try {
     switch (event.type) {
       case 'payment_intent.succeeded':
-        console.log('Payment succeeded:', event.data.object.id);
+        logger.info('Payment succeeded', { paymentId: event.data.object.id });
         // Handle successful payment
         break;
       case 'payment_intent.payment_failed':
-        console.log('Payment failed:', event.data.object.id);
+        logger.warn('Payment failed', { paymentId: event.data.object.id });
         // Handle failed payment
         break;
       case 'payment_method.attached':
-        console.log('Payment method attached:', event.data.object.id);
+        logger.info('Payment method attached', { paymentMethodId: event.data.object.id });
         // Handle payment method attachment
         break;
       default:
-        console.log('Unhandled event type:', event.type);
+        logger.debug('Unhandled webhook event type', { eventType: event.type });
     }
   } catch (error) {
-    console.error('Webhook error:', error);
+    logger.error('Webhook processing error', { error: String(error) });
     throw error;
   }
 };
