@@ -1,1 +1,93 @@
-import { useEffect, useRef } from 'react';\nimport { logger } from '@/utils/logger';\n\ninterface KeyboardShortcut {\n  keys: string[];\n  handler: (e: KeyboardEvent) => void;\n  description?: string;\n}\n\nexport const useGlobalKeyboardShortcuts = (shortcuts: KeyboardShortcut[] = []) => {\n  const registeredShortcutsRef = useRef<KeyboardShortcut[]>([]);\n\n  useEffect(() => {\n    // Default shortcuts\n    const defaultShortcuts: KeyboardShortcut[] = [\n      {\n        keys: ['Meta', 'k'],\n        handler: (e: KeyboardEvent) => {\n          e.preventDefault();\n          const searchInput = document.querySelector('[data-testid=\"search-visual-input\"]') as HTMLInputElement;\n          if (searchInput && document.activeElement !== searchInput) {\n            // Try to focus the search input if it's in the navbar\n            const navbarSearch = document.querySelector('[role=\"searchbox\"]') as HTMLInputElement;\n            if (navbarSearch) {\n              navbarSearch.focus();\n              logger.debug('Focused search input via Cmd+K');\n            }\n          }\n        },\n        description: 'Focus search (⌘K / Ctrl+K)'\n      },\n      {\n        keys: ['Control', 'k'],\n        handler: (e: KeyboardEvent) => {\n          e.preventDefault();\n          const navbarSearch = document.querySelector('[role=\"searchbox\"]') as HTMLInputElement;\n          if (navbarSearch && document.activeElement !== navbarSearch) {\n            navbarSearch.focus();\n            logger.debug('Focused search input via Ctrl+K');\n          }\n        },\n        description: 'Focus search (Ctrl+K)'\n      },\n      {\n        keys: ['Escape'],\n        handler: (e: KeyboardEvent) => {\n          // Close dropdowns, modals when pressing Escape\n          const activeInput = document.activeElement as HTMLInputElement;\n          if (activeInput?.type === 'text' || activeInput?.type === 'search') {\n            activeInput.blur();\n            logger.debug('Closed search input via Escape');\n          }\n        },\n        description: 'Close search (Esc)'\n      }\n    ];\n\n    registeredShortcutsRef.current = [...defaultShortcuts, ...shortcuts];\n\n    const handleKeyDown = (e: KeyboardEvent) => {\n      // Ignore if typing in input/textarea (except for our custom shortcuts)\n      const target = e.target as HTMLElement;\n      const isFormElement = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);\n\n      for (const shortcut of registeredShortcutsRef.current) {\n        const keys = shortcut.keys.map(k => k.toLowerCase());\n        const pressedKeys = [\n          e.ctrlKey && 'control',\n          e.metaKey && 'meta',\n          e.shiftKey && 'shift',\n          e.altKey && 'alt',\n          e.key.toLowerCase()\n        ].filter(Boolean);\n\n        // Check if all required keys are pressed\n        const isMatch = keys.length === pressedKeys.length &&\n          keys.every(key => pressedKeys.includes(key));\n\n        if (isMatch) {\n          // Allow search shortcut even in form elements\n          if (isFormElement && !['meta', 'control'].some(k => keys.includes(k))) {\n            continue;\n          }\n          shortcut.handler(e);\n          break;\n        }\n      }\n    };\n\n    document.addEventListener('keydown', handleKeyDown, { capture: false });\n\n    return () => {\n      document.removeEventListener('keydown', handleKeyDown);\n    };\n  }, [shortcuts]);\n\n  return registeredShortcutsRef.current;\n};\n"
+import { useEffect, useRef } from 'react';
+import { logger } from '@/utils/logger';
+
+interface KeyboardShortcut {
+  keys: string[];
+  handler: (e: KeyboardEvent) => void;
+  description?: string;
+}
+
+export const useGlobalKeyboardShortcuts = (shortcuts: KeyboardShortcut[] = []) => {
+  const registeredShortcutsRef = useRef<KeyboardShortcut[]>([]);
+
+  useEffect(() => {
+    // Default shortcuts
+    const defaultShortcuts: KeyboardShortcut[] = [
+      {
+        keys: ['Meta', 'k'],
+        handler: (e: KeyboardEvent) => {
+          e.preventDefault();
+          const searchInput = document.querySelector('[data-testid="search-visual-input"]') as HTMLInputElement;
+          if (searchInput && document.activeElement !== searchInput) {
+            const navbarSearch = document.querySelector('[role="searchbox"]') as HTMLInputElement;
+            if (navbarSearch) {
+              navbarSearch.focus();
+              logger.debug('Focused search input via Cmd+K');
+            }
+          }
+        },
+        description: 'Focus search (⌘K / Ctrl+K)'
+      },
+      {
+        keys: ['Control', 'k'],
+        handler: (e: KeyboardEvent) => {
+          e.preventDefault();
+          const navbarSearch = document.querySelector('[role="searchbox"]') as HTMLInputElement;
+          if (navbarSearch && document.activeElement !== navbarSearch) {
+            navbarSearch.focus();
+            logger.debug('Focused search input via Ctrl+K');
+          }
+        },
+        description: 'Focus search (Ctrl+K)'
+      },
+      {
+        keys: ['Escape'],
+        handler: (e: KeyboardEvent) => {
+          const activeInput = document.activeElement as HTMLInputElement;
+          if (activeInput?.type === 'text' || activeInput?.type === 'search') {
+            activeInput.blur();
+            logger.debug('Closed search input via Escape');
+          }
+        },
+        description: 'Close search (Esc)'
+      }
+    ];
+
+    registeredShortcutsRef.current = [...defaultShortcuts, ...shortcuts];
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isFormElement = ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName);
+
+      for (const shortcut of registeredShortcutsRef.current) {
+        const keys = shortcut.keys.map(k => k.toLowerCase());
+        const pressedKeys = [
+          e.ctrlKey && 'control',
+          e.metaKey && 'meta',
+          e.shiftKey && 'shift',
+          e.altKey && 'alt',
+          e.key.toLowerCase()
+        ].filter(Boolean);
+
+        const isMatch = keys.length === pressedKeys.length &&
+          keys.every(key => pressedKeys.includes(key));
+
+        if (isMatch) {
+          if (isFormElement && !['meta', 'control'].some(k => keys.includes(k))) {
+            continue;
+          }
+          shortcut.handler(e);
+          break;
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown, { capture: false });
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [shortcuts]);
+
+  return registeredShortcutsRef.current;
+};
