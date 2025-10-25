@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingBag, Truck, Gift, Tag, ChevronDown, ChevronUp, Info } from 'lucide-react';
+import { ShoppingBag, Truck, Gift, Tag, ChevronDown, ChevronUp, Info, AlertCircle, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { CartSummarySkeleton } from '@/components/skeletons';
 
 interface CartSummaryProps {
   subtotal: number;
@@ -14,6 +15,9 @@ interface CartSummaryProps {
   onCheckout: () => void;
   isCheckingOut?: boolean;
   className?: string;
+  isLoading?: boolean;
+  error?: Error | null;
+  onRetry?: () => void;
 }
 
 interface PromoCode {
@@ -34,8 +38,47 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   totalItems,
   onCheckout,
   isCheckingOut = false,
-  className
+  className,
+  isLoading = false,
+  error = null,
+  onRetry = () => {}
 }) => {
+  // Show skeleton while loading
+  if (isLoading) {
+    return <CartSummarySkeleton />;
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={cn("bg-gray-50 rounded-xl p-6", className)}
+      >
+        <div className="p-6 bg-red-50 border border-red-200 rounded-lg">
+          <div className="flex items-start gap-4">
+            <AlertCircle className="w-6 h-6 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <h3 className="text-lg font-semibold text-red-900 mb-2">
+                Failed to Load Cart
+              </h3>
+              <p className="text-red-700 mb-4">
+                {error.message || 'An error occurred while calculating your cart total.'}
+              </p>
+              <button
+                onClick={onRetry}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+              >
+                <RotateCcw className="w-4 h-4" />
+                Retry
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    );
+  }
   const [promoCode, setPromoCode] = useState('');
   const [appliedPromo, setAppliedPromo] = useState<PromoCode | null>(null);
   const [isApplyingPromo, setIsApplyingPromo] = useState(false);
