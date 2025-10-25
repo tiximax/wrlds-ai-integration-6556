@@ -1,0 +1,106 @@
+/* SearchResultsSkeleton - Layout cho search results */
+.search-results-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+}
+
+.search-results-skeleton__header {
+  margin-bottom: 8px;
+}
+
+.search-results-skeleton__container {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .search-results-skeleton__container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Sidebar */
+.search-results-skeleton__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.search-results-skeleton__filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.search-results-skeleton__filter-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-results-skeleton__filter-item {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.search-results-skeleton__price-inputs {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* Main content */
+.search-results-skeleton__main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search-results-skeleton__info {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
+}
+
+@media (prefers-color-scheme: dark) {
+  .search-results-skeleton__info {
+    border-color: var(--border-color, #333);
+  }
+}
+
+/* Product grid */
+.search-results-skeleton__products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .search-results-skeleton__products {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-results-skeleton__products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+}
+
+.search-results-skeleton__product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.search-results-skeleton__product-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}

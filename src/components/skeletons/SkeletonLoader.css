@@ -1,0 +1,46 @@
+/* Skeleton Loader - Pulse animation siêu mượt */
+@keyframes skeleton-pulse {
+  0% {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+  50% {
+    background-color: rgba(0, 0, 0, 0.12);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  @keyframes skeleton-pulse {
+    0% {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+    50% {
+      background-color: rgba(255, 255, 255, 0.12);
+    }
+    100% {
+      background-color: rgba(255, 255, 255, 0.08);
+    }
+  }
+}
+
+.skeleton-loader {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  .skeleton-loader {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+}
+
+.skeleton-loader--animated {
+  animation: skeleton-pulse 2s ease-in-out infinite;
+}
+
+/* Prevent layout shift - luôn reserve space */
+.skeleton-loader {
+  display: block;
+}
