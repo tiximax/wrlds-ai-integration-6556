@@ -462,7 +462,7 @@ export const EnhancedSearch: React.FC<EnhancedSearchProps> = ({
               </motion.button>
             )}
             
-            <div className="hidden md:flex items-center space-x-1 text-xs text-gray-400">
+            <div className="hidden md:flex items-center space-x-1 text-xs text-gray-400 px-2 py-1 bg-gray-100 rounded">
               <Command className="w-3 h-3" />
               <span>K</span>
             </div>

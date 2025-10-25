@@ -14,6 +14,7 @@ import { AnalyticsProvider, useAnalytics } from "@/contexts/AnalyticsContext";
 import { Auth0ProviderWithNavigate } from "@/contexts/Auth0Context";
 import { logger, formatError } from "@/utils/logger";
 import { registerServiceWorker } from "@/utils/serviceWorker";
+import { useGlobalKeyboardShortcuts } from "@/hooks/useGlobalKeyboardShortcuts";
 import ErrorBoundary from "@/components/ErrorBoundary";
 
 // Lazy load pages for better performance
@@ -43,6 +44,11 @@ const VectorDB = lazy(() => import("./pages/VectorDB"));
 const Login = lazy(() => import("./pages/Login"));
 const Callback = lazy(() => import("./pages/Callback"));
 const Profile = lazy(() => import("./pages/Profile"));
+
+const KeyboardShortcutsManager = () => {
+  useGlobalKeyboardShortcuts();
+  return null;
+};
 
 const PageViewTracker = () => {
   const { track } = useAnalytics();
@@ -103,6 +109,7 @@ const App = () => {
             <Sonner />
           <BrowserRouter>
             <Auth0ProviderWithNavigate>
+            <KeyboardShortcutsManager />
             <PageViewTracker />
             <Suspense fallback={
               <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-50 to-white">

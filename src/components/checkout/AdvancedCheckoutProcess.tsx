@@ -145,59 +145,77 @@ const ShippingStep: React.FC<CheckoutStepProps> = ({ onNext, data, errors, setEr
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Email */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
             <Mail className="inline h-4 w-4 mr-1" />
             Email Address *
           </label>
-          <input
-            type="email"
-            value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.email ? 'border-red-500' : 'border-gray-300'
-            }`}
-            placeholder="john@example.com"
-          />
+          <div className="relative">
+            <input
+              id="email"
+              type="email"
+              value={formData.email}
+              onChange={(e) => handleInputChange('email', e.target.value)}
+              className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+                errors.email ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
+              }`}
+              placeholder="john@example.com"
+              aria-invalid={!!errors.email}
+              aria-describedby={errors.email ? 'email-error' : undefined}
+            />
+            {!errors.email && formData.email && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 text-green-600">✓</div>
+            )}
+          </div>
           {errors.email && (
-            <p className="text-red-600 text-sm mt-1">{errors.email}</p>
+            <p id="email-error" className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span className="text-lg">⚠️</span> {errors.email}
+            </p>
           )}
         </div>
 
         {/* Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
             <User className="inline h-4 w-4 mr-1" />
             First Name *
           </label>
           <input
+            id="firstName"
             type="text"
             value={formData.firstName}
             onChange={(e) => handleInputChange('firstName', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.firstName ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+              errors.firstName ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
             }`}
             placeholder="John"
+            aria-invalid={!!errors.firstName}
           />
           {errors.firstName && (
-            <p className="text-red-600 text-sm mt-1">{errors.firstName}</p>
+            <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span>⚠️</span> {errors.firstName}
+            </p>
           )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
             Last Name *
           </label>
           <input
+            id="lastName"
             type="text"
             value={formData.lastName}
             onChange={(e) => handleInputChange('lastName', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.lastName ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+              errors.lastName ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
             }`}
             placeholder="Doe"
+            aria-invalid={!!errors.lastName}
           />
           {errors.lastName && (
-            <p className="text-red-600 text-sm mt-1">{errors.lastName}</p>
+            <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span>⚠️</span> {errors.lastName}
+            </p>
           )}
         </div>
 
@@ -217,21 +235,25 @@ const ShippingStep: React.FC<CheckoutStepProps> = ({ onNext, data, errors, setEr
 
         {/* Address */}
         <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="address" className="block text-sm font-medium text-gray-700 mb-2">
             <Home className="inline h-4 w-4 mr-1" />
             Address *
           </label>
           <input
+            id="address"
             type="text"
             value={formData.address}
             onChange={(e) => handleInputChange('address', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.address ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+              errors.address ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
             }`}
             placeholder="123 Main Street"
+            aria-invalid={!!errors.address}
           />
           {errors.address && (
-            <p className="text-red-600 text-sm mt-1">{errors.address}</p>
+            <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span>⚠️</span> {errors.address}
+            </p>
           )}
         </div>
 
@@ -251,33 +273,39 @@ const ShippingStep: React.FC<CheckoutStepProps> = ({ onNext, data, errors, setEr
 
         {/* City, State, ZIP */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-2">
             City *
           </label>
           <input
+            id="city"
             type="text"
             value={formData.city}
             onChange={(e) => handleInputChange('city', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.city ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+              errors.city ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
             }`}
             placeholder="New York"
+            aria-invalid={!!errors.city}
           />
           {errors.city && (
-            <p className="text-red-600 text-sm mt-1">{errors.city}</p>
+            <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span>⚠️</span> {errors.city}
+            </p>
           )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="state" className="block text-sm font-medium text-gray-700 mb-2">
             State *
           </label>
           <select
+            id="state"
             value={formData.state}
             onChange={(e) => handleInputChange('state', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.state ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+              errors.state ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
             }`}
+            aria-invalid={!!errors.state}
           >
             <option value="">Select State</option>
             <option value="CA">California</option>
@@ -287,45 +315,55 @@ const ShippingStep: React.FC<CheckoutStepProps> = ({ onNext, data, errors, setEr
             {/* Add more states as needed */}
           </select>
           {errors.state && (
-            <p className="text-red-600 text-sm mt-1">{errors.state}</p>
+            <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span>⚠️</span> {errors.state}
+            </p>
           )}
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700 mb-2">
             ZIP Code *
           </label>
           <input
+            id="zipCode"
             type="text"
             value={formData.zipCode}
             onChange={(e) => handleInputChange('zipCode', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.zipCode ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+              errors.zipCode ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
             }`}
             placeholder="10001"
+            aria-invalid={!!errors.zipCode}
           />
           {errors.zipCode && (
-            <p className="text-red-600 text-sm mt-1">{errors.zipCode}</p>
+            <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span>⚠️</span> {errors.zipCode}
+            </p>
           )}
         </div>
 
         {/* Phone */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
             <Phone className="inline h-4 w-4 mr-1" />
             Phone Number *
           </label>
           <input
+            id="phone"
             type="tel"
             value={formData.phone}
             onChange={(e) => handleInputChange('phone', e.target.value)}
-            className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${
-              errors.phone ? 'border-red-500' : 'border-gray-300'
+            className={`w-full px-3 py-2.5 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all min-h-[44px] ${
+              errors.phone ? 'border-red-500 bg-red-50' : 'border-gray-300 focus:bg-white'
             }`}
             placeholder="+1 (555) 123-4567"
+            aria-invalid={!!errors.phone}
           />
           {errors.phone && (
-            <p className="text-red-600 text-sm mt-1">{errors.phone}</p>
+            <p className="text-red-600 text-sm mt-1 flex items-center gap-1">
+              <span>⚠️</span> {errors.phone}
+            </p>
           )}
         </div>
       </div>
